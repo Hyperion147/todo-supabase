@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1E1E2D;       /* Dark Charcoal */
-  --color-secondary: #BB86FC;     /* Soft Purple */
-  --color-background: #4d5165;    /* Near-Black */
-  --color-text: #E0E0E0;          /* Light Gray */
-  --color-accent: #03DAC6;        /* Teal */
-  --color-warning: #FF5252;       /* Red */
-  --color-surface: #2C2C3A;       /* Card BG */
-  --color-border: #3A3A4A;        /* Borders */
+  --color-primary: #071013;      
+  --color-secondary: #BB86FC;    
+  --color-background: #A2AEBB;    
+  --color-text: #E0E0E0;        
+  --color-accent: #03DAC6;      
+  --color-warning: #FF5252;    
+  --color-surface: #2C2C3A;     
+  --color-border: #3A3A4A;       
 
   --color-bg-primary: var(--color-primary);
   --color-bg-secondary: var(--color-secondary);
@@ -32,7 +32,7 @@ body{
 }
 
 ::selection{
-  @apply bg-text text-primary
+  @apply bg-white text-gray-900
 }
 
 .scrollbar {

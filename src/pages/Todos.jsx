@@ -1,11 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import gsap from "gsap"
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 import supabase from "../lib/supabase";
+
+import Navbar from "../components/Navbar";
 
 const Todos = () => {
     const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
+    const [isEditig, setIsEditing] = useState(null)
+
+    const editRef = useRef()
+
+    const animateDeleteAll = () => {
+        const items = gsap.utils.toArray(".todo-item");
+        const tl = gsap.timeline({
+            onComplete: () => deleteAllTask(),
+        });
+
+        tl.to(items, {
+            x: 300,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.1,
+        });
+    };
 
     useEffect(() => {
         fetchTodos();
@@ -14,12 +37,13 @@ const Todos = () => {
     const fetchTodos = async () => {
         const { data, error } = await supabase.from("TodoList").select("*");
         if (error) {
+            toast.error("Error fetching todos");
             console.log("Error fetching todos", error);
+            
         } else {
             setTodos(data);
         }
     };
-
     const addTodo = async () => {
         if (!newTodo.trim()) return;
         try {
@@ -29,6 +53,7 @@ const Todos = () => {
                 .insert({ name: newTodo, isCompleted: false });
             if (error) {
                 console.log("Error adding todo", error);
+                toast.error("Error adding task")
             } else {
                 await fetchTodos();
                 setNewTodo("");
@@ -48,6 +73,7 @@ const Todos = () => {
 
         if (error) {
             console.log("Error completing task", error);
+            toast.error("Error completing task");
         } else {
             const updatedTodo = todos.map((todo) =>
                 todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
@@ -56,10 +82,20 @@ const Todos = () => {
             if (!isCompleted) toast.success("Completed Task!");
         }
     };
+    const updateTask = async (id) => {
+        const { error } = await supabase.from("TodoList").update({}).eq("id", id);
+        if (error) {
+            console.log("Error updating task", error);
+            toast.error("Error updating task");
+        } else {
+            toast.error("Updated Task!");
+        }
+    };
     const deleteTask = async (id) => {
         const { error } = await supabase.from("TodoList").delete().eq("id", id);
         if (error) {
-            console.log("Error deleting todo", error);
+            console.log("Error deleting task", error);
+            toast.error("Error deleting task");
         } else {
             setTodos((prev) => prev.filter((todo) => todo.id !== id));
             toast.error("Deleted Task!");
@@ -67,10 +103,13 @@ const Todos = () => {
     };
     const deleteAllTask = async () => {
         try {
-            const { data, error } = await supabase
+            const { data, error : fetchingError } = await supabase
                 .from("TodoList")
                 .select("id");
-            if (error) toast.error("Error fetching todos: ", error);
+            if (fetchingError){ 
+                toast.error("Error fetching todos to delete");
+                console.log("Error fetching todos: ", fetchingError);
+            }
 
             const { error: deletingError } = await supabase
                 .from("TodoList")
@@ -80,7 +119,8 @@ const Todos = () => {
                     data.map((todo) => todo.id)
                 );
             if (deletingError) {
-                toast.error("Error deleting todos:", error);
+                toast.error("Error deleting todos");
+                console.log("Error deleting todos:", deletingError);
             } else {
                 setTodos([]);
                 toast.error("All tasks deleted!");
@@ -92,13 +132,15 @@ const Todos = () => {
 
     return (
         <div className="">
+            <Toaster position="bottom-right" />
+            <Navbar />
             <div className="flex justify-center">
                 <input
                     type="text"
                     placeholder="Add todo..."
                     value={newTodo}
                     onChange={(e) => setNewTodo(e.target.value)}
-                    className="relative w-100 px-6 py-3 pr-20 rounded-l-full border border-border bg-white text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+                    className="relative w-100 px-6 py-3 pr-4 rounded-l-full border border-border bg-white text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
                 />
                 <button
                     onClick={addTodo}
@@ -108,12 +150,12 @@ const Todos = () => {
                     ADD
                 </button>
             </div>
-            <div className="border-primary border-4 mt-4 min-h-[560px] max-h-[560px] max-w-[750px] mx-auto rounded-2xl overflow-y-auto">
-                <ul className="flex flex-col items-center mt-6  max-h-[560px]">
+            <div className="border-primary border-4 mt-4 min-h-[560px] max-h-[560px] max-w-[750px] mx-auto rounded-2xl overflow-y-auto overflow-x-hidden">
+                <ul className="flex flex-col items-center mt-4 max-h-[560px]">
                     {todos.map((todo) => (
                         <li
                             key={todo.id}
-                            className="relative flex space-x-6 justify-center items-center bg-primary py-3 mb-2 min-w-[550px] rounded-xl"
+                            className="relative flex space-x-6 justify-center items-center bg-primary py-3 mb-2 min-w-[700px] rounded-xl todo-item"
                         >
                             <input
                                 type="checkbox"
@@ -121,26 +163,31 @@ const Todos = () => {
                                     completeTask(todo.id, todo.isCompleted)
                                 }
                                 checked={todo.isCompleted}
-                                className="absolute left-4 h-6 w-6 text-gray-600 rounded focus:ring-gray-500 cursor-pointer transition-colors duration-200'"
+                                className="absolute left-4 h-6 w-6 text-gray-600 rounded focus:ring-gray-500 cursor-pointer transition-colors duration-200"
                             />
                             <span
-                                className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-text"} transition-all duration-300`}
+                                className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-text"} transition-all duration-300 max-w-[550px] text-center text-pretty wrap-break-word`}
                             >
                                 {todo.name}
                             </span>
-                            <button onClick={() => deleteTask(todo.id)} className="absolute right-4">
-                                <img
-                                    src="delete.png"
-                                    alt=""
-                                    className="w-8 h-8 hover:bg-gradient-to-b p-1 hover:to-gray-800 rounded-b-sm"
-                                />
+                            <button
+                                onClick={() => updateTask(todo.id)}
+                                className="absolute right-6"
+                            >
+                                <FaEdit className="w-5 h-5" />
+                            </button>
+                            <button
+                                onClick={() => deleteTask(todo.id)}
+                                className="absolute right-3"
+                            >
+                                <MdDelete className="w-6 h-6" />
                             </button>
                         </li>
                     ))}
                 </ul>
-                <div className="relative flex justify-center">
+                <div className="flex justify-center">
                     <button
-                        onClick={deleteAllTask}
+                        onClick={animateDeleteAll}
                         className={`${todos.length >= 2 ? "flex" : "hidden"} bg-red-700 py-2 border-gray-500 border-2 px-5 rounded-xl font-bold hover:bg-gradient-to-b hover:to-red-900 hover:ring-1`}
                     >
                         Delete All
