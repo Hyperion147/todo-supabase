@@ -1,5 +1,4 @@
 import {
-    BrowserRouter as Router,
     Routes,
     Route,
     Navigate,
@@ -71,9 +70,7 @@ function AppWrap() {
 
 function App() {
     return (
-        <Router>
             <AppWrap />
-        </Router>
     );
 }
 
