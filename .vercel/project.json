@@ -1,17 +1,1 @@
-{
-  "projectId": "prj_AJxruLnSSKu0yTyLIzxiU2aAlIIu",
-  "orgId": "team_jzM0MtiEdD6B47BdAJbtf1ZR",
-  "version": 2,
-  "builds": [
-    {
-      "src": "dist/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
+{"projectId":"prj_AJxruLnSSKu0yTyLIzxiU2aAlIIu","orgId":"team_jzM0MtiEdD6B47BdAJbtf1ZR"}
