@@ -35,7 +35,7 @@ const Auth = () => {
 
                 if (registerError) throw registerError;
 
-                toast.success("Successfull! Check your email for confirmation");
+                toast.success("Successfull! Login to continue!");
             } else {
                 const { error } = await supabase.auth.signInWithPassword({
                     email,
