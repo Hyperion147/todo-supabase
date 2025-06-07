@@ -69,7 +69,7 @@ const Navbar = () => {
                         <button className="hover:text-gray-400 transition-colors cursor-pointer text-base sm:text-xl"
                         onClick={logout}
                         >
-                            <Link to="auth">LOGOUT</Link>
+                            <Link to="/auth">LOGOUT</Link>
                         </button>
                     </div>
                 </nav>

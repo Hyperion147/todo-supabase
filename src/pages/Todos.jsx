@@ -1,20 +1,16 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
-import gsap from "gsap"
+import gsap from "gsap";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import supabase from "../lib/supabase";
-
 import Navbar from "../components/Navbar";
 
 const Todos = () => {
     const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
-    const [isEditig, setIsEditing] = useState(null)
-
-    const editRef = useRef()
 
     const animateDeleteAll = () => {
         const items = gsap.utils.toArray(".todo-item");
@@ -35,25 +31,37 @@ const Todos = () => {
     }, []);
 
     const fetchTodos = async () => {
-        const { data, error } = await supabase.from("TodoList").select("*");
+        const { data: {session}} = await supabase.auth.getSession();
+        const emailCheck = session.user.email
+        if(!emailCheck){
+            setTodos([])
+            return
+        }
+        const { data, error } = await supabase.from("TodoList").select("*").eq("email", emailCheck);
         if (error) {
             toast.error("Error fetching todos");
             console.log("Error fetching todos", error);
-            
         } else {
             setTodos(data);
         }
     };
     const addTodo = async () => {
+        const { data: {session}} = await supabase.auth.getSession();
+        const email = session.user.email
+
         if (!newTodo.trim()) return;
         try {
             setIsAdding(true);
             const { error } = await supabase
                 .from("TodoList")
-                .insert({ name: newTodo, isCompleted: false });
+                .insert({
+                    name: newTodo,
+                    isCompleted: false,
+                    email: email,
+                });
             if (error) {
                 console.log("Error adding todo", error);
-                toast.error("Error adding task")
+                toast.error("Error adding task");
             } else {
                 await fetchTodos();
                 setNewTodo("");
@@ -82,15 +90,6 @@ const Todos = () => {
             if (!isCompleted) toast.success("Completed Task!");
         }
     };
-    const updateTask = async (id) => {
-        const { error } = await supabase.from("TodoList").update({}).eq("id", id);
-        if (error) {
-            console.log("Error updating task", error);
-            toast.error("Error updating task");
-        } else {
-            toast.error("Updated Task!");
-        }
-    };
     const deleteTask = async (id) => {
         const { error } = await supabase.from("TodoList").delete().eq("id", id);
         if (error) {
@@ -103,10 +102,10 @@ const Todos = () => {
     };
     const deleteAllTask = async () => {
         try {
-            const { data, error : fetchingError } = await supabase
+            const { data, error: fetchingError } = await supabase
                 .from("TodoList")
                 .select("id");
-            if (fetchingError){ 
+            if (fetchingError) {
                 toast.error("Error fetching todos to delete");
                 console.log("Error fetching todos: ", fetchingError);
             }
@@ -171,14 +170,8 @@ const Todos = () => {
                                 {todo.name}
                             </span>
                             <button
-                                onClick={() => updateTask(todo.id)}
-                                className="absolute right-6"
-                            >
-                                <FaEdit className="w-5 h-5" />
-                            </button>
-                            <button
                                 onClick={() => deleteTask(todo.id)}
-                                className="absolute right-3"
+                                className="absolute right-3 cursor-pointer"
                             >
                                 <MdDelete className="w-6 h-6" />
                             </button>
@@ -188,7 +181,7 @@ const Todos = () => {
                 <div className="flex justify-center">
                     <button
                         onClick={animateDeleteAll}
-                        className={`${todos.length >= 2 ? "flex" : "hidden"} bg-red-700 py-2 border-gray-500 border-2 px-5 rounded-xl font-bold hover:bg-gradient-to-b hover:to-red-900 hover:ring-1`}
+                        className={`${todos.length >= 2 ? "flex" : "hidden"} bg-red-600 py-2 border-gray-500 border-2 px-5 rounded-xl font-bold hover:bg-red-800 hover:ring-1 cursor-pointer`}
                     >
                         Delete All
                     </button>

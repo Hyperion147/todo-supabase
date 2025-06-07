@@ -3,64 +3,77 @@ import {
     Routes,
     Route,
     Navigate,
+    useNavigate,
 } from "react-router-dom";
 import { useEffect, useState } from "react";
-
-import { Toaster } from "react-hot-toast";
 import Auth from "./pages/Auth";
 import Todos from "./pages/Todos";
 import Home from "./pages/Home";
+import AuthCallback from "./pages/AuthCallback";
 import supabase from "./lib/supabase";
 import "./App.css";
 
-function App() {
+function AppWrap() {
     const [session, setSession] = useState(null);
-
+    const navigate = useNavigate();
     const fetchSession = async () => {
         const currentSession = await supabase.auth.getSession();
-        console.log(currentSession);
         setSession(currentSession.data.session);
     };
 
     useEffect(() => {
         fetchSession();
         const { data: authListener } = supabase.auth.onAuthStateChange(
-            (_event, session) => {
+            async (event, session) => {
                 setSession(session);
+                if (event === "SIGNED_IN") {
+                    if (window.location.pathname.includes("/auth")) {
+                        navigate("/todo", { replace: true });
+                    }
+                }
             }
         );
-
         return () => {
             authListener.subscription.unsubscribe();
         };
-    }, []);
+    }, [navigate]);
 
     return (
         <>
-            <Router>
-                <div className="min-h-screen bg-background text-text overflow-hidden relative z-10">
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route
-                            path="/todo"
-                            element={
-                                session ? (
-                                    <Todos />
-                                ) : (
-                                    <Navigate
-                                        to="/auth"
-                                        replace
-                                        state={{ from: "/todo" }}
-                                    />
-                                )
-                            }
-                        />
-                        <Route path="auth" element={<Auth />} />
-                        <Route path="*" element={<Navigate to="/" replace />} />
-                    </Routes>
-                </div>
-            </Router>
+            <div className="min-h-screen bg-background text-text overflow-hidden relative z-10">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route
+                        path="/auth"
+                        element={session ? <Navigate to="/todo" /> : <Auth />}
+                    />
+                    <Route
+                        path="/todo"
+                        element={
+                            session ? (
+                                <Todos session={session} />
+                            ) : (
+                                <Navigate
+                                    to="/auth"
+                                    replace
+                                    state={{ from: "/todo" }}
+                                />
+                            )
+                        }
+                    />
+                    <Route path="/auth/callback" element={<AuthCallback />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </div>
         </>
+    );
+}
+
+function App() {
+    return (
+        <Router>
+            <AppWrap />
+        </Router>
     );
 }
 
