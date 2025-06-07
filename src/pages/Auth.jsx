@@ -59,24 +59,24 @@ const Auth = () => {
         }
     };
 
-    const signInWithGithub = async () => {
-        try {
-            const { error } = await supabase.auth.signInWithOAuth({
-                provider: "github",
-                options: {
-                    redirectTo: "http://localhost:5173/auth/callback",
-                    queryParams: {
-                        access_type: "offline",
-                        prompt: "consent",
-                    },
-                },
-            });
-            if(error) throw error
-        } catch (error) {
-            console.log(error);
-            toast.error("Github auth error! Try email login!");
-        }
-    };
+    // const signInWithGithub = async () => {
+    //     try {
+    //         const { error } = await supabase.auth.signInWithOAuth({
+    //             provider: "github",
+    //             options: {
+    //                 redirectTo: "http://localhost:5173/auth/callback",
+    //                 queryParams: {
+    //                     access_type: "offline",
+    //                     prompt: "consent",
+    //                 },
+    //             },
+    //         });
+    //         if(error) throw error
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error("Github auth error! Try email login!");
+    //     }
+    // };
 
     return (
         <div className="text-text bg-background flex flex-col justify-center items-center min-h-screen ">
