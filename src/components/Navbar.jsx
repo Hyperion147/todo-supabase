@@ -14,8 +14,9 @@ const Navbar = () => {
             const mm = gsap.matchMedia();
             const commonAnimation = {
                 opacity: 1,
-                duration: 1,
+                duration: 2,
                 ease: "power3.out",
+                
             };
             mm.add("(min-width: 768px)", () => {
                 gsap.set(navbarRef.current, {

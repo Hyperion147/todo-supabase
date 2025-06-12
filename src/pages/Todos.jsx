@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import gsap from "gsap";
@@ -11,6 +11,7 @@ const Todos = () => {
     const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
+    const itemRef = useRef([]);
 
     const animateDeleteAll = () => {
         const items = gsap.utils.toArray(".todo-item");
@@ -25,19 +26,34 @@ const Todos = () => {
             stagger: 0.1,
         });
     };
+    const animateDelete = (id, index) => {
+        const element = itemRef.current[index];
+        if (!element) return;
+        gsap.to(element, {
+            x: 300,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.1,
+            onComplete: () => deleteTask(id),
+        });
+    };
 
     useEffect(() => {
         fetchTodos();
     }, []);
-
     const fetchTodos = async () => {
-        const { data: {session}} = await supabase.auth.getSession();
-        const emailCheck = session.user.email
-        if(!emailCheck){
-            setTodos([])
-            return
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
+        const emailCheck = session.user.email;
+        if (!emailCheck) {
+            setTodos([]);
+            return;
         }
-        const { data, error } = await supabase.from("TodoList").select("*").eq("email", emailCheck);
+        const { data, error } = await supabase
+            .from("TodoList")
+            .select("*")
+            .eq("email", emailCheck);
         if (error) {
             toast.error("Error fetching todos");
             console.log("Error fetching todos", error);
@@ -46,19 +62,23 @@ const Todos = () => {
         }
     };
     const addTodo = async () => {
-        const { data: {session}} = await supabase.auth.getSession();
-        const email = session.user.email
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
+        const email = session.user.email;
 
         if (!newTodo.trim()) return;
+        if (todos.length >= 8) {
+            toast.error("Maximum limit of 8 todos reached!");
+            return;
+        }
         try {
             setIsAdding(true);
-            const { error } = await supabase
-                .from("TodoList")
-                .insert({
-                    name: newTodo,
-                    isCompleted: false,
-                    email: email,
-                });
+            const { error } = await supabase.from("TodoList").insert({
+                name: newTodo,
+                isCompleted: false,
+                email: email,
+            });
             if (error) {
                 console.log("Error adding todo", error);
                 toast.error("Error adding task");
@@ -133,28 +153,36 @@ const Todos = () => {
         <div className="">
             <Toaster position="bottom-right" />
             <Navbar />
-            <div className="flex justify-center">
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    addTodo();
+                }}
+                className="flex justify-center"
+            >
                 <input
                     type="text"
                     placeholder="Add todo..."
                     value={newTodo}
                     onChange={(e) => setNewTodo(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && addTodo()}
                     className="relative w-100 px-6 py-3 pr-4 rounded-l-full border border-border bg-white text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
                 />
                 <button
-                    onClick={addTodo}
-                    disabled={isAdding}
+                    type="submit"
+                    disabled={isAdding || todos.length >= 8}
                     className="px-4 bg-primary text-text rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200 font-medium cursor-pointer tech"
                 >
                     ADD
                 </button>
-            </div>
+            </form>
             <div className="border-primary border-4 mt-4 min-h-[560px] max-h-[560px] max-w-[750px] mx-auto rounded-2xl overflow-y-auto overflow-x-hidden">
                 <ul className="flex flex-col items-center mt-4 max-h-[560px]">
-                    {todos.map((todo) => (
+                    {todos.map((todo, index) => (
                         <li
+                            ref={(e) => (itemRef.current[index] = e)}
                             key={todo.id}
-                            className="relative flex space-x-6 justify-center items-center bg-primary py-3 mb-2 min-w-[700px] rounded-xl todo-item"
+                            className="relative flex space-x-6 justify-center items-center bg-primary py-3 mb-2 min-w-[700px] rounded-xl todo-item todo-element"
                         >
                             <input
                                 type="checkbox"
@@ -170,7 +198,7 @@ const Todos = () => {
                                 {todo.name}
                             </span>
                             <button
-                                onClick={() => deleteTask(todo.id)}
+                                onClick={() => animateDelete(todo.id, index)}
                                 className="absolute right-3 cursor-pointer"
                             >
                                 <MdDelete className="w-6 h-6" />

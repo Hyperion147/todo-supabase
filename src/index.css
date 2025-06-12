@@ -1,60 +1,74 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #071013;      
-  --color-secondary: #BB86FC;    
-  --color-background: #A2AEC8;    
-  --color-text: #E0E0E0;        
-  --color-accent: #03DAC6;      
-  --color-warning: #FF5252;    
-  --color-surface: #2C2C3A;     
-  --color-border: #3A3A4A;       
+    --color-primary: #071013;
+    --color-secondary: #bb86fc;
+    --color-background: #a2aec8;
+    --color-text: #e0e0e0;
+    --color-accent: #03dac6;
+    --color-warning: #ff5252;
+    --color-surface: #2c2c3a;
+    --color-border: #3a3a4a;
 
-  --color-bg-primary: var(--color-primary);
-  --color-bg-secondary: var(--color-secondary);
-  --color-bg-background: var(--color-background);
-  --color-bg-accent: var(--color-accent);
-  --color-bg-warning: var(--color-warning);
-  --color-bg-surface: var(--color-surface);
+    --color-bg-primary: var(--color-primary);
+    --color-bg-secondary: var(--color-secondary);
+    --color-bg-background: var(--color-background);
+    --color-bg-accent: var(--color-accent);
+    --color-bg-warning: var(--color-warning);
+    --color-bg-surface: var(--color-surface);
 
-  --color-text-primary: var(--color-primary);
-  --color-text-secondary: var(--color-secondary);
-  --color-text-default: var(--color-text);
-  --color-text-accent: var(--color-accent);
-  --color-text-warning: var(--color-warning);
+    --color-text-primary: var(--color-primary);
+    --color-text-secondary: var(--color-secondary);
+    --color-text-default: var(--color-text);
+    --color-text-accent: var(--color-accent);
+    --color-text-warning: var(--color-warning);
 
-  --color-border-default: var(--color-border);
+    --color-border-default: var(--color-border);
 }
 
-body{
+body {
     background-color: rgb(244, 254, 255);
     overflow: hidden;
 }
 
-::selection{
-  @apply bg-white text-gray-900
+::selection {
+    @apply bg-white text-gray-900;
 }
 
 .scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e0 #f7fafc;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 .scrollbar::-webkit-scrollbar-track {
-  background: #f7fafc;
-  border-radius: 4px;
+    background: #f7fafc;
+    border-radius: 4px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background-color: #cbd5e0;
-  border-radius: 4px;
-  border: 2px solid #f7fafc;
+    background-color: #cbd5e0;
+    border-radius: 4px;
+    border: 2px solid #f7fafc;
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #a0aec0;
+    background-color: #a0aec0;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(250%);
+    }
+}
+
+.animate-loading-bar {
+    animation: loading 0.8s ease infinite;
 }

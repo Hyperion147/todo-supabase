@@ -1,18 +1,15 @@
-import {
-    Routes,
-    Route,
-    Navigate,
-    useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Auth from "./pages/Auth";
 import Todos from "./pages/Todos";
 import Home from "./pages/Home";
 import AuthCallback from "./pages/AuthCallback";
 import supabase from "./lib/supabase";
+import Loading from "./components/Loading";
 import "./App.css";
 
 function AppWrap() {
+    const [isLoaded, setIsLoaded] = useState(false);
     const [session, setSession] = useState(null);
     const navigate = useNavigate();
     const fetchSession = async () => {
@@ -39,6 +36,7 @@ function AppWrap() {
 
     return (
         <>
+            {!isLoaded && <Loading onComplete={() => setIsLoaded(true)} />}
             <div className="min-h-screen bg-background text-text overflow-hidden relative z-10">
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -69,9 +67,7 @@ function AppWrap() {
 }
 
 function App() {
-    return (
-            <AppWrap />
-    );
+    return <AppWrap />;
 }
 
 export default App;
