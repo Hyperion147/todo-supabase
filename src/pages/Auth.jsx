@@ -79,7 +79,7 @@ const Auth = () => {
     // };
 
     return (
-        <div className="text-text bg-background flex flex-col justify-center items-center min-h-screen ">
+        <div className="text-text bg-background flex flex-col items-center mt-30">
             <div className="border-2 border-primary text-center px-15 py-10 rounded-xl">
                 <Toaster duration="4000" position="bottom-right" />
                 <h2 className="text-primary font-bold text-2xl mb-4 tech">

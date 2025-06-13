@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import Auth from "./pages/Auth";
 import Todos from "./pages/Todos";
 import AuthCallback from "./pages/AuthCallback";
+import Home from "./pages/Home";
+import Settings from "./components/Settings";
+import Navbar from "./components/Navbar";
 import supabase from "./lib/supabase";
 
 import "./App.css";
@@ -35,15 +38,16 @@ function AppWrap() {
 
     return (
         <>
-            
             <div className="min-h-screen bg-background text-text overflow-hidden relative z-10">
+                 <Navbar session={session} />
                 <Routes>
+                    <Route path="/" element={<Home />} />
                     <Route
                         path="/auth"
                         element={session ? <Navigate to="/todo" /> : <Auth />}
                     />
                     <Route
-                        path="/todo"
+                        path="/"
                         element={
                             session ? (
                                 <Todos session={session} />
@@ -57,6 +61,7 @@ function AppWrap() {
                         }
                     />
                     <Route path="/auth/callback" element={<AuthCallback />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </div>

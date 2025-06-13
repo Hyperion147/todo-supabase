@@ -4,10 +4,12 @@ import { Toaster } from "react-hot-toast";
 import gsap from "gsap";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
 import supabase from "../lib/supabase";
 import Navbar from "../components/Navbar";
+import Description from "../components/Description";
 
-const Todos = () => {
+const Todos = ({ onTodoSelect }) => {
     const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
@@ -150,22 +152,21 @@ const Todos = () => {
     };
 
     return (
-        <div className="">
+        <div>
             <Toaster position="bottom-right" />
-            <Navbar />
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     addTodo();
                 }}
-                className="flex justify-center"
+                className="flex justify-center mx-2"
             >
                 <input
                     type="text"
                     placeholder="Add todo..."
                     value={newTodo}
                     onChange={(e) => setNewTodo(e.target.value)}
-                    className="relative w-100 px-6 py-3 pr-4 rounded-l-full border border-border bg-white text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+                    className="relative w-100 px-6 py-3 pr-4 rounded-l-full border bg-white text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
                 />
                 <button
                     type="submit"
@@ -175,13 +176,13 @@ const Todos = () => {
                     ADD
                 </button>
             </form>
-            <div className="border-primary border-4 mt-4 min-h-[560px] max-h-[560px] max-w-[750px] mx-auto rounded-2xl overflow-y-auto overflow-x-hidden">
+            <div className="border-primary/30 border-0 md:border-2 mt-4 min-h-[680px] md:min-h-[560px] max-h-[560px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden mx-2 md:mx-auto">
                 <ul className="flex flex-col items-center mt-4 max-h-[560px]">
                     {todos.map((todo, index) => (
                         <li
                             ref={(e) => (itemRef.current[index] = e)}
                             key={todo.id}
-                            className="relative flex space-x-6 justify-center items-center bg-primary py-3 mb-2 min-w-[700px] rounded-xl todo-item todo-element"
+                            className="relative flex justify-center items-center bg-primary py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] rounded-sm md:rounded-lg todo-item todo-element"
                         >
                             <input
                                 type="checkbox"
@@ -192,7 +193,8 @@ const Todos = () => {
                                 className="absolute left-4 h-6 w-6 text-gray-600 rounded focus:ring-gray-500 cursor-pointer transition-colors duration-200"
                             />
                             <span
-                                className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-text"} transition-all duration-300 max-w-[550px] text-center text-pretty wrap-break-word`}
+                                className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-text"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer`}
+                                onClick={() => onTodoSelect(todo)}
                             >
                                 {todo.name}
                             </span>
