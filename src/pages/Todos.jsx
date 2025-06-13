@@ -165,7 +165,6 @@ const Todos = () => {
                     placeholder="Add todo..."
                     value={newTodo}
                     onChange={(e) => setNewTodo(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && addTodo()}
                     className="relative w-100 px-6 py-3 pr-4 rounded-l-full border border-border bg-white text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
                 />
                 <button
