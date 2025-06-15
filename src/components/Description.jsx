@@ -1,6 +1,7 @@
 
 
 const Description = ({ todo }) => {
+    
     return (
         <div className="pl-10 flex flex-col mt-20">
             <h2 className="text-5xl text-primary font-bold mb-2 capitalize">

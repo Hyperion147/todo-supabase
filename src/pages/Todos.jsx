@@ -13,6 +13,7 @@ const Todos = ({ onTodoSelect }) => {
     const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const itemRef = useRef([]);
 
     const animateDeleteAll = () => {
@@ -148,6 +149,30 @@ const Todos = ({ onTodoSelect }) => {
             }
         } catch (error) {
             toast.error("Error deleting all todos: ", error);
+        }
+    };
+
+    const handleUpdateTask = async (updateTask) => {
+        try {
+            const { error } = await supabase
+                .from("TodoList")
+                .update(updateTask)
+                .eq("id", updateTask.id);
+            if (error) {
+                toast.error("Error updating todo");
+                console.log("Error updating todo", error);
+            } else {
+                setTodos(
+                    todos.map((todo) =>
+                        todo.id === updateTask.id ? updateTask : todo
+                    )
+                );
+                toast.success("Todo updated!");
+                setIsEditing(false);
+            }
+        } catch (error) {
+            toast.error("Error updating todo");
+            console.log("Error updating todo", error);
         }
     };
 
