@@ -39,6 +39,9 @@ const Home = () => {
 
     const handleUpdateTask = async (updateTask) => {
         try {
+            if (!updateTask?.id) {
+                console.error("No Task ID");
+            }
             const { error } = await supabase
                 .from("TodoList")
                 .update(updateTask)
@@ -46,8 +49,8 @@ const Home = () => {
 
             if (error) throw error;
 
-            setTodos(
-                todos.map((todo) =>
+            setTodos((prev) =>
+                prev.map((todo) =>
                     todo.id === updateTask.id ? updateTask : todo
                 )
             );

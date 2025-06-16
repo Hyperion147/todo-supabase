@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuSaveAll } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
 import { ImCancelCircle } from "react-icons/im";
+import DatePicker from "react-datepicker";
 
-const Description = ({ todo, onSave }) => {
+import "react-datepicker/dist/react-datepicker.css";
+
+const Description = ({ todo, onSave, isCompleted }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTask, setEditedTask] = useState({ ...todo });
     const [isOpen, setIsOpen] = useState(false);
+    const [startDate, setStartDate] = useState(
+        editedTask.due_date ? new Date(editedTask.due_date) : null
+    );
+
+    useEffect(() => {
+        setEditedTask({...todo})
+        setStartDate(todo.due_date ? new Date(todo.due_date) : null)
+    }, [todo])
 
     const handleChange = (change) => {
         const { name, value, type, checked } = change.target;
@@ -16,48 +27,25 @@ const Description = ({ todo, onSave }) => {
         }));
     };
 
-    const handleDate = (change) => {
-        const { name, value } = change.target;
-        const date = new Date(editedTask.due_date || new Date());
-
-        if (name === "date") {
-            const [day, month, year] = value.split("-");
-            date.setFullYear(day, month, year);
-        } else if (name === "time") {
-            const [hours, min] = value.split(":");
-            date.setHours(hours, min);
-        }
+    const handleDate = (date) => {
+        setStartDate(date)
         setEditedTask((prev) => ({
             ...prev,
-            due_date: date.toISOString(),
-        }));
+            due_date: date ? date.toISOString() : null,
+        }))
     };
 
     const handleSave = () => {
-        onSave(editedTask);
+        const taskSave = {
+            ...editedTask,
+            due_date: startDate ? startDate.toISOString() : null
+        }
+        onSave(taskSave);
         setIsEditing(false);
     };
 
-    const formatDate = (dateS) => {
-        if (!dateS) return "Not set";
-        const date = new Date(dateS);
-        return date.toLocaleDateString("en-US", {
-            date: "numeric",
-            month: "numeric",
-            year: "numeric",
-        });
-    };
-    const formatTime = (timeS) => {
-        if (!timeS) return "Not set";
-        const time = new Date(timeS);
-        return time.toLocaleTimeString("en-US", {
-            hours: "2-digit",
-            min: "2-digit",
-        });
-    };
-
     return (
-        <div className="pl-10 mt-20">
+        <div className="ml-8 mt-12">
             <div className="">
                 {isEditing ? (
                     <div className="space-x-4">
@@ -80,7 +68,7 @@ const Description = ({ todo, onSave }) => {
             <div className=" flex flex-col">
                 {isEditing ? (
                     <div className="">
-                        <p className="mt-5 block text-xl font-medium text-gray-700">
+                        <p className="mt-2 block text-xl font-medium text-gray-700">
                             Change Name
                         </p>
                         <input
@@ -93,7 +81,7 @@ const Description = ({ todo, onSave }) => {
                         />
                     </div>
                 ) : (
-                    <h2 className="text-5xl text-primary font-bold mb-2 capitalize">
+                    <h2 className="text-4xl text-primary font-bold mb-2 capitalize">
                         {todo.name}
                     </h2>
                 )}
@@ -103,17 +91,13 @@ const Description = ({ todo, onSave }) => {
                         Status
                     </label>
                     <div className="mt-1 text-sm font-bold text-gray-900 capitalize">
-                        {todo.isCompleted ? (
+                        
                             <div className="flex">
-                                <p className="bg-accent min-w-1 rounded-full mr-2"></p>
-                                Completed
+                                <span className={`bg-accent min-w-1 rounded-full mr-2 transition-colors duration-200 ${todo.isCompleted ? "bg-cyan-400" : "bg-red-400"}`}></span>
+                                <span className="transition-all duration-200">
+                                    {todo.isCompleted ? "Completed" : "Pending"}
+                                </span>
                             </div>
-                        ) : (
-                            <div className="flex">
-                                <p className="mr-2 bg-warning/90 min-w-1 rounded-xl text-white"></p>
-                                Pending
-                            </div>
-                        )}
                     </div>
                 </div>
                 <div className="mb-4">
@@ -250,28 +234,28 @@ const Description = ({ todo, onSave }) => {
                         Due Date
                     </label>
                     {isEditing ? (
-                        <input
-                            type="date"
-                            name="date"
-                            value={
-                                editedTask.due_date
-                                    ? new Date(editedTask.due_date)
-                                          .toISOString()
-                                          .split("T")[0]
-                                    : ""
-                            }
+                        <DatePicker
+                            selected={startDate}
                             onChange={handleDate}
-                            className="text-primary w-full px-3 py-1 border rounded focus:outline-none"
-                        ></input>
+                            placeholderText="Select a due date"
+                            dateFormat="d, MMMM yyyy"
+                            dropdownMode="select"
+                            className="text-primary w-full px-3 py-1 border-2 border-primary rounded focus:outline-none"
+                            
+                        />
                     ) : (
                         <p className="mt-1 text-sm text-gray-900">
                             {todo.due_date
-                                ? new Date(todo.due_date).toLocaleDateString()
+                                ? new Date(todo.due_date).toLocaleDateString('en-US', {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                })
                                 : "No due date"}
                         </p>
                     )}
                 </div>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <label className="block text-2xl font-medium text-gray-700">
                         Due Time
                     </label>
@@ -280,7 +264,7 @@ const Description = ({ todo, onSave }) => {
                             ? new Date(todo.due_date).toLocaleTimeString()
                             : "No due date"}
                     </p>
-                </div>
+                </div> */}
             </div>
         </div>
     );

@@ -69,6 +69,7 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
         }
     };
     const completeTask = async (id, isCompleted) => {
+        setTodos(prev => prev.map(todo => todo.id === id ? {...todo, isCompleted : !isCompleted} : todo))
         const { error } = await supabase
             .from("TodoList")
             .update({ isCompleted: !isCompleted })
@@ -82,7 +83,9 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                 todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
             );
             setTodos(updatedTodo);
-            if (!isCompleted) toast.success("Completed Task!");
+            if (!isCompleted){ toast.success("Completed Task!");}
+            else toast.error("Todo Pending!")
+            
         }
     };
     const deleteTask = async (id) => {
@@ -166,7 +169,7 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                                 className="absolute left-4 h-6 w-6 text-gray-600 rounded focus:ring-gray-500 cursor-pointer transition-colors duration-200"
                             />
                             <span
-                                className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-text"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer`}
+                                className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-white"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer`}
                                 onClick={() => onSelect(todo)}
                             >
                                 {todo.name}
