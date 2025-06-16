@@ -9,26 +9,24 @@ import supabase from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Description from "../components/Description";
 
-const Todos = ({ onTodoSelect }) => {
-    const [todos, setTodos] = useState([]);
+const Todos = ({ onSelect, todos, setTodos, selected }) => {
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
     const itemRef = useRef([]);
 
-    const animateDeleteAll = () => {
-        const items = gsap.utils.toArray(".todo-item");
-        const tl = gsap.timeline({
-            onComplete: () => deleteAllTask(),
-        });
+    // const animateDeleteAll = () => {
+    //     const items = gsap.utils.toArray(".todo-item");
+    //     const tl = gsap.timeline({
+    //         onComplete: () => deleteAllTask(),
+    //     });
 
-        tl.to(items, {
-            x: 300,
-            opacity: 0,
-            duration: 0.4,
-            stagger: 0.1,
-        });
-    };
+    //     tl.to(items, {
+    //         x: 300,
+    //         opacity: 0,
+    //         duration: 0.4,
+    //         stagger: 0.1,
+    //     });
+    // };
     const animateDelete = (id, index) => {
         const element = itemRef.current[index];
         if (!element) return;
@@ -41,55 +39,29 @@ const Todos = ({ onTodoSelect }) => {
         });
     };
 
-    useEffect(() => {
-        fetchTodos();
-    }, []);
-    const fetchTodos = async () => {
-        const {
-            data: { session },
-        } = await supabase.auth.getSession();
-        const emailCheck = session.user.email;
-        if (!emailCheck) {
-            setTodos([]);
-            return;
-        }
-        const { data, error } = await supabase
-            .from("TodoList")
-            .select("*")
-            .eq("email", emailCheck);
-        if (error) {
-            toast.error("Error fetching todos");
-            console.log("Error fetching todos", error);
-        } else {
-            setTodos(data);
-        }
-    };
     const addTodo = async () => {
-        const {
-            data: { session },
-        } = await supabase.auth.getSession();
+        const {data: { session }} = await supabase.auth.getSession();
         const email = session.user.email;
 
         if (!newTodo.trim()) return;
-        if (todos.length >= 8) {
-            toast.error("Maximum limit of 8 todos reached!");
+        if (todos.length >= 9) {
+            toast.error("Maximum limit of 9 todos reached!");
             return;
         }
         try {
             setIsAdding(true);
-            const { error } = await supabase.from("TodoList").insert({
+            const { data, error } = await supabase.from("TodoList").insert({
                 name: newTodo,
                 isCompleted: false,
                 email: email,
-            });
+            }).select()
             if (error) {
                 console.log("Error adding todo", error);
                 toast.error("Error adding task");
-            } else {
-                await fetchTodos();
+            }
+            setTodos([...todos, data[0]])
                 setNewTodo("");
                 toast.success("Task added!");
-            }
         } catch (error) {
             console.log("Error adding task:", error);
         } finally {
@@ -123,58 +95,34 @@ const Todos = ({ onTodoSelect }) => {
             toast.error("Deleted Task!");
         }
     };
-    const deleteAllTask = async () => {
-        try {
-            const { data, error: fetchingError } = await supabase
-                .from("TodoList")
-                .select("id");
-            if (fetchingError) {
-                toast.error("Error fetching todos to delete");
-                console.log("Error fetching todos: ", fetchingError);
-            }
+    // const deleteAllTask = async () => {
+    //     try {
+    //         const { data, error: fetchingError } = await supabase
+    //             .from("TodoList")
+    //             .select("id");
+    //         if (fetchingError) {
+    //             toast.error("Error fetching todos to delete");
+    //             console.log("Error fetching todos: ", fetchingError);
+    //         }
 
-            const { error: deletingError } = await supabase
-                .from("TodoList")
-                .delete()
-                .in(
-                    "id",
-                    data.map((todo) => todo.id)
-                );
-            if (deletingError) {
-                toast.error("Error deleting todos");
-                console.log("Error deleting todos:", deletingError);
-            } else {
-                setTodos([]);
-                toast.error("All tasks deleted!");
-            }
-        } catch (error) {
-            toast.error("Error deleting all todos: ", error);
-        }
-    };
-
-    const handleUpdateTask = async (updateTask) => {
-        try {
-            const { error } = await supabase
-                .from("TodoList")
-                .update(updateTask)
-                .eq("id", updateTask.id);
-            if (error) {
-                toast.error("Error updating todo");
-                console.log("Error updating todo", error);
-            } else {
-                setTodos(
-                    todos.map((todo) =>
-                        todo.id === updateTask.id ? updateTask : todo
-                    )
-                );
-                toast.success("Todo updated!");
-                setIsEditing(false);
-            }
-        } catch (error) {
-            toast.error("Error updating todo");
-            console.log("Error updating todo", error);
-        }
-    };
+    //         const { error: deletingError } = await supabase
+    //             .from("TodoList")
+    //             .delete()
+    //             .in(
+    //                 "id",
+    //                 data.map((todo) => todo.id)
+    //             );
+    //         if (deletingError) {
+    //             toast.error("Error deleting todos");
+    //             console.log("Error deleting todos:", deletingError);
+    //         } else {
+    //             setTodos([]);
+    //             toast.error("All tasks deleted!");
+    //         }
+    //     } catch (error) {
+    //         toast.error("Error deleting all todos: ", error);
+    //     }
+    // };
 
     return (
         <div>
@@ -195,7 +143,7 @@ const Todos = ({ onTodoSelect }) => {
                 />
                 <button
                     type="submit"
-                    disabled={isAdding || todos.length >= 8}
+                    disabled={isAdding}
                     className="px-4 bg-primary text-text rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200 font-medium cursor-pointer tech"
                 >
                     ADD
@@ -219,7 +167,7 @@ const Todos = ({ onTodoSelect }) => {
                             />
                             <span
                                 className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-text"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer`}
-                                onClick={() => onTodoSelect(todo)}
+                                onClick={() => onSelect(todo)}
                             >
                                 {todo.name}
                             </span>
@@ -232,14 +180,14 @@ const Todos = ({ onTodoSelect }) => {
                         </li>
                     ))}
                 </ul>
-                <div className="flex justify-center">
+                {/* <div className="flex justify-center">
                     <button
                         onClick={animateDeleteAll}
                         className={`${todos.length >= 2 ? "flex" : "hidden"} bg-red-600 py-2 border-gray-500 border-2 px-5 rounded-xl font-bold hover:bg-red-800 hover:ring-1 cursor-pointer`}
                     >
                         Delete All
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

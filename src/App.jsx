@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Auth from "./pages/Auth";
 import Todos from "./pages/Todos";
 import AuthCallback from "./pages/AuthCallback";
-import Home from "./pages/Home";
+import Home from "./pages/Home"
 import Settings from "./components/Settings";
 import Navbar from "./components/Navbar";
 import supabase from "./lib/supabase";
