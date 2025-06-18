@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
+import clsx from "clsx";
 import supabase from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Description from "../components/Description";
@@ -40,7 +41,9 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
     };
 
     const addTodo = async () => {
-        const {data: { session }} = await supabase.auth.getSession();
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
         const email = session.user.email;
 
         if (!newTodo.trim()) return;
@@ -50,18 +53,21 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
         }
         try {
             setIsAdding(true);
-            const { data, error } = await supabase.from("TodoList").insert({
-                name: newTodo,
-                isCompleted: false,
-                email: email,
-            }).select()
+            const { data, error } = await supabase
+                .from("TodoList")
+                .insert({
+                    name: newTodo,
+                    isCompleted: false,
+                    email: email,
+                })
+                .select();
             if (error) {
                 console.log("Error adding todo", error);
                 toast.error("Error adding task");
             }
-            setTodos([...todos, data[0]])
-                setNewTodo("");
-                toast.success("Task added!");
+            setTodos([...todos, data[0]]);
+            setNewTodo("");
+            toast.success("Task added!");
         } catch (error) {
             console.log("Error adding task:", error);
         } finally {
@@ -69,7 +75,11 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
         }
     };
     const completeTask = async (id, isCompleted) => {
-        setTodos(prev => prev.map(todo => todo.id === id ? {...todo, isCompleted : !isCompleted} : todo))
+        setTodos((prev) =>
+            prev.map((todo) =>
+                todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
+            )
+        );
         const { error } = await supabase
             .from("TodoList")
             .update({ isCompleted: !isCompleted })
@@ -83,9 +93,9 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                 todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
             );
             setTodos(updatedTodo);
-            if (!isCompleted){ toast.success("Completed Task!");}
-            else toast.error("Todo Pending!")
-            
+            if (!isCompleted) {
+                toast.success("Completed Task!");
+            } else toast.error("Todo Pending!");
         }
     };
     const deleteTask = async (id) => {
@@ -158,7 +168,9 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                         <li
                             ref={(e) => (itemRef.current[index] = e)}
                             key={todo.id}
-                            className="relative flex justify-center items-center bg-primary py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] rounded-sm md:rounded-lg todo-item todo-element"
+                            className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 
+                                ${todo.priority === "low" ? "bg-yellow-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""}
+                                `}
                         >
                             <input
                                 type="checkbox"
@@ -166,10 +178,11 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                                     completeTask(todo.id, todo.isCompleted)
                                 }
                                 checked={todo.isCompleted}
-                                className="absolute left-4 h-6 w-6 text-gray-600 rounded focus:ring-gray-500 cursor-pointer transition-colors duration-200"
+                                className={`absolute left-4 h-6 w-6 text-gray-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-yellow-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
                             />
                             <span
-                                className={`text-lg ${todo.isCompleted ? "line-through text-accent" : "text-white"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer`}
+                                className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-primary"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
+                                `}
                                 onClick={() => onSelect(todo)}
                             >
                                 {todo.name}
@@ -178,7 +191,7 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                                 onClick={() => animateDelete(todo.id, index)}
                                 className="absolute right-3 cursor-pointer"
                             >
-                                <MdDelete className="w-6 h-6" />
+                                <MdDelete className="w-6 h-6 text-red-500" />
                             </button>
                         </li>
                     ))}
