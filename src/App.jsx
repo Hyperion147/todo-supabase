@@ -38,8 +38,8 @@ function AppWrap() {
 
     return (
         <>
-            <div className="min-h-screen bg-background text-white overflow-hidden relative z-10">
-                 <Navbar session={session} />
+            <div className="h-screen bg-background text-primary overflow-hidden relative z-10">
+                <Navbar session={session} />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route

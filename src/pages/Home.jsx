@@ -63,31 +63,29 @@ const Home = () => {
     };
 
     return (
-        <div className="flex flex-col min-w-full">
-            <div className="flex items-center border-border">
-                <div className="flex min-w-full justify-around">
-                    <div className="min-w-[150px] border-r-2 border-primary">
-                        <Category />
-                    </div>
-                    <main className="flex items-center justify-between mt-4">
-                        <Todos
-                            onSelect={setSelected}
-                            setTodos={setTodos}
-                            todos={todos}
-                            selected={selected}
+            <div className="flex w-full justify-between gap-0">
+                <div className="min-w-[150px] border-r-2 border-primary pr-20">
+                    <Category
+                    todos={todos}
+                    />
+                </div>
+                <main className="mt-4">
+                    <Todos
+                        onSelect={setSelected}
+                        setTodos={setTodos}
+                        todos={todos}
+                        selected={selected}
+                    />
+                </main>
+                <div className="min-w-[350px] border-l-2 border-primary">
+                    {selected && (
+                        <Description
+                            todo={selected}
+                            onSave={handleUpdateTask}
                         />
-                    </main>
-                    <div className="min-w-[350px] border-l-2 border-primary">
-                        {selected && (
-                            <Description
-                                todo={selected}
-                                onSave={handleUpdateTask}
-                            />
-                        )}
-                    </div>
+                    )}
                 </div>
             </div>
-        </div>
     );
 };
 

@@ -45,7 +45,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
     };
 
     return (
-        <div className="ml-8 mt-12">
+        <div className="ml-8 mt-12 mr-10">
             <div className="">
                 {isEditing ? (
                     <div className="space-x-4">
@@ -109,7 +109,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
                             <div>
                                 <button
                                     type="button"
-                                    className="inline-flex w-full justify-between rounded-md px-3 py-2 text-sm font-bold text-gray-900 shadow-lg ring-1 ring-primary ring-inset hover:bg-gray-90"
+                                    className="inline-flex w-full rounded-md px-3 py-2 text-sm font-bold text-gray-900 shadow-lg ring-1 ring-primary ring-inset hover:bg-gray-90"
                                     id="priority-menu-button"
                                     aria-expanded="true"
                                     aria-haspopup="true"
@@ -154,11 +154,11 @@ const Description = ({ todo, onSave, isCompleted }) => {
                                                 });
                                                 setIsOpen(false);
                                             }}
-                                            className={`${editedTask.priority === "low" ? "bg-yellow-100" : ""} block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-yellow-50`}
+                                            className={`${editedTask.priority === "low" ? "bg-blue-100" : ""} block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-50`}
                                             role="menuitem"
                                             tabIndex="-1"
                                         >
-                                            <span className="inline-block h-3 w-3 rounded-full bg-yellow-300 mr-2"></span>
+                                            <span className="inline-block h-3 w-3 rounded-full bg-blue-300 mr-2"></span>
                                             Low
                                         </button>
                                         <button
@@ -204,7 +204,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
                             className={`flex mt-1 text-md font-bold text-gray-900 capitalize`}
                         >
                             <p
-                                className={`min-w-1 ${todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-500" : "bg-yellow-100"} rounded-full mr-2`}
+                                className={`min-w-1 ${todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-500" : "bg-blue-200"} rounded-full mr-2`}
                             ></p>
                             {todo.priority || "Low"}
                         </div>

@@ -157,19 +157,19 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                 <button
                     type="submit"
                     disabled={isAdding}
-                    className="px-4 bg-primary text-text rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200 font-medium cursor-pointer tech"
+                    className="px-4 bg-primary text-text rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200 font-medium cursor-pointer tech text-white"
                 >
                     ADD
                 </button>
             </form>
-            <div className="border-primary/30 border-0 md:border-2 mt-4 min-h-[680px] md:min-h-[560px] max-h-[560px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden mx-2 md:mx-auto">
-                <ul className="flex flex-col items-center mt-4 max-h-[560px]">
+            <div className="border-primary/30 border-0 md:border-2 mt-4 min-h-[680px] md:min-h-[560px] max-h-[560px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden">
+                <ul className="flex flex-col items-center mt-4">
                     {todos.map((todo, index) => (
                         <li
                             ref={(e) => (itemRef.current[index] = e)}
                             key={todo.id}
-                            className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 
-                                ${todo.priority === "low" ? "bg-yellow-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""}
+                            className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
+                                ${todo.priority === "low" ? "bg-blue-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""}
                                 `}
                         >
                             <input
@@ -178,7 +178,7 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                                     completeTask(todo.id, todo.isCompleted)
                                 }
                                 checked={todo.isCompleted}
-                                className={`absolute left-4 h-6 w-6 text-gray-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-yellow-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
+                                className={`absolute left-4 h-6 w-6 text-gray-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
                             />
                             <span
                                 className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-primary"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
