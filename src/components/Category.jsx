@@ -1,101 +1,62 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaAngleDown } from "react-icons/fa";
-import { FaAngleUp } from "react-icons/fa";
 import { TbCategory } from "react-icons/tb";
+import { FaAngleRight } from "react-icons/fa";
 
-const Category = ({ todos }) => {
-    const [categoryTodo, setCategoryTodo] = useState({
-        high: [],
-        medium: [],
-        low: [],
-    });
+const Category = ({ onFilterChange, todos }) => {
+    // const [categoryTodo, setCategoryTodo] = useState({
+    //     high: [],
+    //     medium: [],
+    //     low: [],
+    // });
 
-    const [open, setOpen] = useState(false);
+    const [activeFilter, setActiveFilter] = useState("all");
 
-    useEffect(() => {
-        const category = {
-            high: todos.filter((todo) => todo.priority === "high"),
-            medium: todos.filter((todo) => todo.priority === "medium"),
-            low: todos.filter((todo) => todo.priority === "low"),
-        };
-        setCategoryTodo(category);
-    }, [todos]);
-
-    const toggle = (category) => {
-        setOpen(open === category ? null : category);
+    const handleFilter = (priority) => {
+        setActiveFilter(priority);
+        onFilterChange(priority);
     };
 
-    const getColor = (priority) => {
-        switch (priority) {
-            case "high":
-                return "bg-red-500";
-            case "low":
-                return "bg-blue-200";
-            case "medium":
-                return "bg-green-500";
-        }
-    };
+    const filters = [
+        { id: "all", label: "All Todos", color: "bg-gray-200" },
+        { id: "high", label: "High", color: "bg-red-200" },
+        { id: "medium", label: "Medium", color: "bg-green-300" },
+        { id: "low", label: "Low", color: "bg-yellow-100" },
+        { id: "completed", label: "Completed", color: "bg-blue-200" },
+    ];
+
+    // const [open, setOpen] = useState(false);
+
+    // useEffect(() => {
+    //     const category = {
+    //         high: todos.filter((todo) => todo.priority === "high"),
+    //         medium: todos.filter((todo) => todo.priority === "medium"),
+    //         low: todos.filter((todo) => todo.priority === "low"),
+    //     };
+    //     setCategoryTodo(category);
+    // }, [todos]);
 
     return (
-        <div className="flex flex-col relative ml-5">
+        <div className="flex flex-col relative ml-5 w-full">
             <h2 className="mt-10 font-bold text-primary flex items-center gap-1">
-                <TbCategory /> Categories
+                <TbCategory /> Filters
             </h2>
-            {/* <div className="mt-4">
-                <button
-                    type="button"
-                    className="text-xl font-bold border-b-2 rounded-b-sm px-2 shadow-gray-700 flex gap-4 justify-between items-center cursor-pointer w-40 hover:from-red-200 hover:bg-gradient-to-t"
-                    onClick={() => categoryTodo.high.length > 0 ? toggle("high") : toast.error("No High Priority Todos!")}
-                    aria-expanded={open === "high"}
-                >
-                    High {open ? <FaAngleUp /> : <FaAngleDown />}
-                </button>
-                {open === "high" && (
-                    <ul
-                        className="absolute z-10 max-h-56 w-full overflow-auto rounded-md py-1 text-base shadow-lg focus:outline-hidden sm:text-sm "
-                        tabindex="-1"
-                        role="listbox"
-                        aria-labelledby="listbox-label"
-                        aria-activedescendant="listbox-option-3"
+            <hr />
+            <div className="mt-4 space-y-2 flex flex-col">
+                {filters.map((filter) => (
+                    <button
+                        key={filter.id}
+                        onClick={() => handleFilter(filter.id)}
+                        className={`w-full text-left px-4 py-2 rounded-md transition-colors flex items-center justify-between ${
+                            activeFilter === filter.id
+                                ? filter.color
+                                : "hover:bg-gray-100"
+                        }`}
                     >
-                      {categoryTodo.high.length > 0 ? 
-                        (categoryTodo.high.map((todo) => (
-                            <li
-                                key={todo.id}
-                                className="relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none bg-red-200"
-                                id="listbox-option-0"
-                            >
-                                <p className="text-2xl">{todo.name}</p>
-                            </li>
-                        ))) : ""
-                      }
-                    </ul>
-                )}
-
-                <button className="text-xl font-bold border-b-2 rounded-b-sm px-2 shadow-gray-700 flex gap-4 justify-between items-center cursor-pointer w-40">
-                    Medium <FaAngleDown />
-                </button>
-                <ul>
-                    {categoryTodo.medium.map((todo) => (
-                        <li key={todo.id}>
-                            <p>{todo.name}</p>
-                        </li>
-                    ))}
-                </ul>
-                <button className="text-xl font-bold border-b-2 rounded-b-sm px-2 shadow-gray-700 flex gap-4 justify-between items-center cursor-pointer w-40">
-                    Low <FaAngleDown />
-                </button>
-                <ul>
-                    {categoryTodo.low.map((todo) => (
-                        <li key={todo.id}>
-                            <p>{todo.name}</p>
-                        </li>
-                    ))}
-                </ul>
-            </div> */}
-            <div>
-                {console.log(todos.isCompleted)}
+                        {filter.label}
+                        <FaAngleRight className="text-primary/70" />
+                    </button>
+                ))}
             </div>
         </div>
     );

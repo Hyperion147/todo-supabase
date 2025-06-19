@@ -12,6 +12,7 @@ const Home = () => {
     const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState("");
     const [selected, setSelected] = useState(null);
+    const [filtered, setFiltered] = useState("all");
 
     useEffect(() => {
         fetchTodos();
@@ -62,30 +63,45 @@ const Home = () => {
         }
     };
 
+    const filterTodos = (todos, filter) => {
+        switch (filter) {
+            case "high":
+                return todos.filter((todo) => todo.priority === "high");
+            case "medium":
+                return todos.filter((todo) => todo.priority === "medium");
+            case "low":
+                return todos.filter((todo) => todo.priority === "low");
+            case "completed":
+                return todos.filter((todo) => todo.isCompleted);
+            default:
+                return todos;
+        }
+    };
+    const filter = filterTodos(todos, filtered);
+
     return (
-            <div className="flex w-full justify-between gap-0">
-                <div className="min-w-[150px] border-r-2 border-primary pr-20">
-                    <Category
+        <div className="flex w-full justify-between gap-0">
+            <div className="min-w-[150px] border-r-2 border-primary pr-20">
+                <Category
                     todos={todos}
-                    />
-                </div>
-                <main className="mt-4">
-                    <Todos
-                        onSelect={setSelected}
-                        setTodos={setTodos}
-                        todos={todos}
-                        selected={selected}
-                    />
-                </main>
-                <div className="min-w-[350px] border-l-2 border-primary">
-                    {selected && (
-                        <Description
-                            todo={selected}
-                            onSave={handleUpdateTask}
-                        />
-                    )}
-                </div>
+                    onFilterChange={(filter) => setFiltered(filter)}
+                />
             </div>
+            <main className="mt-4">
+                <Todos
+                    onSelect={setSelected}
+                    setTodos={setTodos}
+                    todos={todos}
+                    selected={selected}
+                    filter={filter}
+                />
+            </main>
+            <div className="min-w-[350px] border-l-2 border-primary">
+                {selected && (
+                    <Description todo={selected} onSave={handleUpdateTask} />
+                )}
+            </div>
+        </div>
     );
 };
 

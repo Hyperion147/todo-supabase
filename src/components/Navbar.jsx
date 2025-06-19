@@ -74,10 +74,10 @@ const Navbar = ({ session }) => {
                 </h1>
                 <div className="flex items-center gap-3 sm:gap-8">
                     <Link to="settings" element={<Settings />}>
-                        <IoSettingsOutline className="w-6 h-6 cursor-pointer hover:text-gray-400" />
+                        <IoSettingsOutline className="w-6 h-6 cursor-pointer text-white hover:text-gray-400" />
                     </Link>
                     <button
-                        className="hover:text-gray-400 transition-colors cursor-pointer text-base sm:text-xl"
+                        className="hover:text-gray-400 transition-colors cursor-pointer text-white text-base sm:text-xl"
                         onClick={handleInOut}
                     >
                         <Link to={session ? "#" : "/auth"}>

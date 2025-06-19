@@ -15,9 +15,9 @@ const Description = ({ todo, onSave, isCompleted }) => {
     );
 
     useEffect(() => {
-        setEditedTask({...todo})
-        setStartDate(todo.due_date ? new Date(todo.due_date) : null)
-    }, [todo])
+        setEditedTask({ ...todo });
+        setStartDate(todo.due_date ? new Date(todo.due_date) : null);
+    }, [todo]);
 
     const handleChange = (change) => {
         const { name, value, type, checked } = change.target;
@@ -28,18 +28,18 @@ const Description = ({ todo, onSave, isCompleted }) => {
     };
 
     const handleDate = (date) => {
-        setStartDate(date)
+        setStartDate(date);
         setEditedTask((prev) => ({
             ...prev,
             due_date: date ? date.toISOString() : null,
-        }))
+        }));
     };
 
     const handleSave = () => {
         const taskSave = {
             ...editedTask,
-            due_date: startDate ? startDate.toISOString() : null
-        }
+            due_date: startDate ? startDate.toISOString() : null,
+        };
         onSave(taskSave);
         setIsEditing(false);
     };
@@ -91,13 +91,14 @@ const Description = ({ todo, onSave, isCompleted }) => {
                         Status
                     </label>
                     <div className="mt-1 text-sm font-bold text-gray-900 capitalize">
-                        
-                            <div className="flex">
-                                <span className={`bg-accent min-w-1 rounded-full mr-2 transition-colors duration-200 ${todo.isCompleted ? "bg-cyan-400" : "bg-red-400"}`}></span>
-                                <span className="transition-all duration-200">
-                                    {todo.isCompleted ? "Completed" : "Pending"}
-                                </span>
-                            </div>
+                        <div className="flex">
+                            <span
+                                className={`bg-accent min-w-1 rounded-full mr-2 transition-colors duration-200 ${todo.isCompleted ? "bg-cyan-400" : "bg-red-400"}`}
+                            ></span>
+                            <span className="transition-all duration-200">
+                                {todo.isCompleted ? "Completed" : "Pending"}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div className="mb-4">
@@ -109,7 +110,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
                             <div>
                                 <button
                                     type="button"
-                                    className="inline-flex w-full rounded-md px-3 py-2 text-sm font-bold text-gray-900 shadow-lg ring-1 ring-primary ring-inset hover:bg-gray-90"
+                                    className="inline-flex w-full rounded-md px-3 py-2 text-sm font-bold text-gray-900 shadow-lg ring-1 ring-primary ring-inset hover:bg-gray-90 justify-between tracking-wider"
                                     id="priority-menu-button"
                                     aria-expanded="true"
                                     aria-haspopup="true"
@@ -241,16 +242,18 @@ const Description = ({ todo, onSave, isCompleted }) => {
                             dateFormat="d, MMMM yyyy"
                             dropdownMode="select"
                             className="text-primary w-full px-3 py-1 border-2 border-primary rounded focus:outline-none"
-                            
                         />
                     ) : (
                         <p className="mt-1 text-sm text-gray-900">
                             {todo.due_date
-                                ? new Date(todo.due_date).toLocaleDateString('en-US', {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                })
+                                ? new Date(todo.due_date).toLocaleDateString(
+                                      "en-US",
+                                      {
+                                          year: "numeric",
+                                          month: "long",
+                                          day: "numeric",
+                                      }
+                                  )
                                 : "No due date"}
                         </p>
                     )}

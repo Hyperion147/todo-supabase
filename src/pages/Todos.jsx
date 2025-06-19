@@ -10,7 +10,7 @@ import supabase from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Description from "../components/Description";
 
-const Todos = ({ onSelect, todos, setTodos, selected }) => {
+const Todos = ({ onSelect, todos, setTodos, filter }) => {
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
     const itemRef = useRef([]);
@@ -47,10 +47,6 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
         const email = session.user.email;
 
         if (!newTodo.trim()) return;
-        if (todos.length >= 9) {
-            toast.error("Maximum limit of 9 todos reached!");
-            return;
-        }
         try {
             setIsAdding(true);
             const { data, error } = await supabase
@@ -108,6 +104,7 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
             toast.error("Deleted Task!");
         }
     };
+
     // const deleteAllTask = async () => {
     //     try {
     //         const { data, error: fetchingError } = await supabase
@@ -162,39 +159,78 @@ const Todos = ({ onSelect, todos, setTodos, selected }) => {
                     ADD
                 </button>
             </form>
-            <div className="border-primary/30 border-0 md:border-2 mt-4 min-h-[680px] md:min-h-[560px] max-h-[560px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden">
+            <div
+                className="border-primary/30 border-0 md:border-2 mt-4 min-h-[680px] md:min-h-[560px] max-h-[560px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide">
                 <ul className="flex flex-col items-center mt-4">
-                    {todos.map((todo, index) => (
-                        <li
-                            ref={(e) => (itemRef.current[index] = e)}
-                            key={todo.id}
-                            className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
+                    {filter.map((todo, index) =>
+                        todo.isCompleted ? (
+                            <li
+                                ref={(e) => (itemRef.current[index] = e)}
+                                key={todo.id}
+                                className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
                                 ${todo.priority === "low" ? "bg-blue-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""}
                                 `}
-                        >
-                            <input
-                                type="checkbox"
-                                onChange={() =>
-                                    completeTask(todo.id, todo.isCompleted)
-                                }
-                                checked={todo.isCompleted}
-                                className={`absolute left-4 h-6 w-6 text-gray-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
-                            />
-                            <span
-                                className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-primary"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
+                            >
+                                <input
+                                    type="checkbox"
+                                    onChange={() =>
+                                        completeTask(todo.id, todo.isCompleted)
+                                    }
+                                    disabled={todo.isCompleted}
+                                    checked={todo.isCompleted}
+                                    className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
+                                />
+                                <span
+                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-primary"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
                                 `}
-                                onClick={() => onSelect(todo)}
+                                    onClick={() => onSelect(todo)}
+                                >
+                                    {todo.name}
+                                </span>
+                                <button
+                                    onClick={() =>
+                                        animateDelete(todo.id, index)
+                                    }
+                                    className="absolute right-3 cursor-pointer"
+                                >
+                                    <MdDelete className="w-6 h-6 text-red-500" />
+                                </button>
+                            </li>
+                        ) : (
+                            <li
+                                ref={(e) => (itemRef.current[index] = e)}
+                                key={todo.id}
+                                className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
+                                ${todo.priority === "low" ? "bg-blue-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""} ${todo.isCompleted && "hidden"}
+                                `}
                             >
-                                {todo.name}
-                            </span>
-                            <button
-                                onClick={() => animateDelete(todo.id, index)}
-                                className="absolute right-3 cursor-pointer"
-                            >
-                                <MdDelete className="w-6 h-6 text-red-500" />
-                            </button>
-                        </li>
-                    ))}
+                                <input
+                                    type="checkbox"
+                                    onChange={() =>
+                                        completeTask(todo.id, todo.isCompleted)
+                                    }
+                                    disabled={todo.isCompleted}
+                                    checked={todo.isCompleted}
+                                    className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
+                                />
+                                <span
+                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-primary"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
+                                `}
+                                    onClick={() => onSelect(todo)}
+                                >
+                                    {todo.name}
+                                </span>
+                                <button
+                                    onClick={() =>
+                                        animateDelete(todo.id, index)
+                                    }
+                                    className="absolute right-3 cursor-pointer"
+                                >
+                                    <MdDelete className="w-6 h-6 text-red-500" />
+                                </button>
+                            </li>
+                        )
+                    )}
                 </ul>
                 {/* <div className="flex justify-center">
                     <button

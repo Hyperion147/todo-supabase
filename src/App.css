@@ -9,3 +9,7 @@ body{
 .tech{
   font-family: "Audiowide", sans-serif;
 }
+
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
