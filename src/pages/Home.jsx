@@ -37,7 +37,7 @@ const Home = () => {
             setTodos(data);
         }
     };
-
+    
     const handleUpdateTask = async (updateTask) => {
         try {
             if (!updateTask?.id) {

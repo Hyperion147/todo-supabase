@@ -59,7 +59,7 @@ const Navbar = ({ session }) => {
     const handleInOut = async () => {
         if (session) {
             await supabase.auth.signOut();
-            toast.error("Logged out! Login again");
+            toast.error("Logged Out!")
         }
     };
 
@@ -70,19 +70,22 @@ const Navbar = ({ session }) => {
         >
             <div className="container px-4 sm:px-10 py-3 sm:py-5 flex justify-between items-center gap-2 sm:gap-0 z-10 mx-20">
                 <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-5">
-                    <Link to="/">TODO</Link>
+                    {session ? <Link to="/">TODO</Link> : <Link>TODO</Link>}
                 </h1>
                 <div className="flex items-center gap-3 sm:gap-8">
                     <Link to="settings" element={<Settings />}>
                         <IoSettingsOutline className="w-6 h-6 cursor-pointer text-text hover:text-text/70" />
                     </Link>
+                    <span className="text-2xl text-text/50 cursor-default">
+                        |
+                    </span>
                     <button
                         className="hover:text-text/70 transition-colors cursor-pointer text-text text-base sm:text-xl"
-                        onClick={handleInOut}
+                        onClick={() => handleInOut()}
                     >
                         <Link to={session ? "#" : "/auth"}>
                             {session ? (
-                                <IoMdLogOut className="w-6 h-6" />
+                                <IoMdLogOut className="w-6 h-6" /> 
                             ) : (
                                 <IoMdLogIn className="w-6 h-6" />
                             )}
