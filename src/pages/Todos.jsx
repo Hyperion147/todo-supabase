@@ -10,7 +10,7 @@ import supabase from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Description from "../components/Description";
 
-const Todos = ({ onSelect, todos, setTodos, filter, session }) => {
+const Todos = ({ onSelect, todos, setTodos, filter }) => {
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
     const itemRef = useRef([]);
@@ -161,7 +161,6 @@ const Todos = ({ onSelect, todos, setTodos, filter, session }) => {
             </form>
             <div
                 className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide"
-                n
             >
                 <ul className="flex flex-col items-center mt-4">
                     {filter.map((todo, index) =>

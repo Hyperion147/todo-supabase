@@ -58,8 +58,50 @@ const Navbar = ({ session }) => {
 
     const handleInOut = async () => {
         if (session) {
-            await supabase.auth.signOut();
-            toast.error("Logged Out!")
+            toast(
+                (t) => (
+                    <div>
+                        <p>Are you sure you want to log out?</p>
+                        <div>
+                            <button
+                                onClick={() => {
+                                    toast.dismiss(t.id);
+                                    handleSignOut();
+                                }}
+                                className="cursor-pointer"
+                            >
+                                Log Out
+                            </button>
+                            <button
+                                onClick={() => toast.dismiss(t.id)}
+                                className="cursor-pointer"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                ),
+                {
+                    duration: 3000,
+                    style: {
+                        background: "white",
+                        padding: "1rem",
+                        borderRadius: "0.5rem",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                    },
+                }
+            );
+        } else {
+            return;
+        }
+    };
+
+    const handleSignOut = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            toast.error("Failed to log out!");
+        } else {
+            toast.success("Logged out successfully!");
         }
     };
 
@@ -70,7 +112,7 @@ const Navbar = ({ session }) => {
         >
             <div className="container px-4 sm:px-10 py-3 sm:py-5 flex justify-between items-center gap-2 sm:gap-0 z-10 mx-20">
                 <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-5">
-                    {session ? <Link to="/">TODO</Link> : <Link>TODO</Link>}
+                    {session ? <Link to="/todo">TODO</Link> : <span>TODO</span>}
                 </h1>
                 <div className="flex items-center gap-3 sm:gap-8">
                     <Link to="settings" element={<Settings />}>
@@ -83,12 +125,8 @@ const Navbar = ({ session }) => {
                         className="hover:text-text/70 transition-colors cursor-pointer text-text text-base sm:text-xl"
                         onClick={() => handleInOut()}
                     >
-                        <Link to={session ? "#" : "/auth"}>
-                            {session ? (
-                                <IoMdLogOut className="w-6 h-6" /> 
-                            ) : (
-                                <IoMdLogIn className="w-6 h-6" />
-                            )}
+                        <Link to={!session && "/auth"}>
+                            <IoMdLogOut className="w-6 h-6" />
                         </Link>
                     </button>
                 </div>
