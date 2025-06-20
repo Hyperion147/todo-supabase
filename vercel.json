@@ -13,7 +13,8 @@
   "cleanUrls": true,
   "rewrites": [
     {
-       "source": "/(.*)", "destination": "/"
+      "source": "/((?!.*\\.\\w+$|api/).*)",
+      "destination": "/"
     }
   ]
 }
