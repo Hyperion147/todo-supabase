@@ -149,18 +149,18 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                     placeholder="Add todo..."
                     value={newTodo}
                     onChange={(e) => setNewTodo(e.target.value)}
-                    className="relative w-100 px-6 py-3 pr-4 rounded-l-full border bg-white text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+                    className="relative w-100 px-6 py-3 pr-4 rounded-l-full border bg-text/70 text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
                 />
                 <button
                     type="submit"
                     disabled={isAdding}
-                    className="px-4 bg-primary text-text rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200 font-medium cursor-pointer tech text-white"
+                    className="px-4 bg-primary text-text rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200 font-medium cursor-pointer tech"
                 >
                     ADD
                 </button>
             </form>
             <div
-                className="border-primary/30 border-0 md:border-2 mt-4 min-h-[680px] md:min-h-[560px] max-h-[560px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide">
+                className="border-border border-0 md:border-2 mt-4 min-h-[680px] md:min-h-[560px] max-h-[560px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide"n>
                 <ul className="flex flex-col items-center mt-4">
                     {filter.map((todo, index) =>
                         todo.isCompleted ? (
@@ -168,7 +168,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                                 ref={(e) => (itemRef.current[index] = e)}
                                 key={todo.id}
                                 className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
-                                ${todo.priority === "low" ? "bg-blue-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""}
+                                ${todo.priority === "low" ? "bg-blue-300" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""}
                                 `}
                             >
                                 <input
@@ -181,7 +181,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                                     className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
                                 />
                                 <span
-                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-primary"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
+                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : ""} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
                                 `}
                                     onClick={() => onSelect(todo)}
                                 >

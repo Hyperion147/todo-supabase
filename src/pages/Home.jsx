@@ -81,7 +81,7 @@ const Home = () => {
 
     return (
         <div className="flex w-full justify-between gap-0">
-            <div className="min-w-[150px] border-r-2 border-primary pr-20">
+            <div className="min-w-[150px] border-r-2 border-border pr-20">
                 <Category
                     todos={todos}
                     onFilterChange={(filter) => setFiltered(filter)}
@@ -96,7 +96,7 @@ const Home = () => {
                     filter={filter}
                 />
             </main>
-            <div className="min-w-[350px] border-l-2 border-primary">
+            <div className="min-w-[350px] border-l-2 border-border">
                 {selected && (
                     <Description todo={selected} onSave={handleUpdateTask} />
                 )}

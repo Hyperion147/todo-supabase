@@ -50,25 +50,25 @@ const Description = ({ todo, onSave, isCompleted }) => {
                 {isEditing ? (
                     <div className="space-x-4">
                         <button onClick={handleSave} title="save">
-                            <LuSaveAll className="w-6 h-6 text-black cursor-pointer" />
+                            <LuSaveAll className="w-6 h-6 text-text cursor-pointer" />
                         </button>
                         <button
                             onClick={() => setIsEditing(false)}
                             title="cancel"
                         >
-                            <ImCancelCircle className="w-6 h-6 text-black cursor-pointer" />
+                            <ImCancelCircle className="w-6 h-6 text-text cursor-pointer" />
                         </button>
                     </div>
                 ) : (
                     <button onClick={() => setIsEditing(true)}>
-                        <FiEdit className="w-6 h-6 text-black cursor-pointer" />
+                        <FiEdit className="w-6 h-6 text-text cursor-pointer" />
                     </button>
                 )}
             </div>
             <div className=" flex flex-col">
                 {isEditing ? (
                     <div className="">
-                        <p className="mt-2 block text-xl font-medium text-gray-700">
+                        <p className="mt-2 block text-xl font-medium text-text/70">
                             Change Name
                         </p>
                         <input
@@ -77,20 +77,20 @@ const Description = ({ todo, onSave, isCompleted }) => {
                             name="name"
                             value={editedTask.name}
                             onChange={handleChange}
-                            className="border-primary border-b-3 px-2 pb-1 text-xl text-primary/80 focus:outline-none mb-2"
+                            className="border-border border-b-3 px-2 pb-1 text-xl text-text focus:outline-none mb-2"
                         />
                     </div>
                 ) : (
-                    <h2 className="text-4xl text-primary font-bold mb-2 capitalize">
+                    <h2 className="text-4xl text-text font-bold mb-2 capitalize">
                         {todo.name}
                     </h2>
                 )}
 
                 <div className="mb-4">
-                    <label className="text-2xl font-medium text-gray-700">
+                    <label className="text-2xl font-medium text-text/70">
                         Status
                     </label>
-                    <div className="mt-1 text-sm font-bold text-gray-900 capitalize">
+                    <div className="mt-1 text-sm font-bold text-text capitalize">
                         <div className="flex">
                             <span
                                 className={`bg-accent min-w-1 rounded-full mr-2 transition-colors duration-200 ${todo.isCompleted ? "bg-cyan-400" : "bg-red-400"}`}
@@ -102,15 +102,15 @@ const Description = ({ todo, onSave, isCompleted }) => {
                     </div>
                 </div>
                 <div className="mb-4">
-                    <label className="block text-2xl font-medium text-gray-700">
+                    <label className="block text-2xl font-medium text-text/70">
                         Priority
                     </label>
                     {isEditing ? (
-                        <div className="relative inline-block text-left w-full">
+                        <div className="relative inline-block w-full">
                             <div>
                                 <button
                                     type="button"
-                                    className="inline-flex w-full rounded-md px-3 py-2 text-sm font-bold text-gray-900 shadow-lg ring-1 ring-primary ring-inset hover:bg-gray-90 justify-between tracking-wider"
+                                    className="inline-flex w-full rounded-md px-3 py-2 text-sm font-bold text-text shadow-lg ring-1 ring-border ring-inset hover:bg-gray-90 justify-between tracking-wider"
                                     id="priority-menu-button"
                                     aria-expanded="true"
                                     aria-haspopup="true"
@@ -122,7 +122,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
                                           ? "Medium"
                                           : "Low"}
                                     <svg
-                                        className="-mr-1 h-5 w-5 text-primary"
+                                        className="-mr-1 h-5 w-5 text-text/70"
                                         viewBox="0 0 20 20"
                                         fill="currentColor"
                                         aria-hidden="true"
@@ -155,11 +155,11 @@ const Description = ({ todo, onSave, isCompleted }) => {
                                                 });
                                                 setIsOpen(false);
                                             }}
-                                            className={`${editedTask.priority === "low" ? "bg-blue-100" : ""} block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-50`}
+                                            className={`${editedTask.priority === "low" ? "bg-blue-100" : ""} block w-full px-4 py-2 text-left text-sm text-black hover:bg-blue-200`}
                                             role="menuitem"
                                             tabIndex="-1"
                                         >
-                                            <span className="inline-block h-3 w-3 rounded-full bg-blue-300 mr-2"></span>
+                                            <span className="inline-block h-3 w-3 rounded-full bg-blue-400 mr-2"></span>
                                             Low
                                         </button>
                                         <button
@@ -172,11 +172,11 @@ const Description = ({ todo, onSave, isCompleted }) => {
                                                 });
                                                 setIsOpen(false);
                                             }}
-                                            className={`${editedTask.priority === "medium" ? "bg-green-100" : ""} block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-green-100`}
+                                            className={`${editedTask.priority === "medium" ? "bg-green-200" : ""} block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-green-200`}
                                             role="menuitem"
                                             tabIndex="-1"
                                         >
-                                            <span className="inline-block h-3 w-3 rounded-full bg-green-300 mr-2"></span>
+                                            <span className="inline-block h-3 w-3 rounded-full bg-green-400 mr-2"></span>
                                             Medium
                                         </button>
                                         <button
@@ -202,7 +202,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
                         </div>
                     ) : (
                         <div
-                            className={`flex mt-1 text-md font-bold text-gray-900 capitalize`}
+                            className={`flex mt-1 text-md font-bold text-text capitalize`}
                         >
                             <p
                                 className={`min-w-1 ${todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-500" : "bg-blue-200"} rounded-full mr-2`}
@@ -212,7 +212,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
                     )}
                 </div>
                 <div className="mb-4">
-                    <label className="block font-medium text-gray-700 text-2xl">
+                    <label className="block font-medium text-text/70 text-2xl">
                         Description
                     </label>
                     {isEditing ? (
@@ -220,18 +220,18 @@ const Description = ({ todo, onSave, isCompleted }) => {
                             name="description"
                             value={editedTask.description || ""}
                             onChange={handleChange}
-                            rows="2"
-                            className="w-full border-2 border-gray-700 rounded-sm focus:outline-none px-1 py-1 text-primary text-md resize-none"
+                            rows="4"
+                            className="w-full border-2 border-border rounded-sm focus:outline-none px-1 py-1 text-text text-md resize-none"
                         ></textarea>
                     ) : (
-                        <p className="mt-1 text-md text-gray-900">
+                        <p className="mt-1 text-md text-text">
                             {todo.description || "No description added."}
                         </p>
                     )}
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-2xl font-medium text-gray-700">
+                    <label className="block text-2xl font-medium text-text/70">
                         Due Date
                     </label>
                     {isEditing ? (
@@ -241,10 +241,10 @@ const Description = ({ todo, onSave, isCompleted }) => {
                             placeholderText="Select a due date"
                             dateFormat="d, MMMM yyyy"
                             dropdownMode="select"
-                            className="text-primary w-full px-3 py-1 border-2 border-primary rounded focus:outline-none"
+                            className="text-text w-full px-3 py-1 border-2 border-border rounded focus:outline-none"
                         />
                     ) : (
-                        <p className="mt-1 text-sm text-gray-900">
+                        <p className="mt-1 text-sm text-text">
                             {todo.due_date
                                 ? new Date(todo.due_date).toLocaleDateString(
                                       "en-US",
@@ -258,16 +258,6 @@ const Description = ({ todo, onSave, isCompleted }) => {
                         </p>
                     )}
                 </div>
-                {/* <div className="mb-4">
-                    <label className="block text-2xl font-medium text-gray-700">
-                        Due Time
-                    </label>
-                    <p className="mt-1 text-sm text-gray-900">
-                        {todo.due_date
-                            ? new Date(todo.due_date).toLocaleTimeString()
-                            : "No due date"}
-                    </p>
-                </div> */}
             </div>
         </div>
     );

@@ -69,15 +69,15 @@ const Navbar = ({ session }) => {
             className="bg-primary border border-gray-700 shadow-md flex justify-around bgImg"
         >
             <div className="container px-4 sm:px-10 py-3 sm:py-5 flex justify-between items-center gap-2 sm:gap-0 z-10 mx-20">
-                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-l from-slate-400 to-slate-200 bg-clip-text text-transparent tech cursor-default ml-5">
+                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-5">
                     <Link to="/">TODO</Link>
                 </h1>
                 <div className="flex items-center gap-3 sm:gap-8">
                     <Link to="settings" element={<Settings />}>
-                        <IoSettingsOutline className="w-6 h-6 cursor-pointer text-white hover:text-gray-400" />
+                        <IoSettingsOutline className="w-6 h-6 cursor-pointer text-text hover:text-text/70" />
                     </Link>
                     <button
-                        className="hover:text-gray-400 transition-colors cursor-pointer text-white text-base sm:text-xl"
+                        className="hover:text-text/70 transition-colors cursor-pointer text-text text-base sm:text-xl"
                         onClick={handleInOut}
                     >
                         <Link to={session ? "#" : "/auth"}>

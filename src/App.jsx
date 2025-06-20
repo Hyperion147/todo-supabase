@@ -38,7 +38,7 @@ function AppWrap() {
 
     return (
         <>
-            <div className="h-screen bg-background text-primary overflow-hidden relative z-10">
+            <div className="h-screen bg-background text-text overflow-hidden relative z-10">
                 <Navbar session={session} />
                 <Routes>
                     <Route path="/" element={<Home />} />
