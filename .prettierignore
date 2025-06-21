@@ -2,3 +2,6 @@ node_modules
 dist
 *.config.js
 .env
+
+index.css
+theme-config.js

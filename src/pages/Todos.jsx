@@ -149,12 +149,12 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                     placeholder="Add todo..."
                     value={newTodo}
                     onChange={(e) => setNewTodo(e.target.value)}
-                    className="relative w-100 px-6 py-3 pr-4 rounded-l-full border bg-text/70 text-primary shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+                    className="relative w-100 px-6 py-3 pr-4 rounded-l-full border bg-background text-text shadow-sm focus:outline-none focus:ring-1 focus:border-transparent transition-all duration-200"
                 />
                 <button
                     type="submit"
                     disabled={isAdding}
-                    className="px-4 bg-primary text-text rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors duration-200 font-medium cursor-pointer tech"
+                    className="px-4 bg-text text-background rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-border transition-colors duration-200 font-medium cursor-pointer tech"
                 >
                     ADD
                 </button>
@@ -215,7 +215,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                                     className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
                                 />
                                 <span
-                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-primary"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
+                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-black"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
                                 `}
                                     onClick={() => onSelect(todo)}
                                 >

@@ -2,41 +2,70 @@
 @import "tw-animate-css";
 @import 'tailwind-scrollbar-hide/v4';
 
+:root {
+  @theme{
+  --color-primary: #8fbcbb;
+  --color-background: #242933;
+  --color-text: #e5e9f0;
+  --color-border: #3b4252;
+  --color-hover: #81a1c1;
+  }
+}
+
+[data-theme="comfy-dark"] {
+  --color-primary: #7AA2F7 ;
+  --color-background: #1A1A2A;
+  --color-text: #E0E0E6 ;
+  --color-border: #2D2D44 ;
+  --color-hover: #9AB8FF ;
+}
+
+[data-theme="comfy-light"] {
+  --color-primary: #FF9494;       /* Vibrant pink (accent) */
+  --color-background: #FFF5E4;    /* Soft peach (background) */
+  --color-text: #5A3E3E;         /* Dark brown (text, for contrast) */
+  --color-border: #FFD1D1;       /* Light pink (borders) */
+  --color-hover: #FFE3E1;        /* Lighter pink (hover states) */
+}
+
+[dark-theme="dark-carbon"]{
+  --color-primary: #3A7CA5;       /* Steel blue (accent) */
+  --color-background: #1E1E1E;    /* Near-black (carbon base) */
+  --color-text: #E0E0E0;          /* Light gray (high readability) */
+  --color-border: #3D3D3D;        /* Dark gray (subtle borders) */
+  --color-hover: #5D9CC7;         /* Brighter blue (interactive) */
+}
+
+[data-theme="light-forest"] {
+  --color-primary: #609966;       /* Muted green (accent) */
+  --color-background: #EDF1D6;    /* Soft cream (background) */
+  --color-text: #40513B;          /* Dark moss (text) */
+  --color-border: #9DC08B;        /* Light green (borders) */
+  --color-hover: #7CAE7A;         /* Mid-green (hover, derived from palette) */
+}
+
+[data-theme="light-kitchen"] {
+  --color-primary: #F4CE14;       /* Vibrant mustard (accent) */
+  --color-background: #F5F7F8;    /* Off-white (background) */
+  --color-text: #45474B;          /* Dark gray (text) */
+  --color-border: #495E57;        /* Muted sage (borders) */
+  --color-hover: #D4B710;         /* Darker mustard (hover) */
+}
+
+[data-theme="retro-nautical"] {
+  --color-primary: #954C2E;       /* Rusty anchor (accent) */
+  --color-background: #EFE4D2;    /* Parchment cream (background) */
+  --color-text: #131D4F;          /* Midnight navy (text) */
+  --color-border: #254D70;        /* Weathered blue (borders) */
+  --color-hover: #B35E3A;         /* Darker rust (hover) */
+}
+
 @layer base {
   ::selection {
-    @apply bg-text text-background;
+    @apply bg-gray-700 text-white;
   }
-}
 
-.scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e0 #f7fafc;
-  
-  &::-webkit-scrollbar {
-    width: 8px;
+  html{
+    @apply transition-colors duration-300;
   }
-  
-  &::-webkit-scrollbar-track {
-    background: #f7fafc;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background-color: #cbd5e0;
-    border-radius: 4px;
-    border: 2px solid #f7fafc;
-    
-    &:hover {
-      background-color: #a0aec0;
-    }
-  }
-}
-
-@theme {
-  --color-primary: #2e3440;
-  --color-background: #3b4252;
-  --color-text: #d8dee9;
-  --color-border: #4c566a;
-  --color-hover: #81a1c1;
-  --color-texthover: #eceff4;
 }

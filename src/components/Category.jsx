@@ -36,14 +36,14 @@ const Category = ({ onFilterChange, todos }) => {
                     <button
                         key={filter.id}
                         onClick={() => handleFilter(filter.id)}
-                        className={`w-full px-4 py-2 rounded-md transition-colors flex items-center justify-between text-primary ${
+                        className={`w-full px-4 py-2 rounded-md transition-colors flex items-center justify-between text-black ${
                             activeFilter === filter.id
                                 ? filter.color
                                 : "hover:bg-hover/30 text-text"
                         }`}
                     >
                         {filter.label}
-                        <FaAngleRight className={`text-primary ${activeFilter !== filter.id && "text-text"}`} />
+                        <FaAngleRight className={`text-black ${activeFilter !== filter.id && "text-text"}`} />
                     </button>
                 ))}
             </div>

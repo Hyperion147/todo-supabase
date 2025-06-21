@@ -6,6 +6,8 @@ import AuthCallback from "./pages/AuthCallback";
 import Home from "./pages/Home";
 import Settings from "./components/Settings";
 import Navbar from "./components/Navbar";
+import { ThemeProvider } from "./components/ui/ThemeProvider";
+
 import supabase from "./lib/supabase";
 
 import "./App.css";
@@ -79,7 +81,11 @@ function AppWrap() {
 }
 
 function App() {
-    return <AppWrap />;
+    return (
+        <ThemeProvider>
+            <AppWrap />
+        </ThemeProvider>
+    );
 }
 
 export default App;

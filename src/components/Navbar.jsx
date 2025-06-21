@@ -8,6 +8,7 @@ import { IoMdLogIn } from "react-icons/io";
 import toast from "react-hot-toast";
 import Settings from "../components/Settings";
 import supabase from "../lib/supabase";
+import { useTheme } from "./ui/ThemeProvider";
 
 gsap.registerPlugin(useGSAP);
 
@@ -108,7 +109,7 @@ const Navbar = ({ session }) => {
     return (
         <nav
             ref={navbarRef}
-            className="bg-primary border border-gray-700 shadow-md flex justify-around bgImg"
+            className="bg-background border border-gray-700 shadow-md flex justify-around bgImg"
         >
             <div className="container px-4 sm:px-10 py-3 sm:py-5 flex justify-between items-center gap-2 sm:gap-0 z-10 mx-20">
                 <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-5">
