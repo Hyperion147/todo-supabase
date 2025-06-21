@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-const Description = ({ todo, onSave, isCompleted }) => {
+const Description = ({ todo, onSave }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTask, setEditedTask] = useState({ ...todo });
     const [isOpen, setIsOpen] = useState(false);
@@ -81,7 +81,7 @@ const Description = ({ todo, onSave, isCompleted }) => {
                         />
                     </div>
                 ) : (
-                    <h2 className="text-4xl text-text font-bold mb-2 capitalize">
+                    <h2 className="text-4xl text-text font-bold mb-2 capitalize text-wrap w-60">
                         {todo.name}
                     </h2>
                 )}

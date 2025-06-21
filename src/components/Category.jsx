@@ -19,9 +19,9 @@ const Category = ({ onFilterChange, todos }) => {
 
     const filters = [
         { id: "all", label: "All Todos", color: "bg-hover" },
-        { id: "high", label: "High", color: "bg-red-200" },
-        { id: "medium", label: "Medium", color: "bg-green-300" },
-        { id: "low", label: "Low", color: "bg-yellow-100" },
+        { id: "high", label: "High", color: "bg-hover" },
+        { id: "medium", label: "Medium", color: "bg-hover" },
+        { id: "low", label: "Low", color: "bg-hover" },
         { id: "completed", label: "Completed", color: "bg-blue-200" },
     ];
 

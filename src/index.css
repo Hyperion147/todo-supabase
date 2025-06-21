@@ -60,12 +60,32 @@
   --color-hover: #B35E3A;         /* Darker rust (hover) */
 }
 
+[data-theme="cosmic-dream"] {
+  --color-primary: #F8B55F;       /* Golden starburst (accent) */
+  --color-background: #3D365C;    /* Deep cosmic purple (background) */
+  --color-text: #E0DDFF;          /* Soft lavender (text, for contrast) */
+  --color-border: #7C4585;        /* Mystic purple (borders) */
+  --color-hover: #C95792;         /* Vibrant magenta (hover) */
+}
+
+[data-theme="dreamy-pastel"] {
+  --color-primary: #7F669D;       /* Deep lavender (accent) */
+  --color-background: #FBFACD;    /* Soft lemon (background) */
+  --color-text: #3A2D4D;          /* Dark purple (text, for contrast) */
+  --color-border: #DEBACE;        /* Blush pink (borders) */
+  --color-hover: #BA94D1;         /* Medium lavender (hover) */
+}
+[data-theme="soft-dawn"] {
+  --color-primary: #C0C9EE;
+  --color-background: #2A2A4A;
+  --color-text: #FFF2E0;
+  --color-border: #898AC4;
+  --color-hover: #D6DCF5;
+}
+
+
 @layer base {
   ::selection {
     @apply bg-gray-700 text-white;
-  }
-
-  html{
-    @apply transition-colors duration-300;
   }
 }

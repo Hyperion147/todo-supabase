@@ -94,6 +94,44 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
             } else toast.error("Todo Pending!");
         }
     };
+
+    const handleDelete = async (id, index) => {
+        toast(
+            (t) => (
+                <div className="">
+                    <p className="mb-2 text-2xl text-text text-center">
+                        Delete todo?
+                    </p>
+                    <div className="flex space-x-2 w-full justify-center">
+                        <button
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                animateDelete(id, index);
+                            }}
+                            className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-xl"
+                        >
+                            Delete
+                        </button>
+                        <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="cursor-pointer bg-primary text-background px-5 py-2 rounded-xl"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            ),
+            {
+                duration: 3000,
+                style: {
+                    background: "var(--color-background)",
+                    padding: "10px 15px",
+                    borderRadius: "0.5rem",
+                    boxShadow: "0 4px 12px rgba(50, 120, 140, 0.5)",
+                },
+            }
+        );
+    };
     const deleteTask = async (id) => {
         const { error } = await supabase.from("TodoList").delete().eq("id", id);
         if (error) {
@@ -159,79 +197,85 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                     ADD
                 </button>
             </form>
-            <div
-                className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide"
-            >
+            <div className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide">
                 <ul className="flex flex-col items-center mt-5">
-                    {filter.map((todo, index) =>
-                        todo.isCompleted ? (
-                            <li
-                                ref={(e) => (itemRef.current[index] = e)}
-                                key={todo.id}
-                                className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
+                    {filter
+                        .sort((a, b) => a.isCompleted - b.isCompleted)
+                        .map((todo, index) =>
+                            todo.isCompleted ? (
+                                <li
+                                    ref={(e) => (itemRef.current[index] = e)}
+                                    key={todo.id}
+                                    className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
                                 ${todo.priority === "low" ? "bg-blue-300" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""}
+                                ${todo.isCompleted && "opacity-50"}
                                 `}
-                            >
-                                <input
-                                    type="checkbox"
-                                    onChange={() =>
-                                        completeTask(todo.id, todo.isCompleted)
-                                    }
-                                    disabled={todo.isCompleted}
-                                    checked={todo.isCompleted}
-                                    className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
-                                />
-                                <span
-                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : ""} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
+                                >
+                                    <input
+                                        type="checkbox"
+                                        onChange={() =>
+                                            completeTask(
+                                                todo.id,
+                                                todo.isCompleted
+                                            )
+                                        }
+                                        checked={todo.isCompleted}
+                                        className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
+                                    />
+                                    <span
+                                        className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : ""} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
                                 `}
-                                    onClick={() => onSelect(todo)}
-                                >
-                                    {todo.name}
-                                </span>
-                                <button
-                                    onClick={() =>
-                                        animateDelete(todo.id, index)
-                                    }
-                                    className="absolute right-3 cursor-pointer"
-                                >
-                                    <MdDelete className="w-6 h-6 text-red-500" />
-                                </button>
-                            </li>
-                        ) : (
-                            <li
-                                ref={(e) => (itemRef.current[index] = e)}
-                                key={todo.id}
-                                className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
+                                        onClick={() => onSelect(todo)}
+                                    >
+                                        {todo.name}
+                                    </span>
+                                    <button
+                                        onClick={() =>
+                                            animateDelete(todo.id, index)
+                                        }
+                                        className="absolute right-3 cursor-pointer"
+                                    >
+                                        <MdDelete className="w-6 h-6 text-red-500" />
+                                    </button>
+                                </li>
+                            ) : (
+                                <li
+                                    ref={(e) => (itemRef.current[index] = e)}
+                                    key={todo.id}
+                                    className={`relative flex justify-center items-center py-3 mb-2 max-w-[350px]  min-w-[350px] md:min-w-[700px] todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
                                 ${todo.priority === "low" ? "bg-blue-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""} ${todo.isCompleted && "hidden"}
                                 `}
-                            >
-                                <input
-                                    type="checkbox"
-                                    onChange={() =>
-                                        completeTask(todo.id, todo.isCompleted)
-                                    }
-                                    disabled={todo.isCompleted}
-                                    checked={todo.isCompleted}
-                                    className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
-                                />
-                                <span
-                                    className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-black"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
+                                >
+                                    <input
+                                        type="checkbox"
+                                        onChange={() =>
+                                            completeTask(
+                                                todo.id,
+                                                todo.isCompleted
+                                            )
+                                        }
+                                        disabled={todo.isCompleted}
+                                        checked={todo.isCompleted}
+                                        className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
+                                    />
+                                    <span
+                                        className={`text-lg ${todo.isCompleted ? "line-through text-gray-500" : "text-black"} transition-all duration-300 md:min-w-[300px] max-w-[350px] capitalize  md:max-w-[650px] text-center text-pretty wrap-break-word px-12 md:px-10  cursor-pointer font-bold
                                 `}
-                                    onClick={() => onSelect(todo)}
-                                >
-                                    {todo.name}
-                                </span>
-                                <button
-                                    onClick={() =>
-                                        animateDelete(todo.id, index)
-                                    }
-                                    className="absolute right-3 cursor-pointer"
-                                >
-                                    <MdDelete className="w-6 h-6 text-red-500" />
-                                </button>
-                            </li>
-                        )
-                    )}
+                                        onClick={() => onSelect(todo)}
+                                    >
+                                        {todo.name}
+                                    </span>
+                                    <button
+                                        onClick={() => {
+                                            handleDelete(todo.id, index);
+                                        }}
+                                        className="absolute right-3 cursor-pointer"
+                                    >
+                                        <MdDelete className="w-6 h-6 text-red-500" />
+                                    </button>
+                                </li>
+                            )
+                        )}
                 </ul>
                 {/* <div className="flex justify-center">
                     <button

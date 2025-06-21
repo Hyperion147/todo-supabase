@@ -39,7 +39,7 @@ function AppWrap() {
 
     return (
         <>
-            <div className="h-screen bg-background text-text overflow-hidden relative z-10">
+            <div className="h-screen bg-background text-text overflow-hidden relative z-10 transition-colors duration-500">
                 <Navbar session={session} />
                 <Routes>
                     <Route

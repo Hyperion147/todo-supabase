@@ -10,8 +10,6 @@ const Themes = () => {
             primary: "#8fbcbb",
             background: "#242933",
             text: "#e5e9f0",
-            border: "#3b4252",
-            hover: "#81a1c1",
         },
         {
             id: 2,
@@ -20,8 +18,6 @@ const Themes = () => {
             primary: "#7AA2F7",
             background: "#1A1A2A",
             text: "#E0E0E6",
-            border: "#2D2D44",
-            hover: "#9AB8FF",
         },
         {
             id: 3,
@@ -30,8 +26,6 @@ const Themes = () => {
             primary: "#FF9494",
             background: "#FFF5E4",
             text: "#5A3E3E",
-            border: "#FFD1D1",
-            hover: "#FFE3E1",
         },
         {
             id: 4,
@@ -40,8 +34,6 @@ const Themes = () => {
             primary: "#3A7CA5",
             background: "#1E1E1E",
             text: "#E0E0E0",
-            border: "#3D3D3D",
-            hover: "#5D9CC7",
         },
         {
             id: 5,
@@ -50,8 +42,6 @@ const Themes = () => {
             primary: "#609966",
             background: "#EDF1D6",
             text: "#40513B",
-            border: "#9DC08B",
-            hover: "#7CAE7A",
         },
         {
             id: 6,
@@ -60,8 +50,6 @@ const Themes = () => {
             primary: "#F4CE14",
             background: "#F5F7F8",
             text: "#45474B",
-            border: "#495E57",
-            hover: "#D4B710",
         },
         {
             id: 7,
@@ -70,8 +58,30 @@ const Themes = () => {
             primary: "#954C2E",
             background: "#EFE4D2",
             text: "#131D4F",
-            border: "#254D70",
-            hover: "#B35E3A",
+        },
+        {
+            id: 8,
+            name: "cosmic-dream",
+            varColor: "cosmic-dream",
+            primary: "#F8B55F",
+            background: "#3D365C",
+            text: "#C95792",
+        },
+        {
+            id: 9,
+            name: "dreamy-pastel",
+            varColor: "dreamy-pastel",
+            primary: "#7F669D",
+            background: "#FBFACD",
+            text: "#3A2D4D",
+        },
+        {
+            id: 10,
+            name: "soft-dawn",
+            varColor: "soft-dawn",
+            primary: "#C0C9EE",
+            background: "#2A2A4A",
+            text: "#FFF2E0",
         },
     ];
     const handleTheme = (newTheme) => {
@@ -98,15 +108,15 @@ const Themes = () => {
                         <p>{name}</p>
                         <span
                             className={`rounded-full w-4 h-4`}
-                            style={{backgroundColor: primary}}
+                            style={{ backgroundColor: primary }}
                         ></span>
                         <span
                             className={` rounded-full w-4 h-4`}
-                            style={{backgroundColor: text}}
+                            style={{ backgroundColor: text }}
                         ></span>
                         <span
                             className={` rounded-full w-4 h-4`}
-                            style={{backgroundColor: background}}
+                            style={{ backgroundColor: background }}
                         ></span>
                     </button>
                 )
