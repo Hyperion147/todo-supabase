@@ -61,21 +61,21 @@ const Navbar = ({ session }) => {
         if (session) {
             toast(
                 (t) => (
-                    <div>
-                        <p>Are you sure you want to log out?</p>
-                        <div>
+                    <div className="">
+                        <p className="mb-2 text-lg text-text">Are you sure you want to log out?</p>
+                        <div className="flex space-x-2 w-full justify-center">
                             <button
                                 onClick={() => {
                                     toast.dismiss(t.id);
                                     handleSignOut();
                                 }}
-                                className="cursor-pointer"
+                                className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-xl"
                             >
                                 Log Out
                             </button>
                             <button
                                 onClick={() => toast.dismiss(t.id)}
-                                className="cursor-pointer"
+                                className="cursor-pointer bg-primary text-background px-5 py-2 rounded-xl"
                             >
                                 Cancel
                             </button>
@@ -85,10 +85,10 @@ const Navbar = ({ session }) => {
                 {
                     duration: 3000,
                     style: {
-                        background: "white",
-                        padding: "1rem",
+                        background: "var(--color-background)",
+                        padding: "10px 15px",
                         borderRadius: "0.5rem",
-                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                        boxShadow: "0 4px 12px rgba(50, 120, 140, 0.5)",
                     },
                 }
             );

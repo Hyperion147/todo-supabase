@@ -162,7 +162,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
             <div
                 className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide"
             >
-                <ul className="flex flex-col items-center mt-4">
+                <ul className="flex flex-col items-center mt-5">
                     {filter.map((todo, index) =>
                         todo.isCompleted ? (
                             <li

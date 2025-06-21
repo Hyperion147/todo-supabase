@@ -2,7 +2,7 @@ import Themes from "./ui/Themes"
 
 const Settings = () => {
   return (
-    <div>
+    <div className="">
         <Themes />
     </div>
   )
