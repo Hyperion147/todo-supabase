@@ -5,7 +5,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import toast from "react-hot-toast";
-import { Calendar } from "./ui/Calendar";
+import Calendar from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const Description = ({ todo, onSave }) => {
