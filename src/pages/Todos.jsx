@@ -185,7 +185,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                     ADD
                 </button>
             </form>
-            <div className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide hover:transition-[colors,box-shadow] duration-400 hover:shadow-[5px_5px_rgba(42,42,74,0.3),10px_10px_rgba(42,42,74,0.2),15px_15px_rgba(42,42,74,0.1)]">
+            <div className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide hover:transition-[colors,box-shadow] duration-500  hover:shadow-[4px_4px_rgba(var(--text-rgb),0.4),8px_8px_rgba(var(--text-rgb),0.2),12px_12px_rgba(var(--text-rgb),0.1)]">
                 <ul className="flex flex-col items-center mt-5">
                     {filter
                         .sort((a, b) => a.isCompleted - b.isCompleted)

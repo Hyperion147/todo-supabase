@@ -4,85 +4,100 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* 
+  Nord-inspired Dark Theme  
+  Cool, muted blues and grays with a soft teal accent
+*/
 :root {
   @theme{
-  --color-primary: #8fbcbb;
-  --color-background: #242933;
-  --color-text: #e5e9f0;
-  --color-border: #3b4252;
-  --color-hover: #81a1c1;
+  --color-primary: #8fbcbb;       /* Nord Teal (accent) */
+  --color-background: #242933;    /* Dark Slate (background) */
+  --color-text: #e5e9f0;          /* Snow Storm (text) */
+  --color-border: #3b4252;        /* Polar Night (borders) */
+  --color-hover: #81a1c1;         /* Frost Blue (hover) */
+  --text-rgb: 229, 233, 240;      /* Snow Storm (RGB) */
   }
 }
 
 [data-theme="comfy-dark"] {
-  --color-primary: #7AA2F7 ;
-  --color-background: #1A1A2A;
-  --color-text: #E0E0E6 ;
-  --color-border: #2D2D44 ;
-  --color-hover: #9AB8FF ;
+  --color-primary: #7AA2F7;       /* Soft Azure (accent) */
+  --color-background: #1A1A2A;    /* Deep Navy (background) */
+  --color-text: #E0E0E6;          /* Light Pearl (text) */
+  --color-border: #2D2D44;        /* Dark Steel (borders) */
+  --color-hover: #9AB8FF;         /* Bright Sky (hover) */
+  --text-rgb: 224, 224, 230;      /* Light Pearl (RGB) */
 }
 
 [data-theme="comfy-light"] {
-  --color-primary: #FF9494;       /* Vibrant pink (accent) */
-  --color-background: #FFF5E4;    /* Soft peach (background) */
-  --color-text: #5A3E3E;         /* Dark brown (text, for contrast) */
-  --color-border: #FFD1D1;       /* Light pink (borders) */
-  --color-hover: #FFE3E1;        /* Lighter pink (hover states) */
+  --color-primary: #FF9494;       /* Blush Pink (accent) */
+  --color-background: #FFF5E4;    /* Peach Cream (background) */
+  --color-text: #5A3E3E;          /* Cocoa Brown (text) */
+  --color-border: #FFD1D1;        /* Cotton Candy (borders) */
+  --color-hover: #FFE3E1;         /* Soft Rose (hover) */
+  --text-rgb: 90, 62, 62;         /* Cocoa Brown (RGB) */
 }
 
 [dark-theme="dark-carbon"]{
-  --color-primary: #3A7CA5;       /* Steel blue (accent) */
-  --color-background: #1E1E1E;    /* Near-black (carbon base) */
-  --color-text: #E0E0E0;          /* Light gray (high readability) */
-  --color-border: #3D3D3D;        /* Dark gray (subtle borders) */
-  --color-hover: #5D9CC7;         /* Brighter blue (interactive) */
+  --color-primary: #3A7CA5;       /* Steel Blue (accent) */
+  --color-background: #1E1E1E;    /* Carbon Black (background) */
+  --color-text: #E0E0E0;          /* Silver Gray (text) */
+  --color-border: #3D3D3D;        /* Charcoal (borders) */
+  --color-hover: #5D9CC7;         /* Bright Steel (hover) */
+  --text-rgb: 224, 224, 224;      /* Silver Gray (RGB) */
 }
 
 [data-theme="light-forest"] {
-  --color-primary: #609966;       /* Muted green (accent) */
-  --color-background: #EDF1D6;    /* Soft cream (background) */
-  --color-text: #40513B;          /* Dark moss (text) */
-  --color-border: #9DC08B;        /* Light green (borders) */
-  --color-hover: #7CAE7A;         /* Mid-green (hover, derived from palette) */
+  --color-primary: #609966;       /* Moss Green (accent) */
+  --color-background: #EDF1D6;    /* Creamy Beige (background) */
+  --color-text: #40513B;          /* Pine Needle (text) */
+  --color-border: #9DC08B;        /* Sage Green (borders) */
+  --color-hover: #7CAE7A;         /* Fresh Leaf (hover) */
+  --text-rgb: 64, 81, 59;         /* Pine Needle (RGB) */
 }
 
 [data-theme="light-kitchen"] {
-  --color-primary: #F4CE14;       /* Vibrant mustard (accent) */
-  --color-background: #F5F7F8;    /* Off-white (background) */
-  --color-text: #45474B;          /* Dark gray (text) */
-  --color-border: #495E57;        /* Muted sage (borders) */
-  --color-hover: #D4B710;         /* Darker mustard (hover) */
+  --color-primary: #F4CE14;       /* Golden Mustard (accent) */
+  --color-background: #F5F7F8;    /* Cloud White (background) */
+  --color-text: #45474B;          /* Charcoal Gray (text) */
+  --color-border: #495E57;        /* Muted Sage (borders) */
+  --color-hover: #D4B710;         /* Amber Gold (hover) */
+  --text-rgb: 69, 71, 75;         /* Charcoal Gray (RGB) */
 }
 
 [data-theme="retro-nautical"] {
-  --color-primary: #954C2E;       /* Rusty anchor (accent) */
-  --color-background: #EFE4D2;    /* Parchment cream (background) */
-  --color-text: #131D4F;          /* Midnight navy (text) */
-  --color-border: #254D70;        /* Weathered blue (borders) */
-  --color-hover: #B35E3A;         /* Darker rust (hover) */
+  --color-primary: #954C2E;       /* Rusty Anchor (accent) */
+  --color-background: #EFE4D2;    /* Aged Parchment (background) */
+  --color-text: #131D4F;          /* Midnight Navy (text) */
+  --color-border: #254D70;        /* Weathered Blue (borders) */
+  --color-hover: #B35E3A;         /* Burnt Sienna (hover) */
+  --text-rgb: 19, 29, 79;         /* Midnight Navy (RGB) */
 }
 
 [data-theme="cosmic-dream"] {
-  --color-primary: #F8B55F;       /* Golden starburst (accent) */
-  --color-background: #3D365C;    /* Deep cosmic purple (background) */
-  --color-text: #E0DDFF;          /* Soft lavender (text, for contrast) */
-  --color-border: #7C4585;        /* Mystic purple (borders) */
-  --color-hover: #C95792;         /* Vibrant magenta (hover) */
+  --color-primary: #F8B55F;       /* Starburst Gold (accent) */
+  --color-background: #3D365C;    /* Cosmic Purple (background) */
+  --color-text: #E0DDFF;          /* Ethereal Lavender (text) */
+  --color-border: #7C4585;        /* Mystic Violet (borders) */
+  --color-hover: #C95792;         /* Cosmic Pink (hover) */
+  --text-rgb: 224, 221, 255;      /* Ethereal Lavender (RGB) */
 }
 
 [data-theme="dreamy-pastel"] {
-  --color-primary: #7F669D;       /* Deep lavender (accent) */
-  --color-background: #FBFACD;    /* Soft lemon (background) */
-  --color-text: #3A2D4D;          /* Dark purple (text, for contrast) */
-  --color-border: #DEBACE;        /* Blush pink (borders) */
-  --color-hover: #BA94D1;         /* Medium lavender (hover) */
+  --color-primary: #7F669D;       /* Wisteria Purple (accent) */
+  --color-background: #FBFACD;    /* Lemon Cream (background) */
+  --color-text: #3A2D4D;          /* Deep Amethyst (text) */
+  --color-border: #DEBACE;        /* Blush Pink (borders) */
+  --color-hover: #BA94D1;         /* Lilac Mist (hover) */
+  --text-rgb: 58, 45, 77;         /* Deep Amethyst (RGB) */
 }
+
 [data-theme="soft-dawn"] {
-  --color-primary: #C0C9EE;
-  --color-background: #2A2A4A;
-  --color-text: #FFF2E0;
-  --color-border: #898AC4;
-  --color-hover: #D6DCF5;
+  --color-primary: #C0C9EE;       /* Morning Mist (accent) */
+  --color-background: #2A2A4A;    /* Twilight Indigo (background) */
+  --color-text: #FFF2E0;          /* Dawn Light (text) */
+  --color-border: #898AC4;        /* Dusky Lavender (borders) */
+  --color-hover: #D6DCF5;         /* Soft Sky (hover) */
+  --text-rgb: 255, 242, 224;      /* Dawn Light (RGB) */
 }
 
 @layer base {
@@ -90,4 +105,3 @@
     @apply bg-gray-700 text-white;
   }
 }
-
