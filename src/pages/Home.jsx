@@ -81,14 +81,15 @@ const Home = () => {
     const filter = filterTodos(todos, filtered);
 
     return (
-        <div className="flex w-full justify-between gap-0">
-            <div className="min-w-[150px] border-r-2 border-border pr-20">
+        <div className="flex w-full flex-col lg:flex-row justify-between gap-4 lg:gap-0">
+            <div className="lg:min-w-[150px] lg:border-r-2 lg:border-border lg:pr-4 xl:pr-20">
                 <Category
                     todos={todos}
                     onFilterChange={(filter) => setFiltered(filter)}
                 />
             </div>
-            <main className="mt-4">
+
+            <main className="mt-4 px-4 lg:px-0 order-first lg:order-none">
                 <Todos
                     onSelect={setSelected}
                     setTodos={setTodos}
@@ -97,7 +98,10 @@ const Home = () => {
                     filter={filter}
                 />
             </main>
-            <div className="min-w-[350px] border-l-2 border-border">
+
+            <div
+                className={`lg:min-w-[350px] ${selected ? "fixed lg:static inset-0 z-50 bg-background lg:bg-transparent p-4 lg:p-0" : "hidden lg:block"} lg:border-l-2 lg:border-border`}
+            >
                 {selected ? (
                     <Description todo={selected} onSave={handleUpdateTask} />
                 ) : (
