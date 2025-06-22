@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import supabase from "../lib/supabase";
 import Settings from "../components/Settings";
 import Todos from "./Todos";
+import DescriptionSkeleton from "@/components/ui/DescriptionSkeleton";
 
 const Home = () => {
     const [todos, setTodos] = useState([]);
@@ -97,8 +98,10 @@ const Home = () => {
                 />
             </main>
             <div className="min-w-[350px] border-l-2 border-border">
-                {selected && (
+                {selected ? (
                     <Description todo={selected} onSave={handleUpdateTask} />
+                ) : (
+                    <DescriptionSkeleton />
                 )}
             </div>
         </div>

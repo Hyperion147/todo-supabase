@@ -15,6 +15,10 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
     const [isAdding, setIsAdding] = useState(false);
     const itemRef = useRef([]);
 
+    useEffect(() => {
+        itemRef.current = itemRef.current.slice(0, todos.length);
+    }, [todos]);
+
     // const animateDeleteAll = () => {
     //     const items = gsap.utils.toArray(".todo-item");
     //     const tl = gsap.timeline({
@@ -30,13 +34,18 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
     // };
     const animateDelete = (id, index) => {
         const element = itemRef.current[index];
-        if (!element) return;
+        if (!element) {
+            deleteTask(id);
+            return;
+        }
         gsap.to(element, {
             x: 300,
             opacity: 0,
             duration: 0.4,
             stagger: 0.1,
-            onComplete: () => deleteTask(id),
+            onComplete: () => {
+                deleteTask(id);
+            },
         });
     };
 
@@ -46,6 +55,10 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
         } = await supabase.auth.getSession();
         const email = session.user.email;
         if (!newTodo.trim()) return;
+        if (!newTodo.trim().split(/\s+/).length > 5) {
+            toast.error("Todo name cannot exceed 5 words!");
+            return;
+        }
         try {
             if (!session) toast.error("Login First!");
             setIsAdding(true);
@@ -64,10 +77,23 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
             setTodos([...todos, data[0]]);
             setNewTodo("");
             toast.success("Task added!");
+            toast.success("Click Todo to Edit");
         } catch (error) {
             console.log("Error adding task:", error);
         } finally {
             setIsAdding(false);
+        }
+    };
+    const handleInputChange = (e) => {
+        const input = e.target.value;
+        const words = input.trim().split(/\s+/);
+
+        if (words.length <= 5) {
+            setNewTodo(input);
+        } else {
+            const truncatedInput = words.slice(0, 5).join(" ");
+            setNewTodo(truncatedInput);
+            toast.error("Maximum 5 words allowed in name!");
         }
     };
     const completeTask = async (id, isCompleted) => {
@@ -140,6 +166,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
         } else {
             setTodos((prev) => prev.filter((todo) => todo.id !== id));
             toast.error("Deleted Task!");
+            onSelect(null);
         }
     };
 
@@ -186,7 +213,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                     type="text"
                     placeholder="Add todo..."
                     value={newTodo}
-                    onChange={(e) => setNewTodo(e.target.value)}
+                    onChange={handleInputChange}
                     className="relative w-100 px-6 py-3 pr-4 rounded-l-full border bg-background text-text shadow-sm focus:outline-none focus:ring-1 focus:border-transparent transition-all duration-200"
                 />
                 <button
