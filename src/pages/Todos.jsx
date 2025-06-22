@@ -41,6 +41,10 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
             data: { session },
         } = await supabase.auth.getSession();
         const email = session.user.email;
+        if(todos.length >= 15){
+            toast.error("Todo limit is 15! Delete some todos!")
+            return;
+        }
         if (!newTodo.trim()) return;
         if (!newTodo.trim().split(/\s+/).length > 5) {
             toast.error("Todo name cannot exceed 5 words!");
@@ -64,7 +68,6 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
             setTodos([...todos, data[0]]);
             setNewTodo("");
             toast.success("Task added!");
-            toast.success("Click Todo to Edit");
         } catch (error) {
             console.log("Error adding task:", error);
         } finally {
@@ -103,7 +106,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
             );
             setTodos(updatedTodo);
             if (!isCompleted) {
-                toast.success("Completed Task!");
+                toast.success("Completed task! Check filter!");
             } else toast.error("Todo Pending!");
         }
     };
@@ -182,7 +185,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                     ADD
                 </button>
             </form>
-            <div className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide">
+            <div className="border-border border-0 md:border-2 mt-4 min-h-[590px] md:min-h-[570px] max-h-[570px] min-w-[750px]  max-w-[750px] rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide hover:transition-[colors,box-shadow] duration-400 hover:shadow-[5px_5px_rgba(42,42,74,0.3),10px_10px_rgba(42,42,74,0.2),15px_15px_rgba(42,42,74,0.1)]">
                 <ul className="flex flex-col items-center mt-5">
                     {filter
                         .sort((a, b) => a.isCompleted - b.isCompleted)

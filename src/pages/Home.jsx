@@ -75,7 +75,7 @@ const Home = () => {
             case "completed":
                 return todos.filter((todo) => todo.isCompleted);
             default:
-                return todos;
+                return todos.filter((todo) => !todo.isCompleted);
         }
     };
     const filter = filterTodos(todos, filtered);
