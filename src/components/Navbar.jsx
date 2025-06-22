@@ -12,57 +12,15 @@ import { useTheme } from "./ui/ThemeProvider";
 
 gsap.registerPlugin(useGSAP);
 
-const Navbar = ({ session }) => {
+const Navbar = ({ session, handleSignOut }) => {
     const navbarRef = useRef(null);
-
-    // useGSAP(
-    //     () => {
-    //         const mm = gsap.matchMedia();
-    //         const commonAnimation = {
-    //             opacity: 1,
-    //             duration: 2,
-    //             ease: "power3.out",
-    //         };
-    //         mm.add("(min-width: 768px)", () => {
-    //             gsap.set(navbarRef.current, {
-    //                 height: "75px",
-    //                 borderRadius: "12px",
-    //                 width: "75%",
-    //                 margin: "10px auto",
-    //                 opacity: 0,
-    //             });
-
-    //             gsap.to(navbarRef.current, {
-    //                 width: "45%",
-    //                 borderRadius: "9999px",
-    //                 ...commonAnimation,
-    //             });
-    //         });
-    //         mm.add("(max-width: 767px)", () => {
-    //             gsap.set(navbarRef.current, {
-    //                 height: "65px",
-    //                 width: "100%",
-    //                 margin: "8px auto",
-    //                 opacity: 0,
-    //             });
-
-    //             gsap.to(navbarRef.current, {
-    //                 width: "100%",
-    //                 ...commonAnimation,
-    //             });
-    //         });
-
-    //         return () => mm.revert();
-    //     },
-    //     { scope: navbarRef }
-    // );
 
     const handleInOut = async () => {
         if (session) {
             toast(
                 (t) => (
-                    <div className="">
-                        <p className="mb-2 text-lg text-text">Are you sure you want to log out?</p>
+                    <div className="flex flex-col">
+                        <p className="mb-2 w-full text-lg text-text">Are you sure you want to log out?</p>
                         <div className="flex space-x-2 w-full justify-center">
                             <button
                                 onClick={() => {
@@ -94,15 +52,6 @@ const Navbar = ({ session }) => {
             );
         } else {
             return;
-        }
-    };
-
-    const handleSignOut = async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) {
-            toast.error("Failed to log out!");
-        } else {
-            toast.success("Logged out successfully!");
         }
     };
 

@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Auth from "./pages/Auth";
 import Todos from "./pages/Todos";
 import AuthCallback from "./pages/AuthCallback";
@@ -37,10 +38,19 @@ function AppWrap() {
         };
     }, [navigate]);
 
+        const handleSignOut = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            toast.error("Failed to log out!");
+        } else {
+            toast.success("Logged out successfully!");
+        }
+    };
+
     return (
         <>
             <div className="h-screen bg-background text-text overflow-hidden relative z-10 transition-colors duration-500">
-                <Navbar session={session} />
+                <Navbar handleSignOut={handleSignOut}  session={session} />
                 <Routes>
                     <Route
                         path="/todo"

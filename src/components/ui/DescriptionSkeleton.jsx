@@ -1,14 +1,13 @@
 const DescriptionSkeleton = () => {
     return (
         <>
-            <div className="my-10">
+            <div className="my-10 px-4">
                 <p className="mt-2 block text-2xl font-medium text-text decoration-dashed underline pb-2">
                     Select todo to edit!!!
                 </p>
                 <div className="h-8 w-full bg-gray-200 rounded"></div>
             </div>
-            <div className="">
-
+            <div className="px-4 mt-10">
                 <div className="flex flex-col space-y-6">
                     <div>
                         <label className="text-2xl font-medium text-gray-400">

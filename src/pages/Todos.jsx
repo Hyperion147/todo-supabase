@@ -18,20 +18,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
     useEffect(() => {
         itemRef.current = itemRef.current.slice(0, todos.length);
     }, [todos]);
-
-    // const animateDeleteAll = () => {
-    //     const items = gsap.utils.toArray(".todo-item");
-    //     const tl = gsap.timeline({
-    //         onComplete: () => deleteAllTask(),
-    //     });
-
-    //     tl.to(items, {
-    //         x: 300,
-    //         opacity: 0,
-    //         duration: 0.4,
-    //         stagger: 0.1,
-    //     });
-    // };
+    
     const animateDelete = (id, index) => {
         const element = itemRef.current[index];
         if (!element) {
@@ -170,35 +157,6 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
         }
     };
 
-    // const deleteAllTask = async () => {
-    //     try {
-    //         const { data, error: fetchingError } = await supabase
-    //             .from("TodoList")
-    //             .select("id");
-    //         if (fetchingError) {
-    //             toast.error("Error fetching todos to delete");
-    //             console.log("Error fetching todos: ", fetchingError);
-    //         }
-
-    //         const { error: deletingError } = await supabase
-    //             .from("TodoList")
-    //             .delete()
-    //             .in(
-    //                 "id",
-    //                 data.map((todo) => todo.id)
-    //             );
-    //         if (deletingError) {
-    //             toast.error("Error deleting todos");
-    //             console.log("Error deleting todos:", deletingError);
-    //         } else {
-    //             setTodos([]);
-    //             toast.error("All tasks deleted!");
-    //         }
-    //     } catch (error) {
-    //         toast.error("Error deleting all todos: ", error);
-    //     }
-    // };
-
     return (
         <div>
             <Toaster position="bottom-right" />
@@ -277,12 +235,11 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                                         type="checkbox"
                                         onChange={() =>
                                             completeTask(
-                                                todo.id,
-                                                todo.isCompleted
+                                                todo.id, todo.isCompleted
                                             )
                                         }
-                                        disabled={todo.isCompleted}
                                         checked={todo.isCompleted}
+                                        disabled={todo.isCompleted}
                                         className={`absolute left-4 h-6 w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
                                     />
                                     <span
@@ -304,14 +261,6 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
                             )
                         )}
                 </ul>
-                {/* <div className="flex justify-center">
-                    <button
-                        onClick={animateDeleteAll}
-                        className={`${todos.length >= 2 ? "flex" : "hidden"} bg-red-600 py-2 border-gray-500 border-2 px-5 rounded-xl font-bold hover:bg-red-800 hover:ring-1 cursor-pointer`}
-                    >
-                        Delete All
-                    </button>
-                </div> */}
             </div>
         </div>
     );

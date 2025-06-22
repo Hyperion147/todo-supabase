@@ -71,9 +71,7 @@ const Description = ({ todo, onSave }) => {
     return (
         <div className="ml-8 mt-12 mr-10">
             {!todo && isEditing ? (
-                <div className="text-text">
-                    No Todo Selected
-                </div>
+                <div className="text-text">No Todo Selected</div>
             ) : (
                 <>
                     <div className="flex w-full justify-end">
