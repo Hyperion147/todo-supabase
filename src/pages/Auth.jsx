@@ -102,6 +102,7 @@ const Auth = () => {
                     className="flex flex-col w-full sm:w-[350px]"
                 >
                     <input
+                        id="email"
                         name="email"
                         type="email"
                         placeholder="Email"
@@ -109,9 +110,12 @@ const Auth = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         className="border-border border-b-2 px-4 py-2 text-text focus:outline-none mb-4"
                         required
+                        aria-describedby="email-error"
                     />
                     <div className="border-border border-b-2 py-2 px-4 text-text mb-4 flex justify-between">
                         <input
+                            id="password"
+                            name="password"
                             type={reveal ? "text" : "password"}
                             placeholder="Password"
                             value={password}
@@ -119,6 +123,7 @@ const Auth = () => {
                             className="border-none focus:outline-none w-full"
                             required
                             minLength={6}
+                            aria-describedby="password-error"
                         />
                         <button
                             type="button"
@@ -134,6 +139,8 @@ const Auth = () => {
                         className={`border-border border-b-2 py-2 px-4 text-text mb-4 flex justify-between ${!isRegister ? "hidden" : "flex"}`}
                     >
                         <input
+                            id="confirm-password"
+                            name="confirm-password"
                             type={reveal ? "text" : "password"}
                             placeholder="Confirm Password"
                             value={confirmPassword}
@@ -141,6 +148,7 @@ const Auth = () => {
                             className="border-none focus:outline-none w-full"
                             required={isRegister}
                             minLength={6}
+                            aria-describedby="confirm-password-error"
                         />
                     </div>
                     <button

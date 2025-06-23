@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { IoMdLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMdLogIn } from "react-icons/io";
@@ -14,7 +14,12 @@ gsap.registerPlugin(useGSAP);
 
 const Navbar = ({ session, handleSignOut }) => {
     const navbarRef = useRef(null);
+    // const [isMobile, setisMobile] = useState(false)
 
+
+    // const mobileMenu = () => {
+
+    // }
     const handleInOut = async () => {
         if (session) {
             toast(
