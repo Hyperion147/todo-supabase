@@ -80,8 +80,7 @@ const Description = ({ todo, onSave }) => {
                                 <button
                                     onClick={handleSave}
                                     title="save"
-                                    className="
-                        flex gap-2 mb-1 border border-primary rounded-md px-2 py-1 hover:bg-primary hover:text-background cursor-pointer font-bold"
+                                    className="flex gap-2 mb-1 border border-primary rounded-md px-2 py-1 hover:bg-primary hover:text-background cursor-pointer font-bold"
                                 >
                                     Save
                                     <LuSaveAll className="w-6 h-6" />
@@ -264,13 +263,15 @@ const Description = ({ todo, onSave }) => {
                                     value={editedTask.description || ""}
                                     onChange={handleChange}
                                     rows="4"
-                                    className="w-full border-2 border-border rounded-sm focus:outline-none px-1 py-1 text-text text-md resize-none"
+                                    className="w-full border-2 border-border rounded-sm focus:outline-none px-1 py-1 text-text text-md resize-none scrollbar-hide"
                                 ></textarea>
                             ) : (
-                                <p className="mt-1 text-md text-text">
-                                    {todo.description ||
-                                        "No description added."}
-                                </p>
+                                <div className={`max-h-[105px] overflow-x-hidden overflow-x-ellipsis ${todo.description ? "border border-border px-2 py-1" : "border-none"} scrollbar-hide rounded-md mt-1`}>
+                                    <p className="text-md text-text">
+                                        {todo.description ||
+                                            "No description added."}
+                                    </p>
+                                </div>
                             )}
                         </div>
 

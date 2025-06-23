@@ -100,7 +100,7 @@ const Home = () => {
             </main>
 
             <div
-                className={`lg:min-w-[350px] ${selected ? "fixed lg:static inset-0 z-50 bg-background lg:bg-transparent p-4 lg:p-0" : "hidden lg:block"} lg:border-l-2 lg:border-border`}
+                className={`lg:min-w-[350px] max-w-[350px] ${selected ? "fixed lg:static inset-0 z-50 bg-background lg:bg-transparent p-4 lg:p-0" : "hidden lg:block"} lg:border-l-2 lg:border-border`}
             >
                 {selected ? (
                     <Description todo={selected} onSave={handleUpdateTask} />
