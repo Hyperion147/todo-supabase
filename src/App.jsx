@@ -8,8 +8,9 @@ import Home from "./pages/Home";
 import Settings from "./components/Settings";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "./components/ui/ThemeProvider";
-
 import supabase from "./lib/supabase";
+import FixedButtons from "./components/ui/FixedButtons";
+
 
 import "./App.css";
 
@@ -50,6 +51,7 @@ function AppWrap() {
     return (
         <>
             <div className="h-screen bg-background text-text overflow-hidden relative z-10 transition-colors duration-500">
+                {session ? <FixedButtons /> : ""}
                 <Navbar handleSignOut={handleSignOut}  session={session} />
                 <Routes>
                     <Route

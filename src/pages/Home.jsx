@@ -8,7 +8,6 @@ import supabase from "../lib/supabase";
 import Settings from "../components/Settings";
 import Todos from "./Todos";
 import DescriptionSkeleton from "@/components/ui/DescriptionSkeleton";
-import FixedButtons from "@/components/ui/FixedButtons";
 
 const Home = () => {
     const [todos, setTodos] = useState([]);
@@ -83,7 +82,6 @@ const Home = () => {
 
     return (
         <div className="flex w-full flex-col lg:flex-row justify-between gap-4 lg:gap-0">
-            <FixedButtons />
             <div className="lg:min-w-[150px] lg:border-r-2 lg:border-border lg:pr-4 xl:pr-20">
                 <Category
                     todos={todos}
