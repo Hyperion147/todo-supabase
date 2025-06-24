@@ -11,8 +11,8 @@ import { ThemeProvider } from "./ui/ThemeProvider";
 import supabase from "./lib/supabase";
 import FixedButtons from "./ui/FixedButtons";
 
-
 import "./App.css";
+import Favicon from "./ui/Favicon";
 
 function AppWrap() {
     const [session, setSession] = useState(null);
@@ -39,7 +39,7 @@ function AppWrap() {
         };
     }, [navigate]);
 
-        const handleSignOut = async () => {
+    const handleSignOut = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) {
             toast.error("Failed to log out!");
@@ -52,7 +52,7 @@ function AppWrap() {
         <>
             <div className="h-screen bg-background text-text overflow-hidden relative z-10 transition-all duration-500">
                 {session ? <FixedButtons /> : ""}
-                <Navbar handleSignOut={handleSignOut}  session={session} />
+                <Navbar handleSignOut={handleSignOut} session={session} />
                 <Routes>
                     <Route
                         path="/todo"
@@ -95,6 +95,7 @@ function AppWrap() {
 function App() {
     return (
         <ThemeProvider>
+            <Favicon />
             <AppWrap />
         </ThemeProvider>
     );
