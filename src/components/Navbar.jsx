@@ -8,7 +8,7 @@ import { IoMdLogIn } from "react-icons/io";
 import toast from "react-hot-toast";
 import Settings from "../components/Settings";
 import supabase from "../lib/supabase";
-import { useTheme } from "./ui/ThemeProvider";
+import { useTheme } from "../ui/ThemeProvider";
 
 gsap.registerPlugin(useGSAP);
 

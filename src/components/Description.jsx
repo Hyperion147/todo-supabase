@@ -5,8 +5,9 @@ import { ImCancelCircle } from "react-icons/im";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import toast from "react-hot-toast";
-import Calendar from "./ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import Calendar from "../ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import SubTodos from "./SubTodos";
 
 const Description = ({ todo, onSave }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -67,6 +68,8 @@ const Description = ({ todo, onSave }) => {
         onSave(taskSave);
         setIsEditing(false);
     };
+
+
 
     return (
         <div className="ml-8 mt-12 mr-10">
@@ -253,6 +256,24 @@ const Description = ({ todo, onSave }) => {
                                 </div>
                             )}
                         </div>
+                        {isEditing ? (
+                            ""
+                        ) : (
+                            <div className="mb-4">
+                                <label
+                                    htmlFor="subTodos"
+                                    className="block text-2xl font-medium text-text/70"
+                                >
+                                    Sub Todos
+                                </label>
+
+                                <div
+                                    className={`flex mt-1 text-md font-bold text-text capitalize`}
+                                >
+                                    <SubTodos todo={todo} />
+                                </div>
+                            </div>
+                        )}
                         <div className="mb-4">
                             <label className="block font-medium text-text/70 text-2xl">
                                 Description
@@ -266,7 +287,9 @@ const Description = ({ todo, onSave }) => {
                                     className="w-full border-2 border-border rounded-sm focus:outline-none px-1 py-1 text-text text-md resize-none scrollbar-hide"
                                 ></textarea>
                             ) : (
-                                <div className={`max-h-[105px] overflow-x-hidden overflow-x-ellipsis ${todo.description ? "border border-border px-2 py-1" : "border-none"} scrollbar-hide rounded-md mt-1`}>
+                                <div
+                                    className={`max-h-[105px] overflow-x-hidden overflow-x-ellipsis ${todo.description ? "border border-border px-2 py-1" : "border-none"} scrollbar-hide rounded-md mt-1`}
+                                >
                                     <p className="text-md text-text">
                                         {todo.description ||
                                             "No description added."}

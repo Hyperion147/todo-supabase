@@ -40,6 +40,7 @@ const Todos = ({ onSelect, todos, setTodos, filter }) => {
         const {
             data: { session },
         } = await supabase.auth.getSession();
+
         const email = session.user.email;
         if (todos.length >= 15) {
             toast.error("Todo limit is 15! Delete some todos!");

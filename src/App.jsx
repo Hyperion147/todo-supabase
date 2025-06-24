@@ -7,9 +7,9 @@ import AuthCallback from "./pages/AuthCallback";
 import Home from "./pages/Home";
 import Settings from "./components/Settings";
 import Navbar from "./components/Navbar";
-import { ThemeProvider } from "./components/ui/ThemeProvider";
+import { ThemeProvider } from "./ui/ThemeProvider";
 import supabase from "./lib/supabase";
-import FixedButtons from "./components/ui/FixedButtons";
+import FixedButtons from "./ui/FixedButtons";
 
 
 import "./App.css";

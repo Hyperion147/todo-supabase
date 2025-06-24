@@ -7,11 +7,10 @@ import Navbar from "../components/Navbar";
 import supabase from "../lib/supabase";
 import Settings from "../components/Settings";
 import Todos from "./Todos";
-import DescriptionSkeleton from "@/components/ui/DescriptionSkeleton";
+import DescriptionSkeleton from "@/ui/DescriptionSkeleton";
 
 const Home = () => {
     const [todos, setTodos] = useState([]);
-    const [newTodo, setNewTodo] = useState("");
     const [selected, setSelected] = useState(null);
     const [filtered, setFiltered] = useState("all");
 
@@ -38,6 +37,7 @@ const Home = () => {
             setTodos(data);
         }
     };
+
 
     const handleUpdateTask = async (updateTask) => {
         try {
