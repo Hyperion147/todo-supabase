@@ -82,7 +82,7 @@ const Home = () => {
 
     return (
         <div className="flex w-full flex-col lg:flex-row justify-between gap-4 lg:gap-0">
-            <div className="lg:min-w-[150px] lg:border-r-2 lg:border-border lg:pr-4 xl:pr-20">
+            <div className="lg:min-w-[150px] lg:border-r-2 lg:border-border lg:pr-4 xl:pr-20 transition-all duration-500">
                 <Category
                     todos={todos}
                     onFilterChange={(filter) => setFiltered(filter)}

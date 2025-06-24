@@ -50,7 +50,7 @@ function AppWrap() {
 
     return (
         <>
-            <div className="h-screen bg-background text-text overflow-hidden relative z-10 transition-colors duration-500">
+            <div className="h-screen bg-background text-text overflow-hidden relative z-10 transition-all duration-500">
                 {session ? <FixedButtons /> : ""}
                 <Navbar handleSignOut={handleSignOut}  session={session} />
                 <Routes>

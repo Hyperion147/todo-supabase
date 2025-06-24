@@ -2,12 +2,16 @@ import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import gsap from "gsap";
+import { FiEdit } from "react-icons/fi";
 import supabase from "@/lib/supabase";
+
 
 const SubTodos = ({ todo }) => {
     const [subTodos, setSubTodos] = useState([]);
     const [newSub, setNewSub] = useState("");
     const [session, setSession] = useState(null);
+    const [pendingDeletes, setPendingDeletes] = useState([]);
+    const [pendingUpdates, setPendingUpdates] = useState([]);
 
     useEffect(() => {
         const session = async () => {
@@ -23,21 +27,33 @@ const SubTodos = ({ todo }) => {
         if (session && todo?.id) {
             fetchSubTodos();
         }
-    }, [session, todo]);
+    }, [session, todo?.id]);
 
-    gsap.fromTo(
-        ".leftAnimate",
-        {
-            x: -20,
-            opacity: 0,
-        },
-        {
-            x: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power2.out",
-        }
-    );
+    useEffect(() => {
+        return () => {
+            if (pendingDeletes.length > 0) {
+                supabase
+                    .from("SubTodos")
+                    .delete()
+                    .in("id", pendingDeletes)
+                    .then(({ error }) => {
+                        if (error) console.error("Batch delete failed:", error);
+                    });
+            }
+            if (pendingUpdates.length > 0) {
+                pendingUpdates.forEach((update) => {
+                    supabase
+                        .from("SubTodos")
+                        .update({ isCompleted: update.isCompleted })
+                        .eq("id", update.id)
+                        .then(({ error }) => {
+                            if (error)
+                                console.error("Batch update failed:", error);
+                        });
+                });
+            }
+        };
+    }, [pendingDeletes, pendingUpdates]);
 
     const fetchSubTodos = async () => {
         const { data, error } = await supabase
@@ -64,7 +80,7 @@ const SubTodos = ({ todo }) => {
 
             const wordCount = newSub.trim().split(/\s+/).length;
             if (wordCount > 3) {
-                toast.error("Sub todo name cannot exceed 3 words!");
+                toast.error("Sub name cannot exceed 3 words!");
                 return;
             }
 
@@ -95,60 +111,40 @@ const SubTodos = ({ todo }) => {
         }
     };
     const toggleComplete = async (id, isCompleted) => {
-        try {
-            const { error } = await supabase
-                .from("SubTodos")
-                .update({ isCompleted: !isCompleted })
-                .eq("id", id);
-            if (error) {
-                console.log("Error:", error);
-                toast.error("Error completing sub todo!");
-                return;
-            }
-            setSubTodos(
-                subTodos.map((sub) =>
-                    sub.id === id ? { ...sub, isCompleted: !isCompleted } : sub
-                )
-            );
-        } catch (error) {
-            console.log("Error completing todo", error);
-        }
+        setSubTodos(
+            subTodos.map((sub) =>
+                sub.id === id ? { ...sub, isCompleted: !isCompleted } : sub
+            )
+        );
+        setPendingUpdates([
+            ...pendingUpdates,
+            { id, isCompleted: !isCompleted },
+        ]);
     };
 
     const deleteSubTodo = async (id) => {
-        try {
-            const { error } = await supabase
-                .from("SubTodos")
-                .delete()
-                .eq("id", id);
-            if (error) {
-                console.log("Error:", error);
-                toast.error("Error deleting todo!");
-            }
-        } catch (error) {
-            console.log("Error deleting sub todo:", error);
-        }
+        setSubTodos(subTodos.filter((sub) => sub.id !== id));
+        setPendingDeletes([...pendingDeletes, id]);
     };
 
     return (
-        <div className="leftAnimate">
-            <div
+        <div className="">
+            <form
                 className={`${subTodos.length >= 3 ? "hidden" : "flex"} items-center justify-center mb-2`}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    addSubTodo()
+                }}
             >
                 <input
                     type="text"
                     value={newSub}
                     onChange={(e) => setNewSub(e.target.value)}
                     placeholder="Add sub todo!"
-                    className="relative px-2 w-full rounded-l-lg border bg-background text-text shadow-sm focus:outline-none focus:ring-1 focus:border-transparent transition-all duration-200"
+                    className="relative px-2 py-1 w-full rounded-l-md border bg-background text-text shadow-sm focus:outline-none focus:ring-1 focus:border-transparent transition-all duration-200"
                 />
-                <button
-                    onClick={addSubTodo}
-                    className="px-2 bg-text text-background rounded-r-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-border transition-colors duration-200 font-medium cursor-pointer tech"
-                >
-                    Add
-                </button>
-            </div>
+                <FiEdit className="absolute w-5 h-5 right-6 hidden md:flex" />
+            </form>
             <ul className="space-y-2">
                 {subTodos.map((subTodo) => (
                     <li key={subTodo.id}>
@@ -167,7 +163,7 @@ const SubTodos = ({ todo }) => {
                                 className="h-4 w-4 text-border cursor-pointer transition-colors duration-200 ring-2 ring-inset "
                             />
                             <span
-                                className={`${subTodo.isCompleted ? "line-through text-primary" : "text-text"} py-1 overflow-x-hidden px-2`}
+                                className={`${subTodo.isCompleted ? "line-through text-primary" : "text-text"} py-1 text-center px-2`}
                             >
                                 {subTodo.name}
                             </span>
