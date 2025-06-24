@@ -2,7 +2,6 @@ import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import gsap from "gsap";
-import { FiEdit } from "react-icons/fi";
 import supabase from "@/lib/supabase";
 
 
@@ -135,15 +134,14 @@ const SubTodos = ({ todo }) => {
                     e.preventDefault()
                     addSubTodo()
                 }}
-            >
+            > 
                 <input
                     type="text"
                     value={newSub}
                     onChange={(e) => setNewSub(e.target.value)}
                     placeholder="Add sub todo!"
-                    className="relative px-2 py-1 w-full rounded-l-md border bg-background text-text shadow-sm focus:outline-none focus:ring-1 focus:border-transparent transition-all duration-200"
+                    className="px-2 py-1 w-full rounded-md border border-border bg-background text-text shadow-sm focus:outline-none focus:ring-1 focus:border-transparent transition-all duration-200"
                 />
-                <FiEdit className="absolute w-5 h-5 right-6 hidden md:flex" />
             </form>
             <ul className="space-y-2">
                 {subTodos.map((subTodo) => (
