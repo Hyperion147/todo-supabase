@@ -70,7 +70,7 @@ const Navbar = ({ session, handleSignOut }) => {
                 <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-5">
                     {session ? <Link to="/todo">TODO</Link> : <span>TODO</span>}
                 </h1>
-                <div className="flex items-center gap-3 sm:gap-8">
+                <div className={`items-center gap-3 sm:gap-8 ${session ? "flex" : "hidden"}`}>
                     <Link to="settings" element={<Settings />}>
                         <GradientAvatar width={26} height={26} />
                     </Link>

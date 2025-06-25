@@ -109,7 +109,7 @@ const Auth = () => {
     // };
 
     return (
-        <div className="text-text flex flex-col items-center h-[100vh] justify-center transition-normal">
+        <div className="text-text flex flex-col items-center h-[85vh] justify-center transition-normal">
             <div className="border-2 border-border text-center px-4 sm:px-8 md:px-15 py-6 md:py-10 rounded-xl w-full max-w-[90vw] sm:max-w-md">
                 <Toaster duration="4000" position="bottom-right" />
                 <h2 className="text-text font-bold text-xl sm:text-2xl mb-4 tech">
@@ -195,7 +195,7 @@ const Auth = () => {
                     <button
                         type="button"
                         onClick={() => setIsRegister(!isRegister)}
-                        className="text-sm text-text hover:underline mt-4 cursor-pointer"
+                        className="text-sm text-text hover:underline mt-2 cursor-pointer"
                     >
                         {isRegister
                             ? "Already have an account? Login"
