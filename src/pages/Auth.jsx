@@ -8,6 +8,7 @@ import supabase from "../lib/supabase";
 
 const Auth = () => {
     const [isRegister, setIsRegister] = useState(false);
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -47,13 +48,30 @@ const Auth = () => {
 
                 if (registerError) throw registerError;
 
-                toast.success("Successfull! Login to continue!");
+                const { error: profileError } = await supabase
+                    .from("Profiles")
+                    .insert({
+                        email: email,
+                        username: username,
+                    });
+
+                if (profileError) throw profileError;
+                toast.success("Registered Successfully!");
+                toast.custom(
+                    <div className="px-4 py-2 bg-border text-text rounded-md">
+                        <p className="text-xl">Welcome {username}! 🔥 Update your profile!</p>
+                    </div>,
+                    {
+                        position: "top-center",
+                        duration: 4000,
+                        icon: "🔥",
+                    }
+                );
             } else {
                 const { error } = await supabase.auth.signInWithPassword({
                     email,
                     password,
                 });
-
                 if (error) throw error;
 
                 toast.success("Login successful!");
@@ -91,7 +109,7 @@ const Auth = () => {
     // };
 
     return (
-        <div className="text-text flex flex-col items-center mt-30 transition-normal">
+        <div className="text-text flex flex-col items-center h-[85vh] justify-center transition-normal">
             <div className="border-2 border-border text-center px-4 sm:px-8 md:px-15 py-6 md:py-10 rounded-xl w-full max-w-[90vw] sm:max-w-md">
                 <Toaster duration="4000" position="bottom-right" />
                 <h2 className="text-text font-bold text-xl sm:text-2xl mb-4 tech">
@@ -101,6 +119,18 @@ const Auth = () => {
                     onSubmit={handleSubmit}
                     className="flex flex-col w-full sm:w-[350px]"
                 >
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className={`border-border border-b-2 px-4 py-2 text-text focus:outline-none mb-4 
+                            ${!isRegister ? "hidden" : "flex"}`}
+                        required={isRegister}
+                        aria-describedby="email-error"
+                    />
                     <input
                         id="email"
                         name="email"
@@ -154,7 +184,7 @@ const Auth = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="mt-4 bg-border hover:bg-border/80 text-background px-4 py-2 rounded-md disabled:opacity-50 mb-4 cursor-pointer"
+                        className="mt-4 bg-border hover:bg-border/80 text-text px-4 py-2 rounded-md disabled:opacity-50 mb-4 cursor-pointer"
                     >
                         {isLoading
                             ? "Processing..."

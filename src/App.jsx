@@ -5,12 +5,11 @@ import Auth from "./pages/Auth";
 import Todos from "./pages/Todos";
 import AuthCallback from "./pages/AuthCallback";
 import Home from "./pages/Home";
-import Settings from "./components/Settings";
+import Settings from "./pages/Settings";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "./ui/ThemeProvider";
 import supabase from "./lib/supabase";
 import FixedButtons from "./ui/FixedButtons";
-
 import "./App.css";
 import Favicon from "./ui/Favicon";
 

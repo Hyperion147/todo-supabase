@@ -1,4 +1,4 @@
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "../ui/ThemeProvider";
 
 const Themes = () => {
     const { theme, changeTheme } = useTheme();
@@ -99,8 +99,8 @@ const Themes = () => {
                         px-5 py-2 rounded-lg border w-60 cursor-pointer flex justify-around items-center hover:scale-110 transition-all mx-auto
                         ${
                             theme === varColor
-                                ? "bg-primary/80 text-text"
-                                : "bg-gray-400 text-white hover:text-black hover:bg-white"
+                                ? "bg-primary/80 text-text border-border"
+                                : "bg-gray-400 text-white hover:text-black hover:border-border hover:bg-white"
                         }
                     `}
                     >

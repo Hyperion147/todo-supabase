@@ -30,7 +30,7 @@ const SubTodos = ({ todo }) => {
 
     useEffect(() => {
         return () => {
-            if (pendingDeletes.length > 0) {
+            if (pendingDeletes.length >= 0) {
                 supabase
                     .from("SubTodos")
                     .delete()

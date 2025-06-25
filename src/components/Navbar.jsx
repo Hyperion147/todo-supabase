@@ -6,9 +6,10 @@ import { IoMdLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoMdLogIn } from "react-icons/io";
 import toast from "react-hot-toast";
-import Settings from "../components/Settings";
+import Settings from "../pages/Settings";
 import supabase from "../lib/supabase";
 import { useTheme } from "../ui/ThemeProvider";
+import { GradientAvatar } from "@/ui/GradientAvatar";
 
 gsap.registerPlugin(useGSAP);
 
@@ -71,7 +72,7 @@ const Navbar = ({ session, handleSignOut }) => {
                 </h1>
                 <div className="flex items-center gap-3 sm:gap-8">
                     <Link to="settings" element={<Settings />}>
-                        <IoSettingsOutline className="w-6 h-6 cursor-pointer text-text hover:text-text/70" />
+                        <GradientAvatar width={26} height={26} />
                     </Link>
                     <span className="text-2xl text-text/50 cursor-default">
                         |

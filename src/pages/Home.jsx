@@ -5,7 +5,7 @@ import Description from "../components/Description";
 import Category from "../components/Category";
 import Navbar from "../components/Navbar";
 import supabase from "../lib/supabase";
-import Settings from "../components/Settings";
+import Settings from "./Settings";
 import Todos from "./Todos";
 import DescriptionSkeleton from "@/ui/DescriptionSkeleton";
 
