@@ -1,9 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-// import { useNavigate } from "react-router-dom";
 import supabase from "../lib/supabase";
 
 const Auth = () => {
@@ -15,13 +13,6 @@ const Auth = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [reveal, setReveal] = useState(false);
 
-    // const navigate = useNavigate()
-
-    // const passwordReset = async (e) => {
-    //     e.preventDefault()
-    //     const newPassword = await supabase.auth.passwordReset({password: "new_password"})
-    // }
-
     const handleSubmit = async (e) => {
         if (e) {
             e.preventDefault();
@@ -29,12 +20,12 @@ const Auth = () => {
         setIsLoading(true);
 
         if (!password || !email) {
-            toast.error("Please fill all fields");
+            toast.error("Please fill all fields", { id: "auth-fields-error" });
             setIsLoading(false);
             return;
         }
         if (isRegister && password != confirmPassword) {
-            toast.error("Passwords do not match!");
+            toast.error("Passwords do not match!", { id: "auth-password-match-error" });
             setIsLoading(false);
             return;
         }
@@ -56,12 +47,13 @@ const Auth = () => {
                     });
 
                 if (profileError) throw profileError;
-                toast.success("Registered Successfully!");
+                toast.success("Registered Successfully!", { id: "auth-register-success" });
                 toast.custom(
                     <div className="px-4 py-2 bg-border text-text rounded-md">
                         <p className="text-xl">Welcome {username}! 🔥 Update your profile!</p>
                     </div>,
                     {
+                        id: "auth-welcome-message",
                         position: "top-center",
                         duration: 4000,
                         icon: "🔥",
@@ -74,7 +66,7 @@ const Auth = () => {
                 });
                 if (error) throw error;
 
-                toast.success("Login successful!");
+                toast.success("Login successful!", { id: "auth-login-success" });
             }
         } catch (error) {
             console.error("Auth error:", error);
@@ -82,36 +74,17 @@ const Auth = () => {
                 error.message ||
                     (isRegister
                         ? "Registration failed"
-                        : "Check your credentials!")
+                        : "Check your credentials!"),
+                { id: "auth-error" }
             );
         } finally {
             setIsLoading(false);
         }
     };
 
-    // const signInWithGithub = async () => {
-    //     try {
-    //         const { error } = await supabase.auth.signInWithOAuth({
-    //             provider: "github",
-    //             options: {
-    //                 redirectTo: "http://localhost:5173/auth/callback",
-    //                 queryParams: {
-    //                     access_type: "offline",
-    //                     prompt: "consent",
-    //                 },
-    //             },
-    //         });
-    //         if(error) throw error
-    //     } catch (error) {
-    //         console.log(error);
-    //         toast.error("Github auth error! Try email login!");
-    //     }
-    // };
-
     return (
         <div className="text-text flex flex-col items-center h-[85vh] justify-center transition-normal">
             <div className="border-2 border-border text-center px-4 sm:px-8 md:px-15 py-6 md:py-10 rounded-xl w-full max-w-[90vw] sm:max-w-md">
-                <Toaster duration="4000" position="bottom-right" />
                 <h2 className="text-text font-bold text-xl sm:text-2xl mb-4 tech">
                     {isRegister ? "REGISTER" : "LOGIN"}
                 </h2>

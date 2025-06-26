@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Auth from "./pages/Auth";
 import Todos from "./pages/Todos";
 import AuthCallback from "./pages/AuthCallback";
@@ -41,51 +41,87 @@ function AppWrap() {
     const handleSignOut = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) {
-            toast.error("Failed to log out!");
+            toast.error("Failed to log out!", { id: "logout-error" });
         } else {
-            toast.success("Logged out successfully!");
+            toast.success("Logged out successfully!", { id: "logout-success" });
         }
     };
 
     return (
         <>
-            <div className="h-screen bg-background text-text overflow-hidden relative z-10 transition-all duration-500">
-                {session ? <FixedButtons /> : ""}
+            <Toaster 
+                position="bottom-right"
+                toastOptions={{
+                    duration: 3000,
+                    style: {
+                        background: "var(--color-background)",
+                        color: "var(--color-text)",
+                        border: "1px solid var(--color-border)",
+                        zIndex: 9999,
+                    },
+                }}
+                containerStyle={{
+                    zIndex: 9999,
+                    position: "fixed",
+                    bottom: "1rem",
+                    right: "1rem",
+                }}
+                gutter={8}
+            />
+            <div className="h-screen bg-background text-text relative z-10 transition-all duration-500 overflow-x-hidden">
+                {session ? (
+                    <div className="hidden lg:block">
+                        <FixedButtons />
+                    </div>
+                ) : (
+                    ""
+                )}
                 <Navbar handleSignOut={handleSignOut} session={session} />
-                <Routes>
-                    <Route
-                        path="/todo"
-                        element={
-                            session ? <Home /> : <Navigate to="/auth" replace />
-                        }
-                    />
-                    <Route
-                        path="/auth"
-                        element={session ? <Navigate to="/todo" /> : <Auth />}
-                    />
-                    <Route
-                        path="/"
-                        element={
-                            session ? (
-                                <Todos session={session} />
-                            ) : (
-                                <Navigate to="/auth" replace />
-                            )
-                        }
-                    />
-                    <Route path="/auth/callback" element={<AuthCallback />} />
-                    <Route
-                        path="/settings"
-                        element={
-                            session ? (
-                                <Settings />
-                            ) : (
-                                <Navigate to="/auth" replace />
-                            )
-                        }
-                    />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
+                <div className="px-2 sm:px-4 lg:px-6">
+                    <Routes>
+                        <Route
+                            path="/todo"
+                            element={
+                                session ? (
+                                    <Home />
+                                ) : (
+                                    <Navigate to="/auth" replace />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/auth"
+                            element={
+                                session ? <Navigate to="/todo" /> : <Auth />
+                            }
+                        />
+                        <Route
+                            path="/"
+                            element={
+                                session ? (
+                                    <Todos session={session} />
+                                ) : (
+                                    <Navigate to="/auth" replace />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/auth/callback"
+                            element={<AuthCallback />}
+                        />
+                        <Route
+                            path="/settings"
+                            element={
+                                session ? (
+                                    <Settings />
+                                ) : (
+                                    <Navigate to="/auth" replace />
+                                )
+                            }
+                        />
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                </div>
             </div>
         </>
     );

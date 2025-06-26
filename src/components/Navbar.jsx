@@ -15,12 +15,7 @@ gsap.registerPlugin(useGSAP);
 
 const Navbar = ({ session, handleSignOut }) => {
     const navbarRef = useRef(null);
-    // const [isMobile, setisMobile] = useState(false)
 
-
-    // const mobileMenu = () => {
-
-    // }
     const handleInOut = async () => {
         if (session) {
             toast(
@@ -47,12 +42,15 @@ const Navbar = ({ session, handleSignOut }) => {
                     </div>
                 ),
                 {
+                    id: "navbar-logout-confirm",
                     duration: 3000,
                     style: {
                         background: "var(--color-background)",
+                        color: "var(--color-text)",
                         padding: "10px 15px",
                         borderRadius: "0.5rem",
                         boxShadow: "0 4px 12px rgba(50, 120, 140, 0.5)",
+                        border: "1px solid var(--color-border)",
                     },
                 }
             );
@@ -64,25 +62,25 @@ const Navbar = ({ session, handleSignOut }) => {
     return (
         <nav
             ref={navbarRef}
-            className="bg-background border border-gray-700 shadow-md flex justify-around bgImg"
+            className="bg-background border border-gray-700 shadow-md flex justify-between md:justify-around bgImg"
         >
-            <div className="container px-4 sm:px-10 py-3 sm:py-5 flex justify-between items-center gap-2 sm:gap-0 z-10 mx-20">
-                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-5">
+            <div className="container px-2 sm:px-4 md:px-10 py-2 sm:py-3 md:py-5 flex justify-between items-center gap-2 sm:gap-0 z-10 mx-2 sm:mx-4 md:mx-20">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-2 sm:ml-5">
                     {session ? <Link to="/todo">TODO</Link> : <span>TODO</span>}
                 </h1>
-                <div className={`items-center gap-3 sm:gap-8 ${session ? "flex" : "hidden"}`}>
+                <div className={`items-center gap-2 sm:gap-3 md:gap-8 ${session ? "flex" : "hidden"}`}>
                     <Link to="settings" element={<Settings />}>
-                        <GradientAvatar width={26} height={26} />
+                        <GradientAvatar width={22} height={22} className="sm:w-6 sm:h-6 md:w-7 md:h-7" />
                     </Link>
-                    <span className="text-2xl text-text/50 cursor-default">
+                    <span className="text-lg sm:text-2xl text-text/50 cursor-default">
                         |
                     </span>
                     <button
-                        className="hover:text-text/70 transition-colors cursor-pointer text-text text-base sm:text-xl"
+                        className="hover:text-text/70 transition-colors cursor-pointer text-text text-sm sm:text-base md:text-xl"
                         onClick={() => handleInOut()}
                     >
                         <Link to={!session && "/auth"}>
-                            <IoMdLogOut className="w-6 h-6" />
+                            <IoMdLogOut className="w-5 h-5 sm:w-6 sm:h-6" />
                         </Link>
                     </button>
                 </div>

@@ -1,7 +1,6 @@
-//Generated with AI
+//Created with AI
 
 export const GradientAvatar = ({width, height}) => {
-  // Generate random HSL colors for the gradient
   const randomHue = () => Math.floor(Math.random() * 360);
   const color1 = `hsl(${randomHue()}, 70%, 60%)`;
   const color2 = `hsl(${randomHue()}, 70%, 60%)`;

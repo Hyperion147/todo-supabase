@@ -48,7 +48,7 @@ export default function Favicon() {
             const links = document.querySelectorAll("link[rel='icon']");
             links.forEach(link => link.remove());
         };
-    }, [theme]); // Only re-run when theme changes
+    }, [theme]);
 
     return null;
 }

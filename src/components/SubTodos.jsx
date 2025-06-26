@@ -61,7 +61,7 @@ const SubTodos = ({ todo }) => {
             .eq("main_todo", todo.id)
             .eq("email", session.user.email);
         if (error) {
-            toast.error("Error fetching todos");
+            toast.error("Error fetching todos", { id: "sub-fetch-error" });
             console.log("Error fetching todos", error);
         } else {
             setSubTodos(data || []);
@@ -73,13 +73,13 @@ const SubTodos = ({ todo }) => {
             if (!newSub.trim()) return;
 
             if (subTodos.length >= 3) {
-                toast.error("Sub Todo limit is 3!");
+                toast.error("Sub Todo limit is 3!", { id: "sub-limit-error" });
                 return;
             }
 
             const wordCount = newSub.trim().split(/\s+/).length;
             if (wordCount > 3) {
-                toast.error("Sub name cannot exceed 3 words!");
+                toast.error("Sub name cannot exceed 3 words!", { id: "sub-word-limit-error" });
                 return;
             }
 
@@ -103,10 +103,10 @@ const SubTodos = ({ todo }) => {
 
             setSubTodos([...subTodos, data[0]]);
             setNewSub("");
-            toast.success("Sub todo added!");
+            toast.success("Sub todo added!", { id: "sub-added-success" });
         } catch (error) {
             console.error("Error in addSubTodo:", error);
-            toast.error(error.message || "Error adding sub todo");
+            toast.error(error.message || "Error adding sub todo", { id: "sub-add-error" });
         }
     };
     const toggleComplete = async (id, isCompleted) => {

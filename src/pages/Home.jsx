@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import Description from "../components/Description";
@@ -13,10 +13,13 @@ const Home = () => {
     const [todos, setTodos] = useState([]);
     const [selected, setSelected] = useState(null);
     const [filtered, setFiltered] = useState("all");
+    const [isClosing, setIsClosing] = useState(false);
+    const descriptionRef = useRef(null);
 
     useEffect(() => {
         fetchTodos();
     }, []);
+
     const fetchTodos = async () => {
         const {
             data: { session },
@@ -31,13 +34,12 @@ const Home = () => {
             .select("*")
             .eq("email", emailCheck);
         if (error) {
-            toast.error("Error fetching todos");
+            toast.error("Error fetching todos", { id: "home-fetch-error" });
             console.log("Error fetching todos", error);
         } else {
             setTodos(data);
         }
     };
-
 
     const handleUpdateTask = async (updateTask) => {
         try {
@@ -57,9 +59,9 @@ const Home = () => {
                 )
             );
             setSelected(updateTask);
-            toast.success("Task updated!");
+            toast.success("Task updated!", { id: "home-update-success" });
         } catch (error) {
-            toast.error("Failed to update task");
+            toast.error("Failed to update task", { id: "home-update-error" });
             console.error("Failed to update task", error);
         }
     };
@@ -80,34 +82,56 @@ const Home = () => {
     };
     const filter = filterTodos(todos, filtered);
 
+    const handleCloseDescription = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+            setSelected(null);
+            setIsClosing(false);
+        }, 300);
+    };
+
     return (
         <div className="flex w-full flex-col lg:flex-row justify-between gap-4 lg:gap-0">
-            <div className="lg:min-w-[150px] lg:border-r-2 lg:border-border lg:pr-4 xl:pr-20 transition-all duration-500">
+            <div className="hidden lg:block lg:min-w-[150px] lg:pr-4 xl:pr-20 transition-all duration-500 order-2 lg:order-1">
                 <Category
                     todos={todos}
                     onFilterChange={(filter) => setFiltered(filter)}
+                    activeFilter={filtered}
                 />
             </div>
 
-            <main className="mt-4 px-4 lg:px-0 order-first lg:order-none">
+            <main className="mt-4 lg:px-0 order-1 lg:order-2 flex-1 relative">
                 <Todos
                     onSelect={setSelected}
                     setTodos={setTodos}
                     todos={todos}
                     selected={selected}
                     filter={filter}
+                    onFilterChange={(filter) => setFiltered(filter)}
                 />
             </main>
 
             <div
-                className={`lg:min-w-[350px] max-w-[350px] ${selected ? "fixed lg:static inset-0 z-50 bg-background lg:bg-transparent p-4 lg:p-0" : "hidden lg:block"} lg:border-l-2 lg:border-border`}
+                ref={descriptionRef}
+                className="lg:min-w-[350px] lg:max-w-[350px] hidden lg:block order-3"
             >
                 {selected ? (
-                    <Description todo={selected} onSave={handleUpdateTask} />
+                    <Description todo={selected} onSave={handleUpdateTask} onClose={handleCloseDescription} />
                 ) : (
                     <DescriptionSkeleton />
                 )}
             </div>
+            {(selected || isClosing) && (
+                <div
+                    className={`fixed inset-0 z-40 bg-background p-4 lg:hidden ${
+                        isClosing ? 'description-slide-out' : 'description-slide-in'
+                    }`}
+                >
+                    {selected && (
+                        <Description todo={selected} onSave={handleUpdateTask} onClose={handleCloseDescription} />
+                    )}
+                </div>
+            )}
         </div>
     );
 };
