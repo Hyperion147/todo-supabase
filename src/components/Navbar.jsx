@@ -20,8 +20,8 @@ const Navbar = ({ session, handleSignOut }) => {
         if (session) {
             toast(
                 (t) => (
-                    <div className="flex flex-col">
-                        <p className="mb-2 w-full text-lg text-text">Are you sure you want to log out?</p>
+                    <div className="flex flex-col items-center">
+                        <p className="mb-4 w-full text-lg text-text">Are you sure you want to log out?</p>
                         <div className="flex space-x-2 w-full justify-center">
                             <button
                                 onClick={() => {
@@ -47,7 +47,7 @@ const Navbar = ({ session, handleSignOut }) => {
                     style: {
                         background: "var(--color-background)",
                         color: "var(--color-text)",
-                        padding: "10px 15px",
+                        padding: "10px 14px",
                         borderRadius: "0.5rem",
                         boxShadow: "0 4px 12px rgba(50, 120, 140, 0.5)",
                         border: "1px solid var(--color-border)",
