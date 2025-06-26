@@ -144,6 +144,7 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                 todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
             );
             setTodos(updatedTodo);
+            onSelect(null)
             if (!isCompleted) {
                 toast.success("Completed task! Check filter!", { id: "task-completed" });
             } else toast.error("Todo Pending!", { id: "todo-pending" });
@@ -211,7 +212,7 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
         }
         setTimeout(() => {
                 onSelect(null);
-            }, 100);
+        }, 100);
     };
 
     return (
