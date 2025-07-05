@@ -50,7 +50,7 @@ const Auth = () => {
                 toast.success("Registered Successfully!", { id: "auth-register-success" });
                 toast.custom(
                     <div className="px-4 py-2 bg-border text-text rounded-md">
-                        <p className="text-xl">Welcome {username}</p>
+                        <p className="text-xl text-ellipsis">Welcome {username}</p>
                     </div>,
                     {
                         id: "auth-welcome-message",
@@ -69,9 +69,8 @@ const Auth = () => {
                 toast.success("Login successful!", { id: "auth-login-success" });
             }
         } catch (error) {
-            console.error("Auth error:", error);
+            console.log(error.message)
             toast.error(
-                error.message ||
                     (isRegister
                         ? "Registration failed"
                         : "Check your credentials!"),

@@ -49,7 +49,7 @@ const UserProfile = () => {
                                 <span className="tech text-text/80 hover:text-text text-sm sm:text-base">
                                     username:
                                 </span>
-                                <span className="text-lg sm:text-xl md:text-2xl text-text font-semibold break-all">
+                                <span className="text-lg sm:text-xl md:text-2xl text-text font-semibold break-all text-left">
                                     {profile.username}
                                 </span>
                             </h2>
@@ -57,7 +57,7 @@ const UserProfile = () => {
                                 <span className="tech text-text/80 hover:text-text text-sm sm:text-base">
                                     email:
                                 </span>
-                                <span className="text-sm sm:text-base text-text break-all">
+                                <span className="text-sm sm:text-base text-text break-all text-left">
                                     {profile.email}
                                 </span>
                             </h2>
