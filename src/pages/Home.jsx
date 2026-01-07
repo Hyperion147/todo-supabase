@@ -1,11 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import Description from "../components/Description";
 import Category from "../components/Category";
-import Navbar from "../components/Navbar";
 import supabase from "../lib/supabase";
-import Settings from "./Settings";
 import Todos from "./Todos";
 import DescriptionSkeleton from "@/ui/DescriptionSkeleton";
 
@@ -91,47 +88,64 @@ const Home = () => {
     };
 
     return (
-        <div className="flex w-full flex-col lg:flex-row justify-between gap-4 lg:gap-0">
-            <div className="hidden lg:block lg:min-w-[150px] lg:pr-4 xl:pr-20 transition-all duration-500 order-2 lg:order-1">
-                <Category
-                    todos={todos}
-                    onFilterChange={(filter) => setFiltered(filter)}
-                    activeFilter={filtered}
-                />
-            </div>
+        <div className="flex flex-col w-full h-full max-w-[1600px] mx-auto overflow-hidden">
+            <div className="flex flex-col lg:flex-row flex-1 lg:gap-8 lg:p-4 h-full relative">
+                {/* Left Sidebar - Categories */}
+                <aside className="hidden lg:flex flex-col lg:w-48 xl:w-64 flex-shrink-0 transition-all duration-300">
+                    <div className="sticky top-4">
+                        <Category
+                            todos={todos}
+                            onFilterChange={(filter) => setFiltered(filter)}
+                            activeFilter={filtered}
+                        />
+                    </div>
+                </aside>
 
-            <main className="mt-4 lg:px-0 order-1 lg:order-2 flex-1 relative">
-                <Todos
-                    onSelect={setSelected}
-                    setTodos={setTodos}
-                    todos={todos}
-                    selected={selected}
-                    filter={filter}
-                    onFilterChange={(filter) => setFiltered(filter)}
-                />
-            </main>
+                {/* Main Content - Todos */}
+                <main className="flex-1 w-full min-w-0 flex flex-col h-full z-0 order-1 lg:order-2">
+                    <Todos
+                        onSelect={setSelected}
+                        setTodos={setTodos}
+                        todos={todos}
+                        selected={selected}
+                        filter={filter}
+                        onFilterChange={(filter) => setFiltered(filter)}
+                    />
+                </main>
 
-            <div
-                ref={descriptionRef}
-                className="lg:min-w-[350px] lg:max-w-[350px] hidden lg:block order-3"
-            >
-                {selected ? (
-                    <Description todo={selected} onSave={handleUpdateTask} onClose={handleCloseDescription} />
-                ) : (
-                    <DescriptionSkeleton />
+                {/* Right Sidebar - Description */}
+                <aside 
+                    ref={descriptionRef}
+                    className="hidden lg:flex flex-col w-[350px] xl:w-[400px] flex-shrink-0 border-l border-border/50 pl-6 lg:order-3"
+                >
+                    <div className="sticky top-4 h-full">
+                        {selected ? (
+                            <Description todo={selected} onSave={handleUpdateTask} onClose={handleCloseDescription} />
+                        ) : (
+                            <DescriptionSkeleton />
+                        )}
+                    </div>
+                </aside>
+
+                {/* Mobile Description Overlay */}
+                {(selected || isClosing) && (
+                    <div
+                        className={`fixed inset-0 z-50 bg-background/80 backdrop-blur-sm lg:hidden flex items-end sm:items-center justify-center p-4 transition-all duration-300 ${
+                            isClosing ? "opacity-0 pointer-events-none" : "opacity-100"
+                        }`}
+                        onClick={handleCloseDescription}
+                    >
+                        <div 
+                            className={`w-full max-w-md bg-background border border-border rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto ${
+                                isClosing ? "translate-y-full sm:scale-95" : "translate-y-0 sm:scale-100"
+                            } transition-all duration-300 ease-out`}
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <Description todo={selected} onSave={handleUpdateTask} onClose={handleCloseDescription} />
+                        </div>
+                    </div>
                 )}
             </div>
-            {(selected || isClosing) && (
-                <div
-                    className={`fixed inset-0 z-40 bg-background p-4 lg:hidden ${
-                        isClosing ? 'description-slide-out' : 'description-slide-in'
-                    }`}
-                >
-                    {selected && (
-                        <Description todo={selected} onSave={handleUpdateTask} onClose={handleCloseDescription} />
-                    )}
-                </div>
-            )}
         </div>
     );
 };

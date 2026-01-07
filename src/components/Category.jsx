@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import { TbCategory } from "react-icons/tb";
 import { FaAngleRight } from "react-icons/fa";
 
-const Category = ({ onFilterChange, todos, activeFilter: externalActiveFilter }) => {
+const Category = ({
+    onFilterChange,
+    todos,
+    activeFilter: externalActiveFilter,
+}) => {
     const [internalActiveFilter, setInternalActiveFilter] = useState("all");
-    
-    const activeFilter = externalActiveFilter !== undefined ? externalActiveFilter : internalActiveFilter;
+
+    const activeFilter =
+        externalActiveFilter !== undefined
+            ? externalActiveFilter
+            : internalActiveFilter;
 
     const handleFilter = (priority) => {
         const newFilter = priority;
@@ -23,24 +29,26 @@ const Category = ({ onFilterChange, todos, activeFilter: externalActiveFilter })
     ];
 
     return (
-        <div className="flex flex-col relative ml-0 sm:ml-5 w-full">
-            <h2 className="mt-0 sm:mt-10 font-bold text-text tracking-wider flex items-center gap-1 text-lg sm:text-xl">
+        <div className="flex flex-col relative w-full">
+            <h2 className="font-bold text-text tracking-wider flex items-center gap-1 text-lg sm:text-xl mb-2">
                 <TbCategory /> Filters
             </h2>
-            <hr />
+            <hr className="border-border opacity-50" />
             <div className="mt-4 space-y-2 flex flex-col">
                 {filters.map((filter) => (
                     <button
                         key={filter.id}
                         onClick={() => handleFilter(filter.id)}
-                        className={`w-full px-3 sm:px-4 py-2 rounded-md transition-colors flex items-center justify-between text-black text-sm sm:text-base ${
+                        className={`w-full px-3 sm:px-4 py-2 rounded-md transition-all duration-200 flex items-center justify-between text-sm sm:text-base ${
                             activeFilter === filter.id
-                                ? filter.color
-                                : "hover:bg-hover/30 text-text"
+                                ? `bg-opacity-100 ${filter.color} text-black font-medium shadow-sm`
+                                : "hover:bg-hover/30 text-text opacity-70 hover:opacity-100"
                         }`}
                     >
                         {filter.label}
-                        <FaAngleRight className={`text-black ${activeFilter !== filter.id && "text-text"}`} />
+                        <FaAngleRight
+                            className={`transition-transform duration-200 ${activeFilter === filter.id ? "text-black translate-x-1" : "text-text"}`}
+                        />
                     </button>
                 ))}
             </div>

@@ -71,9 +71,9 @@ const Description = ({ todo, onSave, onClose }) => {
     };
 
     return (
-        <div className="ml-2 sm:ml-8 mt-8 sm:mt-12 mr-2 sm:mr-10">
+        <div className="w-full h-full flex flex-col font-sans relative">
             {/* Mobile Navbar - Only on mobile/tablet */}
-            <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b border-border px-4 py-3 flex items-center justify-between">
+            <div className="lg:hidden sticky top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-4 py-3 flex items-center justify-between mb-4">
                 <button
                     onClick={onClose}
                     className="flex items-center gap-2 text-text hover:text-text/70 transition-colors duration-200"
@@ -81,217 +81,124 @@ const Description = ({ todo, onSave, onClose }) => {
                     <IoArrowBack className="w-5 h-5" />
                     <span className="text-sm font-medium">Back</span>
                 </button>
-                <h3 className="text-text font-semibold text-sm truncate max-w-[200px]">
-                    {todo?.name || "Todo Details"}
-                </h3>
-                <div className="w-16"></div> {/* Spacer for centering */}
+                <div className="w-8"></div>
             </div>
 
-            {/* Mobile Content with top padding for navbar - Only on mobile/tablet */}
-            <div className="lg:pt-0 pt-16">
-                {!todo && isEditing ? (
-                    <div className="text-text">No Todo Selected</div>
+            <div className="flex-1 overflow-y-auto custom-scrollbar px-1 sm:px-4 pb-20 lg:pb-0">
+                {!todo && !isEditing ? (
+                     <div className="h-full flex flex-col items-center justify-center text-text/50 gap-4">
+                        <p className="text-lg">Select a task to view details</p>
+                    </div>
                 ) : (
-                    <>
-                        <div className="flex w-full justify-end">
-                            {isEditing ? (
-                                <div className="space-x-2 sm:space-x-4 flex">
-                                    <button
-                                        onClick={handleSave}
-                                        title="save"
-                                        className="flex gap-1 sm:gap-2 mb-1 border border-primary rounded-md px-2 py-1 hover:bg-primary hover:text-background cursor-pointer font-bold text-sm sm:text-base lg:transition-none transition-all duration-200"
-                                    >
-                                        Save
-                                        <LuSaveAll className="w-4 h-4 sm:w-6 sm:h-6" />
-                                    </button>
-                                    <button
-                                        onClick={() => setIsEditing(false)}
-                                        title="cancel"
-                                        className="flex gap-1 sm:gap-2 mb-1 border border-primary rounded-md px-2 py-1 hover:bg-primary hover:text-background cursor-pointer font-bold text-sm sm:text-base lg:transition-none transition-all duration-200"
-                                    >
-                                        Close
-                                        <ImCancelCircle className="w-4 h-4 sm:w-6 sm:h-6" />
-                                    </button>
-                                </div>
-                            ) : (
-                                <button
-                                    onClick={() => setIsEditing(true)}
-                                    className="flex gap-1 sm:gap-2 mb-1 border border-primary rounded-md px-2 py-1 hover:bg-primary hover:text-background cursor-pointer font-bold text-sm sm:text-base lg:transition-none transition-all duration-200"
-                                >
-                                    Edit
-                                    <FiEdit className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer" />
-                                </button>
-                            )}
-                        </div>
-                        <div className=" flex flex-col">
-                            {isEditing ? (
-                                <div className="">
-                                    <p className="mt-2 block text-lg sm:text-xl font-medium text-text/70">
-                                        Change Name
-                                    </p>
-                                    <input
-                                        type="text"
-                                        required={true}
-                                        name="name"
-                                        value={editedTask.name}
-                                        onChange={handleChange}
-                                        className="border-border border-b-3 px-2 pb-1 text-lg sm:text-xl text-text focus:outline-none mb-2 w-full"
-                                    />
-                                </div>
-                            ) : (
-                                <h2 className="text-2xl sm:text-4xl text-text font-bold mb-2 capitalize text-wrap w-full sm:w-60">
-                                    {todo.name}
-                                </h2>
-                            )}
-
-                            <div className="mb-4">
-                                <label className="text-lg sm:text-2xl font-medium text-text/70">
-                                    Status
-                                </label>
-                                <div className="mt-1 text-sm font-bold text-text capitalize">
-                                    <div className="flex">
-                                        <span
-                                            className={`bg-accent min-w-1 rounded-full mr-2 transition-colors duration-200 ${todo.isCompleted ? "bg-cyan-400" : "bg-red-400"}`}
-                                        ></span>
-                                        <span className="transition-all duration-200">
-                                            {todo.isCompleted
-                                                ? "Completed"
-                                                : "Pending"}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-lg sm:text-2xl font-medium text-text/70">
-                                    Priority
-                                </label>
+                    <div className="flex flex-col gap-6 animate-in fade-in duration-300">
+                        {/* Header Section */}
+                        <div className="flex flex-col gap-4">
+                            <div className="flex justify-between items-start gap-4">
                                 {isEditing ? (
-                                    <div className="relative inline-block w-full">
-                                        <div>
-                                            <button
-                                                type="button"
-                                                className="inline-flex w-full rounded-md px-3 py-2 text-sm font-bold text-text shadow-lg ring-1 ring-border ring-inset hover:bg-gray-90 justify-between tracking-wider"
-                                                id="priority-menu-button"
-                                                aria-expanded="true"
-                                                aria-haspopup="true"
-                                                onClick={() => setIsOpen(!isOpen)}
-                                            >
-                                                {editedTask.priority === "high"
-                                                    ? "High"
-                                                    : editedTask.priority ===
-                                                        "medium"
-                                                      ? "Medium"
-                                                      : "Low"}
-                                                <svg
-                                                    className="-mr-1 h-5 w-5 text-text/70"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </div>
-
-                                        {isOpen && (
-                                            <div
-                                                className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                                role="menu"
-                                                aria-orientation="vertical"
-                                                aria-labelledby="priority-menu-button"
-                                                tabIndex="-1"
-                                            >
-                                                <div className="py-1" role="none">
-                                                    <button
-                                                        onClick={() => {
-                                                            handleChange({
-                                                                target: {
-                                                                    name: "priority",
-                                                                    value: "low",
-                                                                },
-                                                            });
-                                                            setIsOpen(false);
-                                                        }}
-                                                        className={`${editedTask.priority === "low" ? "bg-blue-100" : ""} block w-full px-4 py-2 text-left text-sm text-black hover:bg-blue-200`}
-                                                        role="menuitem"
-                                                        tabIndex="-1"
-                                                    >
-                                                        <span className="inline-block h-3 w-3 rounded-full bg-blue-400 mr-2"></span>
-                                                        Low
-                                                    </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            handleChange({
-                                                                target: {
-                                                                    name: "priority",
-                                                                    value: "medium",
-                                                                },
-                                                            });
-                                                            setIsOpen(false);
-                                                        }}
-                                                        className={`${editedTask.priority === "medium" ? "bg-green-200" : ""} block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-green-200`}
-                                                        role="menuitem"
-                                                        tabIndex="-1"
-                                                    >
-                                                        <span className="inline-block h-3 w-3 rounded-full bg-green-400 mr-2"></span>
-                                                        Medium
-                                                    </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            handleChange({
-                                                                target: {
-                                                                    name: "priority",
-                                                                    value: "high",
-                                                                },
-                                                            });
-                                                            setIsOpen(false);
-                                                        }}
-                                                        className={`${editedTask.priority === "high" ? "bg-red-100" : ""} block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-red-100`}
-                                                        role="menuitem"
-                                                        tabIndex="-1"
-                                                    >
-                                                        <span className="inline-block h-3 w-3 rounded-full bg-red-500 mr-2"></span>
-                                                        High
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        )}
+                                    <div className="flex-1">
+                                        <label className="text-xs font-bold text-text/50 uppercase tracking-wider mb-1 block">Title</label>
+                                        <input
+                                            type="text"
+                                            required={true}
+                                            name="name"
+                                            value={editedTask.name}
+                                            onChange={handleChange}
+                                            className="w-full bg-transparent border-b-2 border-primary/50 focus:border-primary px-0 py-2 text-2xl font-bold text-text focus:outline-none transition-all placeholder:text-text/30"
+                                            placeholder="Task title"
+                                        />
                                     </div>
                                 ) : (
-                                    <div
-                                        className={`flex mt-1 text-md font-bold text-text capitalize`}
-                                    >
-                                        <p
-                                            className={`min-w-1 ${todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-500" : "bg-blue-200"} rounded-full mr-2`}
-                                        ></p>
-                                        {todo.priority || "Low"}
+                                    <h2 className="text-2xl sm:text-3xl font-bold text-text capitalize leading-tight break-words flex-1">
+                                        {todo.name}
+                                    </h2>
+                                )}
+                                
+                                <div className="flex bg-background/50 rounded-lg border border-border/50 shrink-0 ml-2">
+                                    {isEditing ? (
+                                        <div className="flex">
+                                            <button
+                                                onClick={() => setIsEditing(false)}
+                                                className="p-2 text-text/60 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
+                                                title="Cancel"
+                                            >
+                                                <ImCancelCircle className="w-5 h-5" />
+                                            </button>
+                                            <div className="h-9 w-[1px] bg-border"/>
+                                            <button
+                                                onClick={handleSave}
+                                                className="p-2 text-primary hover:bg-primary/10 rounded-md transition-colors"
+                                                title="Save"
+                                            >
+                                                <LuSaveAll className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={() => setIsEditing(true)}
+                                            className="p-2 text-text/60 hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
+                                            title="Edit"
+                                        >
+                                            <FiEdit className="w-5 h-5" />
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Status Badge */}
+                            {!isEditing && (
+                                <div className="flex items-center gap-2">
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase ${todo.isCompleted ? "bg-green-500/10 text-green-600 border border-green-500/20" : "bg-yellow-500/10 text-yellow-600 border border-yellow-500/20"}`}>
+                                        <div className={`w-1.5 h-1.5 rounded-full ${todo.isCompleted ? "bg-green-500" : "bg-yellow-500"}`} />
+                                        {todo.isCompleted ? "Completed" : "In Progress"}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+
+                        <hr className="border-border/50" />
+
+                        {/* Details Grid */}
+                        <div className="grid grid-cols-1 gap-6">
+                            {/* Priority Section */}
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-text/50 uppercase tracking-wider flex items-center gap-2">
+                                    Priority Level
+                                </label>
+                                {isEditing ? (
+                                    <div className="flex gap-2">
+                                        {["low", "medium", "high"].map((p) => (
+                                            <button
+                                                key={p}
+                                                onClick={() => handleChange({ target: { name: "priority", value: p } })}
+                                                className={`flex-1 px-2 py-1 rounded-lg text-sm font-medium capitalize border transition-all ${
+                                                    editedTask.priority === p 
+                                                    ? p === 'high' ? "bg-red-500 text-white border-red-500" : p === 'medium' ? "bg-green-500 text-white border-green-500" : "bg-blue-500 text-white border-blue-500"
+                                                    : "bg-transparent border-border text-text/60 hover:border-text/30"
+                                                }`}
+                                            >
+                                                {p}
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-lg border ${
+                                        todo.priority === "high" ? "bg-red-50 text-red-700 border-red-200" : 
+                                        todo.priority === "medium" ? "bg-green-50 text-green-700 border-green-200" : 
+                                        "bg-blue-50 text-blue-700 border-blue-200"
+                                    }`}>
+                                        <div className={`w-2 h-2 rounded-full ${
+                                            todo.priority === "high" ? "bg-red-500" : 
+                                            todo.priority === "medium" ? "bg-green-500" : 
+                                            "bg-blue-500"
+                                        }`} />
+                                        <span className="capitalize font-medium">{todo.priority || "Low"}</span>
                                     </div>
                                 )}
                             </div>
-                            {isEditing ? (
-                                ""
-                            ) : (
-                                <div className="mb-4">
-                                    <label
-                                        htmlFor="subTodos"
-                                        className="block text-2xl font-medium text-text/70"
-                                    >
-                                        Sub Todos
-                                    </label>
 
-                                    <div
-                                        className={`flex mt-1 text-md font-bold text-text capitalize`}
-                                    >
-                                        <SubTodos todo={todo} />
-                                    </div>
-                                </div>
-                            )}
-                            <div className="mb-4">
-                                <label className="block font-medium text-text/70 text-2xl">
+                            {/* Description Section */}
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-text/50 uppercase tracking-wider">
                                     Description
                                 </label>
                                 {isEditing ? (
@@ -299,79 +206,77 @@ const Description = ({ todo, onSave, onClose }) => {
                                         name="description"
                                         value={editedTask.description || ""}
                                         onChange={handleChange}
-                                        rows="4"
-                                        className="w-full border-2 border-border rounded-sm focus:outline-none px-1 py-1 text-text text-md resize-none scrollbar-hide"
+                                        rows="6"
+                                        className="w-full bg-background border border-border rounded-xl p-4 text-text/90 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none text-sm leading-relaxed"
+                                        placeholder="Add a more detailed description..."
                                     ></textarea>
                                 ) : (
-                                    <div
-                                        className={`max-h-[105px] overflow-x-hidden overflow-x-ellipsis ${todo.description ? "border border-border px-2 py-1" : "border-none"} scrollbar-hide rounded-md mt-1`}
-                                    >
-                                        <p className="text-md text-text">
-                                            {todo.description ||
-                                                "No description added."}
+                                    <div className="bg-background/50 border border-border/50 rounded-xl p-4 min-h-[100px]">
+                                        <p className="text-text/80 text-sm leading-relaxed whitespace-pre-wrap">
+                                            {todo.description || <span className="text-text/30 italic">No description added yet.</span>}
                                         </p>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="mb-4">
-                                <label
-                                    htmlFor="due-date"
-                                    className="block text-2xl font-medium text-text/70"
-                                >
+                            {/* Subtasks Section */}
+                            {!isEditing && (
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-text/50 uppercase tracking-wider">
+                                        Subtasks
+                                    </label>
+                                    <div className="bg-background/30 rounded-xl">
+                                        <SubTodos todo={todo} />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Due Date Section */}
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-text/50 uppercase tracking-wider">
                                     Due Date
                                 </label>
                                 {isEditing ? (
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <button
-                                                id="due-date"
-                                                className={`
-                                        w-full mt-1 inline-flex items-center justify-between rounded-md border border-primary px-4 py-2 text-sm font-medium shadow-sm hover:bg-primary/50 cursor-pointer
-                                        ${!dueDate ? "text-gray-500" : "text-primary"}`}
+                                                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all ${
+                                                    dueDate 
+                                                    ? "bg-primary/5 border-primary/30 text-primary" 
+                                                    : "bg-background border-border text-text/50 hover:border-text/30"
+                                                }`}
                                             >
-                                                {dueDate
-                                                    ? format(dueDate, "PPP")
-                                                    : "Select a date"}
-                                                <CalendarIcon className="ml-2 h-4 w-4 opacity-50" />
+                                                <span className="font-medium text-sm">
+                                                    {dueDate ? format(dueDate, "PPP") : "Set a deadline"}
+                                                </span>
+                                                <CalendarIcon className="w-4 h-4 opacity-70" />
                                             </button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="p-0 w-auto bg-primary border-none">
+                                        <PopoverContent className="p-0 w-auto bg-background border border-border shadow-xl rounded-xl" align="start">
                                             <Calendar
                                                 mode="single"
                                                 selected={dueDate}
                                                 onSelect={handleDate}
-                                                className="text-background w-full px-3 py-1 border-2 border-primary rounded focus:outline-none"
-                                                disabled={(date) =>
-                                                    date <
-                                                    new Date(
-                                                        new Date().setHours(
-                                                            0,
-                                                            0,
-                                                            0,
-                                                            0
-                                                        )
-                                                    )
-                                                }
+                                                className="rounded-xl border-none"
+                                                disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                                             />
                                         </PopoverContent>
                                     </Popover>
                                 ) : (
-                                    <p className="mt-1 text-sm text-text">
-                                        {todo.due_date
-                                            ? new Date(
-                                                  todo.due_date
-                                              ).toLocaleDateString("en-US", {
-                                                  year: "numeric",
-                                                  month: "long",
-                                                  day: "numeric",
-                                              })
-                                            : "No due date"}
-                                    </p>
+                                    <div className="flex items-center gap-3 text-text/80">
+                                        <div className={`p-2 rounded-lg ${todo.due_date ? "bg-primary/10 text-primary" : "bg-gray-500 text-gray-400"}`}>
+                                            <CalendarIcon className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm font-medium">
+                                            {todo.due_date
+                                                ? format(new Date(todo.due_date), "PPP")
+                                                : "No deadline set"}
+                                        </span>
+                                    </div>
                                 )}
                             </div>
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
         </div>

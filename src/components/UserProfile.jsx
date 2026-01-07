@@ -50,7 +50,7 @@ const UserProfile = () => {
                                     username:
                                 </span>
                                 <span className="text-lg sm:text-xl md:text-2xl text-text font-semibold break-all text-left">
-                                    {profile.username}
+                                    {profile?.username}
                                 </span>
                             </h2>
                             <h2 className="flex flex-row sm:flex-row items-center gap-1 sm:gap-2">
@@ -58,7 +58,7 @@ const UserProfile = () => {
                                     email:
                                 </span>
                                 <span className="text-sm sm:text-base text-text break-all text-left">
-                                    {profile.email}
+                                    {profile?.email}
                                 </span>
                             </h2>
                         </div>

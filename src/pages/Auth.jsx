@@ -181,7 +181,13 @@ const Auth = () => {
                             : "Need an account? Register"}
                     </button>
                 </form>
-                <button className={`text-text text-sm hover:underline mt-2 cursor-pointer gap-2 items-center justify-center ${!isRegister ? "flex" : "hidden"}`}>
+                <button
+                    className={`text-text text-sm hover:underline mt-2 cursor-pointer gap-2 items-center justify-center ${!isRegister ? "flex" : "hidden"}`}
+                    onClick={() => {
+                        setEmail("test@gmail.com");
+                        setPassword("todo@1234");
+                    }}
+                >
                     <p className="opacity-50">Dummy Credentials For Testing</p>
                 </button>
             </div>
