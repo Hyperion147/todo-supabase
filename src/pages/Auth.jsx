@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import { FaLockOpen } from "react-icons/fa";
 import supabase from "../lib/supabase";
 
 const Auth = () => {
@@ -25,7 +26,9 @@ const Auth = () => {
             return;
         }
         if (isRegister && password != confirmPassword) {
-            toast.error("Passwords do not match!", { id: "auth-password-match-error" });
+            toast.error("Passwords do not match!", {
+                id: "auth-password-match-error",
+            });
             setIsLoading(false);
             return;
         }
@@ -47,10 +50,14 @@ const Auth = () => {
                     });
 
                 if (profileError) throw profileError;
-                toast.success("Registered Successfully!", { id: "auth-register-success" });
+                toast.success("Registered Successfully!", {
+                    id: "auth-register-success",
+                });
                 toast.custom(
                     <div className="px-4 py-2 bg-border text-text rounded-md">
-                        <p className="text-xl text-ellipsis">Welcome {username}</p>
+                        <p className="text-xl text-ellipsis">
+                            Welcome {username}
+                        </p>
                     </div>,
                     {
                         id: "auth-welcome-message",
@@ -66,14 +73,14 @@ const Auth = () => {
                 });
                 if (error) throw error;
 
-                toast.success("Login successful!", { id: "auth-login-success" });
+                toast.success("Login successful!", {
+                    id: "auth-login-success",
+                });
             }
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
             toast.error(
-                    (isRegister
-                        ? "Registration failed"
-                        : "Check your credentials!"),
+                isRegister ? "Registration failed" : "Check your credentials!",
                 { id: "auth-error" }
             );
         } finally {
@@ -174,6 +181,9 @@ const Auth = () => {
                             : "Need an account? Register"}
                     </button>
                 </form>
+                <button className={`text-text text-sm hover:underline mt-2 cursor-pointer gap-2 items-center justify-center ${!isRegister ? "flex" : "hidden"}`}>
+                    <p className="opacity-50">Dummy Credentials For Testing</p>
+                </button>
             </div>
         </div>
     );
