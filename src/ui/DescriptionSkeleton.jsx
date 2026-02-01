@@ -15,13 +15,13 @@ const DescriptionSkeleton = () => {
                         <div className="flex justify-between items-start gap-4">
                             <div className="flex-1 space-y-2">
                                 {/* Title Skeleton */}
-                                <div className="h-8 w-3/4 bg-gray-200/50 rounded-lg text-center pt-1">Click on a todo to view</div>
+                                <div className="h-8 w-3/4 bg-gray-200/50 rounded-md text-center pt-1">Click on a todo to view</div>
                                 {/* Status Badge Skeleton */}
                                 <div className="h-6 w-24 bg-gray-200/50 rounded-full"></div>
                             </div>
                             
                             {/* Action Button Skeleton */}
-                            <div className="h-9 w-9 bg-gray-200/50 rounded-lg shrink-0 ml-2"></div>
+                            <div className="h-9 w-9 bg-gray-200/50 rounded-md shrink-0 ml-2"></div>
                         </div>
                     </div>
 
@@ -32,28 +32,28 @@ const DescriptionSkeleton = () => {
                         {/* Priority Section */}
                         <div className="space-y-2">
                             <div className="h-4 w-24 bg-gray-200/50 rounded"></div>
-                            <div className="h-9 w-32 bg-gray-200/50 rounded-lg"></div>
+                            <div className="h-9 w-32 bg-gray-200/50 rounded-md"></div>
                         </div>
 
                         {/* Description Section */}
                         <div className="space-y-2">
                             <div className="h-4 w-24 bg-gray-200/50 rounded"></div>
-                            <div className="h-24 w-full bg-gray-200/50 rounded-xl"></div>
+                            <div className="h-24 w-full bg-gray-200/50 rounded-md"></div>
                         </div>
 
                         {/* Subtasks Section */}
                         <div className="space-y-2">
                             <div className="h-4 w-20 bg-gray-200/50 rounded"></div>
                             <div className="space-y-2">
-                                <div className="h-12 w-full bg-gray-200/50 rounded-xl"></div>
-                                <div className="h-12 w-full bg-gray-200/50 rounded-xl"></div>
+                                <div className="h-12 w-full bg-gray-200/50 rounded-md"></div>
+                                <div className="h-12 w-full bg-gray-200/50 rounded-md"></div>
                             </div>
                         </div>
 
                         {/* Due Date Section */}
                         <div className="space-y-2">
                             <div className="h-4 w-20 bg-gray-200/50 rounded"></div>
-                            <div className="h-10 w-48 bg-gray-200/50 rounded-xl"></div>
+                            <div className="h-10 w-48 bg-gray-200/50 rounded-md"></div>
                         </div>
                     </div>
                 </div>

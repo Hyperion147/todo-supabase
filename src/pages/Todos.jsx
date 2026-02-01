@@ -2,14 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import gsap from "gsap";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import { IoSettingsOutline } from "react-icons/io5";
 import { TbCategory } from "react-icons/tb";
-import clsx from "clsx";
 import supabase from "../lib/supabase";
-import Navbar from "../components/Navbar";
-import Description from "../components/Description";
 import Category from "../components/Category";
+import { playClickSound } from "../components/ClickSound";
 
 const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
     const [newTodo, setNewTodo] = useState("");
@@ -80,10 +76,6 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
         } = await supabase.auth.getSession();
 
         const email = session.user.email;
-        if (todos.length >= 15) {
-            toast.error("Todo limit is 15! Delete some todos!", { id: "todo-limit" });
-            return;
-        }
         if (!newTodo.trim()) return;
         if (!newTodo.trim().split(/\s+/).length > 5) {
             toast.error("Todo name cannot exceed 5 words!", { id: "todo-word-limit" });
@@ -105,6 +97,7 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                 toast.error("Error adding task", { id: "add-error" });
             }
             setTodos([...todos, data[0]]);
+            playClickSound()
             setNewTodo("");
             toast.success("Task added!", { id: "task-added" });
         } catch (error) {
@@ -117,12 +110,12 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
         const input = e.target.value;
         const words = input.trim().split(/\s+/);
 
-        if (words.length <= 5) {
+        if (words.length <= 10) {
             setNewTodo(input);
         } else {
             const truncatedInput = words.slice(0, 5).join(" ");
             setNewTodo(truncatedInput);
-            toast.error("Maximum 5 words allowed in name!", { id: "word-limit-input" });
+            toast.error("Maximum 10 words allowed in name!", { id: "word-limit-input" });
         }
     };
     const completeTask = async (id, isCompleted) => {
@@ -135,7 +128,6 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
             .from("TodoList")
             .update({ isCompleted: !isCompleted })
             .eq("id", id);
-
         if (error) {
             console.log("Error completing task", error);
             toast.error("Error completing task", { id: "complete-error" });
@@ -167,13 +159,13 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                     toast.dismiss(t.id);
                                     animateDelete(id, index);
                                 }}
-                                className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-xl"
+                                className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-md"
                             >
                                 Delete
                             </button>
                             <button
                                 onClick={() => toast.dismiss(t.id)}
-                                className="cursor-pointer bg-primary text-background px-5 py-2 rounded-xl"
+                                className="cursor-pointer bg-primary text-background px-5 py-2 rounded-md"
                             >
                                 Cancel
                             </button>
@@ -237,7 +229,7 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                 className="absolute top-12 right-0 z-20 overflow-hidden lg:hidden"
                 style={{ height: 0, opacity: 0 }}
             >
-                <div className="bg-background border border-border rounded-lg p-3 shadow-lg min-w-[200px]">
+                <div className="bg-background border border-border rounded-md p-3 shadow-lg min-w-500">
                     <Category 
                         todos={todos} 
                         onFilterChange={handleFilterChange}
@@ -260,18 +252,18 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                     placeholder="Add todo..."
                     value={newTodo}
                     onChange={handleInputChange}
-                    className="relative w-full max-w-md px-4 sm:px-6 py-2 sm:py-3 pr-4 rounded-l-full border bg-background text-text shadow-sm focus:outline-none focus:ring-1 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+                    className="relative w-full max-w-md px-4 sm:px-6 pr-4 py-2 rounded-l-md border bg-background text-text shadow-sm focus:outline-none transition-all duration-200 text-sm sm:text-base"
                     aria-describedby="add-todo-error"
                 />
                 <button
                     type="submit"
                     disabled={isAdding}
-                    className="px-3 sm:px-4 py-2 sm:py-3 bg-text text-background rounded-r-full hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-border transition-colors duration-200 font-medium cursor-pointer tech text-sm sm:text-base"
+                    className="px-3 sm:px-4 py-2 bg-text text-background rounded-r-md hover:bg-primary/90 focus:outline-none transition-colors duration-200 font-medium cursor-pointer tech text-sm sm:text-base"
                 >
                     ADD
                 </button>
             </form>
-            <div className="border-border border-0 md:border-2 mt-4 min-h-[calc(100vh-180px)] max-h-[calc(100vh-180px)] w-full rounded-none md:rounded-xl overflow-y-auto overflow-x-hidden scrollbar-hide hover:transition-[colors,box-shadow] duration-500 hover:shadow-[4px_4px_rgba(var(--text-rgb),0.4),8px_8px_rgba(var(--text-rgb),0.2),12px_12px_rgba(var(--text-rgb),0.1)]">
+            <div className="border-border border-0 md:border-2 mt-4 min-h-[calc(100vh-180px)] max-h-[calc(100vh-180px)] w-full rounded-none md:rounded-md overflow-y-auto overflow-x-hidden scrollbar-hide hover:transition-[colors,box-shadow] duration-500 hover:shadow-[4px_4px_rgba(var(--text-rgb),0.4),8px_8px_rgba(var(--text-rgb),0.2),12px_12px_rgba(var(--text-rgb),0.1)]">
                 <ul className="flex flex-col items-center mt-4">
                     {filter
                         .sort((a, b) => a.isCompleted - b.isCompleted)
@@ -290,12 +282,12 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                         type="checkbox"
                                         id={`todo-${todo.id}-checkbox`}
                                         aria-describedby={`todo-${todo.id}-checkbox-error`}
-                                        onChange={() =>
+                                        onChange={() => {
                                             completeTask(
                                                 todo.id,
                                                 todo.isCompleted
-                                            )
-                                        }
+                                            );
+                                        }}
                                         checked={todo.isCompleted}
                                         className={`absolute left-2 sm:left-4 h-5 w-5 sm:h-6 sm:w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
                                     />
@@ -309,9 +301,9 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                     <button
                                         id={`delete-todo-${todo.id}`}
                                         aria-describedby={`delete-todo-${todo.id}-error`}
-                                        onClick={() =>
-                                            animateDelete(todo.id, index)
-                                        }
+                                        onClick={() => {
+                                            animateDelete(todo.id, index);
+                                        }}
                                         className="absolute right-2 sm:right-3 cursor-pointer"
                                     >
                                         <MdDelete className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
@@ -329,12 +321,13 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                         type="checkbox"
                                         id={`todo-${todo.id}-checkbox`}
                                         aria-describedby={`todo-${todo.id}-checkbox-error`}
-                                        onChange={() =>
+                                        onChange={() => {
+                                            playClickSound();
                                             completeTask(
                                                 todo.id,
                                                 todo.isCompleted
-                                            )
-                                        }
+                                            );
+                                        }}
                                         checked={todo.isCompleted}
                                         disabled={todo.isCompleted}
                                         className={`absolute left-2 sm:left-4 h-5 w-5 sm:h-6 sm:w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}

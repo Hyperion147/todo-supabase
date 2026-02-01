@@ -136,7 +136,7 @@ const Home = () => {
                         onClick={handleCloseDescription}
                     >
                         <div 
-                            className={`w-full max-w-md bg-background border border-border rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto ${
+                            className={`w-full max-w-md bg-background border border-border rounded-t-2xl sm:rounded-md shadow-2xl max-h-[85vh] overflow-y-auto ${
                                 isClosing ? "translate-y-full sm:scale-95" : "translate-y-0 sm:scale-100"
                             } transition-all duration-300 ease-out`}
                             onClick={e => e.stopPropagation()}

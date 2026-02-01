@@ -144,12 +144,12 @@ const SubTodos = ({ todo }) => {
                         value={newSub}
                         onChange={(e) => setNewSub(e.target.value)}
                         placeholder="Add a subtask..."
-                        className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-background/50 text-text text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-text/40"
+                        className="w-full px-4 py-2.5 rounded-md border border-border/50 bg-background/50 text-text text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-text/40"
                     />
                     <button
                         type="submit"
                         disabled={!newSub.trim()}
-                        className="absolute right-2 p-1.5 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 disabled:opacity-0 transition-all font-medium text-xs uppercase tracking-wider"
+                        className="absolute right-2 p-1.5 bg-primary/10 text-primary rounded-md hover:bg-primary/20 disabled:opacity-0 transition-all font-medium text-xs uppercase tracking-wider"
                     >
                         Add
                     </button>
@@ -170,7 +170,7 @@ const SubTodos = ({ todo }) => {
                     >
                         <div
                             className={`
-                            flex justify-between items-center px-3 py-2.5 rounded-xl border transition-all duration-200
+                            flex justify-between items-center px-3 py-2.5 rounded-md border transition-all duration-200
                             ${
                                 subTodo.isCompleted
                                     ? "bg-green-500/5 border-green-500/10 text-text/50"
@@ -224,7 +224,7 @@ const SubTodos = ({ todo }) => {
                             </div>
                             <button
                                 onClick={() => deleteSubTodo(subTodo.id)}
-                                className="ml-2 p-1.5 text-text/30 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                className="ml-2 p-1.5 text-text/30 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
                                 title="Delete subtask"
                             >
                                 <MdDelete className="w-4 h-4" />

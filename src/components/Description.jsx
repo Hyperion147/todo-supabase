@@ -108,12 +108,12 @@ const Description = ({ todo, onSave, onClose }) => {
                                         />
                                     </div>
                                 ) : (
-                                    <h2 className="text-2xl sm:text-3xl font-bold text-text capitalize leading-tight break-words flex-1">
+                                    <h2 className="text-2xl sm:text-3xl font-bold text-text capitalize leading-tight wrap-break-word flex-1">
                                         {todo.name}
                                     </h2>
                                 )}
                                 
-                                <div className="flex bg-background/50 rounded-lg border border-border/50 shrink-0 ml-2">
+                                <div className="flex bg-background/50 rounded-md border border-border/50 shrink-0 ml-2">
                                     {isEditing ? (
                                         <div className="flex">
                                             <button
@@ -123,7 +123,7 @@ const Description = ({ todo, onSave, onClose }) => {
                                             >
                                                 <ImCancelCircle className="w-5 h-5" />
                                             </button>
-                                            <div className="h-9 w-[1px] bg-border"/>
+                                            <div className="h-9 w-px bg-border"/>
                                             <button
                                                 onClick={handleSave}
                                                 className="p-2 text-primary hover:bg-primary/10 rounded-md transition-colors"
@@ -170,7 +170,7 @@ const Description = ({ todo, onSave, onClose }) => {
                                             <button
                                                 key={p}
                                                 onClick={() => handleChange({ target: { name: "priority", value: p } })}
-                                                className={`flex-1 px-2 py-1 rounded-lg text-sm font-medium capitalize border transition-all ${
+                                                className={`flex-1 px-2 py-1 rounded-md text-sm font-medium capitalize border transition-all ${
                                                     editedTask.priority === p 
                                                     ? p === 'high' ? "bg-red-500 text-white border-red-500" : p === 'medium' ? "bg-green-500 text-white border-green-500" : "bg-blue-500 text-white border-blue-500"
                                                     : "bg-transparent border-border text-text/60 hover:border-text/30"
@@ -181,7 +181,7 @@ const Description = ({ todo, onSave, onClose }) => {
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-lg border ${
+                                    <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-md border ${
                                         todo.priority === "high" ? "bg-red-50 text-red-700 border-red-200" : 
                                         todo.priority === "medium" ? "bg-green-50 text-green-700 border-green-200" : 
                                         "bg-blue-50 text-blue-700 border-blue-200"
@@ -207,11 +207,11 @@ const Description = ({ todo, onSave, onClose }) => {
                                         value={editedTask.description || ""}
                                         onChange={handleChange}
                                         rows="6"
-                                        className="w-full bg-background border border-border rounded-xl p-4 text-text/90 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none text-sm leading-relaxed"
+                                        className="w-full bg-background border border-border rounded-md p-4 text-text/90 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none text-sm leading-relaxed"
                                         placeholder="Add a more detailed description..."
                                     ></textarea>
                                 ) : (
-                                    <div className="bg-background/50 border border-border/50 rounded-xl p-4 min-h-[100px]">
+                                    <div className="bg-background/50 border border-border/50 rounded-md p-4 min-h-25">
                                         <p className="text-text/80 text-sm leading-relaxed whitespace-pre-wrap">
                                             {todo.description || <span className="text-text/30 italic">No description added yet.</span>}
                                         </p>
@@ -225,7 +225,7 @@ const Description = ({ todo, onSave, onClose }) => {
                                     <label className="text-xs font-bold text-text/50 uppercase tracking-wider">
                                         Subtasks
                                     </label>
-                                    <div className="bg-background/30 rounded-xl">
+                                    <div className="bg-background/30 rounded-md">
                                         <SubTodos todo={todo} />
                                     </div>
                                 </div>
@@ -240,7 +240,7 @@ const Description = ({ todo, onSave, onClose }) => {
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <button
-                                                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all ${
+                                                className={`w-full flex items-center justify-between px-4 py-3 rounded-md border transition-all ${
                                                     dueDate 
                                                     ? "bg-primary/5 border-primary/30 text-primary" 
                                                     : "bg-background border-border text-text/50 hover:border-text/30"
@@ -252,19 +252,19 @@ const Description = ({ todo, onSave, onClose }) => {
                                                 <CalendarIcon className="w-4 h-4 opacity-70" />
                                             </button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="p-0 w-auto bg-background border border-border shadow-xl rounded-xl" align="start">
+                                        <PopoverContent className="p-0 w-auto bg-background border border-border shadow-xl rounded-md" align="start">
                                             <Calendar
                                                 mode="single"
                                                 selected={dueDate}
                                                 onSelect={handleDate}
-                                                className="rounded-xl border-none"
+                                                className="rounded-md border-none"
                                                 disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                                             />
                                         </PopoverContent>
                                     </Popover>
                                 ) : (
                                     <div className="flex items-center gap-3 text-text/80">
-                                        <div className={`p-2 rounded-lg ${todo.due_date ? "bg-primary/10 text-primary" : "bg-gray-500 text-gray-400"}`}>
+                                        <div className={`p-2 rounded-md ${todo.due_date ? "bg-primary/10 text-primary" : "bg-gray-500 text-gray-400"}`}>
                                             <CalendarIcon className="w-4 h-4" />
                                         </div>
                                         <span className="text-sm font-medium">

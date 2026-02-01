@@ -90,7 +90,7 @@ const Auth = () => {
 
     return (
         <div className="text-text flex flex-col items-center h-[85vh] justify-center transition-normal">
-            <div className="border-2 border-border text-center flex flex-col justify-center items-center px-6 py-6 md:py-10 rounded-xl w-full max-w-[90vw] sm:max-w-md">
+            <div className="border-2 border-border text-center flex flex-col justify-center items-center px-6 py-6 md:py-10 rounded-md w-full max-w-[90vw] sm:max-w-md">
                 <h2 className="text-text font-bold text-xl sm:text-2xl mb-4 tech">
                     {isRegister ? "REGISTER" : "LOGIN"}
                 </h2>

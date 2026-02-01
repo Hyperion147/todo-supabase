@@ -28,13 +28,13 @@ const Navbar = ({ session, handleSignOut }) => {
                                     toast.dismiss(t.id);
                                     handleSignOut();
                                 }}
-                                className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-xl"
+                                className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-md"
                             >
                                 Log Out
                             </button>
                             <button
                                 onClick={() => toast.dismiss(t.id)}
-                                className="cursor-pointer bg-primary text-background px-5 py-2 rounded-xl"
+                                className="cursor-pointer bg-primary text-background px-5 py-2 rounded-md"
                             >
                                 Cancel
                             </button>
