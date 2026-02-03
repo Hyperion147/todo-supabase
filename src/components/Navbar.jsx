@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { IoMdLogOut } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
-import { IoMdLogIn } from "react-icons/io";
 import toast from "react-hot-toast";
 import Settings from "../pages/Settings";
-import supabase from "../lib/supabase";
-import { useTheme } from "../ui/ThemeProvider";
 import { GradientAvatar } from "@/ui/GradientAvatar";
 
 gsap.registerPlugin(useGSAP);
@@ -65,7 +61,7 @@ const Navbar = ({ session, handleSignOut }) => {
             className="bg-background border border-gray-700 shadow-md flex justify-between md:justify-around bgImg"
         >
             <div className="container px-2 sm:px-4 md:px-10 py-2 sm:py-3 md:py-5 flex justify-between items-center gap-2 sm:gap-0 z-10 mx-2 sm:mx-4 md:mx-20">
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-2 sm:ml-5">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-linear-to-l from-text to-text/60 bg-clip-text text-transparent tech cursor-default ml-2 sm:ml-5">
                     {session ? <Link to="/todo">TODO</Link> : <span>TODO</span>}
                 </h1>
                 <div className={`items-center gap-2 sm:gap-3 md:gap-8 ${session ? "flex" : "hidden"}`}>

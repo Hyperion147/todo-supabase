@@ -33,8 +33,8 @@ const UserProfile = () => {
         <div className="border-border border-2 p-3 sm:p-4 md:p-5 rounded-md mx-2 sm:mx-4 md:mx-8 lg:mx-20 mt-3 sm:mt-4 md:mt-5">
             {loading ? (
                 <div className="mx-2 sm:mx-4 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
-                    <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
                 </div>
             ) : editing ? (
                 <div></div>

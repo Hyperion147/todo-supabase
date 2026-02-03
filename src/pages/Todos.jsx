@@ -6,6 +6,7 @@ import { TbCategory } from "react-icons/tb";
 import supabase from "../lib/supabase";
 import Category from "../components/Category";
 import { playClickSound } from "../components/ClickSound";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
     const [newTodo, setNewTodo] = useState("");
@@ -209,18 +210,14 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
 
     return (
         <div className="relative">
-            <div className="flex justify-end mb-4 lg:hidden">
+            <div className="flex justify-end my-2 lg:hidden">
                 <button
                     onClick={() => setShowCategory(!showCategory)}
                     className="flex items-center gap-1 px-3 py-1.5 bg-background hover:bg-hover/30 transition-all duration-200 text-text rounded-md"
                 >
                     <TbCategory className="w-4 h-4" />
                     <span className="text-xs sm:text-sm">Filters</span>
-                    <div className={`transform transition-transform duration-200 ${showCategory ? 'rotate-90' : 'rotate-0'}`}>
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                    </div>
+                    {showCategory ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                 </button>
             </div>
 

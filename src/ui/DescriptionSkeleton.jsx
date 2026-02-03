@@ -3,13 +3,13 @@ const DescriptionSkeleton = () => {
         <div className="w-full h-full flex flex-col font-sans relative overflow-hidden">
             {/* Mobile Navbar Skeleton */}
             <div className="lg:hidden sticky top-0 bg-background border-b border-border px-4 py-3 flex items-center justify-between mb-4">
-                <div className="h-5 w-16 bg-gray-200/50 rounded animate-pulse"></div>
-                <div className="h-5 w-24 bg-gray-200/50 rounded animate-pulse"></div>
+                <div className="h-5 w-16 bg-gray-200/50 rounded"></div>
+                <div className="h-5 w-24 bg-gray-200/50 rounded"></div>
                 <div className="w-8"></div>
             </div>
 
             <div className="flex-1 overflow-y-auto custom-scrollbar px-1 sm:px-4 pb-20 lg:pb-0">
-                <div className="flex flex-col gap-6 animate-pulse">
+                <div className="flex flex-col gap-6">
                     {/* Header Section */}
                     <div className="flex flex-col gap-4">
                         <div className="flex justify-between items-start gap-4">

@@ -29,8 +29,8 @@ const Category = ({
     ];
 
     return (
-        <div className="flex flex-col relative w-full">
-            <h2 className="font-bold text-text tracking-wider flex items-center gap-1 text-lg sm:text-xl mb-2">
+        <div className="flex flex-col w-full">
+            <h2 className="font-bold text-text tracking-wider flex items-center gap-1 text-lg sm:text-xl my-2">
                 <TbCategory /> Filters
             </h2>
             <hr className="border-border opacity-50" />
