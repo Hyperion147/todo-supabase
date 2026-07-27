@@ -11,38 +11,33 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
     const [newTodo, setNewTodo] = useState("");
     const [isAdding, setIsAdding] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(null);
+    const [isDeletingId, setIsDeletingId] = useState(null);
     const [showCategory, setShowCategory] = useState(false);
     const [activeFilter, setActiveFilter] = useState("all");
-    const [isMobile, setIsMobile] = useState(false);
     const itemRef = useRef([]);
     const categoryRef = useRef(null);
 
     useEffect(() => {
-        itemRef.current = itemRef.current.slice(0, todos.length);
-    }, [todos]);
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 1024);
-        };
-        
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-    useEffect(() => {
         if (categoryRef.current) {
             if (showCategory) {
-                gsap.fromTo(categoryRef.current, 
+                gsap.fromTo(
+                    categoryRef.current,
                     { height: 0, opacity: 0 },
-                    { height: "auto", opacity: 1, duration: 0.3, ease: "power2.out" }
+                    {
+                        height: "auto",
+                        opacity: 1,
+                        duration: 0.3,
+                        ease: "power2.out",
+                    }
                 );
             } else {
-                gsap.to(categoryRef.current, 
-                    { height: 0, opacity: 0, duration: 0.3, ease: "power2.in" }
-                );
+                gsap.to(categoryRef.current, {
+                    height: 0,
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: "power2.in",
+                });
             }
         }
     }, [showCategory]);
@@ -54,8 +49,9 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
         }
     };
 
-    const animateDelete = (id, index) => {
-        const element = itemRef.current[index];
+    const animateDelete = (id) => {
+        const element = itemRef.current[id];
+        setIsDeletingId(id);
         if (!element) {
             deleteTask(id);
             return;
@@ -72,18 +68,28 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
     };
 
     const addTodo = async () => {
+        if (!newTodo.trim()) return;
+        if (newTodo.trim().split(/\s+/).length > 5) {
+            toast.error("Todo name cannot exceed 5 words!", {
+                id: "todo-word-limit",
+            });
+            return;
+        }
+
         const {
             data: { session },
         } = await supabase.auth.getSession();
+        if (!session) {
+            return toast.error("Login First!", { id: "login-required" });
+        }
 
         const email = session.user.email;
-        if (!newTodo.trim()) return;
-        if (!newTodo.trim().split(/\s+/).length > 5) {
-            toast.error("Todo name cannot exceed 5 words!", { id: "todo-word-limit" });
-            return;
-        }
+        if (!email)
+            return toast.error("User email not found!", {
+                id: "email-not-found",
+            });
+
         try {
-            if (!session) toast.error("Login First!", { id: "login-required" });
             setIsAdding(true);
             const { data, error } = await supabase
                 .from("TodoList")
@@ -93,119 +99,150 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                     email: email,
                 })
                 .select();
-            if (error) {
-                console.log("Error adding todo", error);
-                toast.error("Error adding task", { id: "add-error" });
-            }
-            setTodos([...todos, data[0]]);
-            playClickSound()
+            if (error) throw error;
+
+            const row = data?.[0];
+            if (!row) throw new Error("No data returned from insert");
+
+            setTodos((prev) => [...prev, row]);
+            playClickSound();
             setNewTodo("");
             toast.success("Task added!", { id: "task-added" });
         } catch (error) {
             console.log("Error adding task:", error);
+            toast.error("Error adding task", { id: "add-error" });
         } finally {
             setIsAdding(false);
         }
     };
+
     const handleInputChange = (e) => {
         const input = e.target.value;
         const words = input.trim().split(/\s+/);
 
-        if (words.length <= 10) {
+        if (words.length <= 5) {
             setNewTodo(input);
         } else {
             const truncatedInput = words.slice(0, 5).join(" ");
             setNewTodo(truncatedInput);
-            toast.error("Maximum 10 words allowed in name!", { id: "word-limit-input" });
+            toast.error("Maximum 5 words allowed in name!", {
+                id: "word-limit-input",
+            });
         }
     };
+
     const completeTask = async (id, isCompleted) => {
         setTodos((prev) =>
             prev.map((todo) =>
                 todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
             )
         );
-        const { error } = await supabase
-            .from("TodoList")
-            .update({ isCompleted: !isCompleted })
-            .eq("id", id);
-        if (error) {
-            console.log("Error completing task", error);
-            toast.error("Error completing task", { id: "complete-error" });
-        } else {
-            const updatedTodo = todos.map((todo) =>
-                todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
-            );
-            setTodos(updatedTodo);
-            onSelect(null)
-            if (!isCompleted) {
-                toast.success("Completed task! Check filter!", { id: "task-completed" });
-            } else toast.error("Todo Pending!", { id: "todo-pending" });
+        try {
+            setIsUpdating(id);
+
+            const { error } = await supabase
+                .from("TodoList")
+                .update({ isCompleted: !isCompleted })
+                .eq("id", id);
+            if (error) {
+                setTodos((prev) =>
+                    prev.map((todo) =>
+                        todo.id === id ? { ...todo, isCompleted } : todo
+                    )
+                );
+                console.log("Error completing task", error);
+                toast.error("Error completing task", { id: "complete-error" });
+            } else {
+                onSelect(null);
+                if (!isCompleted) {
+                    toast.success("Completed task! Check filter!", {
+                        id: "task-completed",
+                    });
+                } else toast.error("Todo Pending!", { id: "todo-pending" });
+            }
+        } finally {
+            setIsUpdating(null);
         }
     };
 
-    const handleDelete = async (id, index) => {
-        if (isMobile) {
-            animateDelete(id, index);
-        } else {
-            toast(
-                (t) => (
-                    <div className="">
-                        <p className="mb-2 text-2xl text-text text-center">
-                            Delete todo?
-                        </p>
-                        <div className="flex space-x-2 w-full justify-center">
-                            <button
-                                onClick={() => {
-                                    toast.dismiss(t.id);
-                                    animateDelete(id, index);
-                                }}
-                                className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-md"
-                            >
-                                Delete
-                            </button>
-                            <button
-                                onClick={() => toast.dismiss(t.id)}
-                                className="cursor-pointer bg-primary text-background px-5 py-2 rounded-md"
-                            >
-                                Cancel
-                            </button>
-                        </div>
+    const handleDelete = (id) => {
+        if (isDeletingId === id) return;
+
+        toast(
+            (t) => (
+                <div className="">
+                    <p className="mb-2 text-2xl text-text text-center">
+                        Delete todo?
+                    </p>
+                    <div className="flex space-x-2 w-full justify-center">
+                        <button
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                animateDelete(id);
+                            }}
+                            className="cursor-pointer hover:bg-primary text-text hover:text-background px-5 py-2 rounded-md"
+                        >
+                            Delete
+                        </button>
+                        <button
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                            }}
+                            className="cursor-pointer bg-primary text-background px-5 py-2 rounded-md"
+                        >
+                            Cancel
+                        </button>
                     </div>
-                ),
-                {
-                    id: `delete-confirm-${id}`,
-                    duration: 5000,
-                    style: {
-                        background: "var(--color-background)",
-                        color: "var(--color-text)",
-                        padding: "10px 15px",
-                        borderRadius: "0.5rem",
-                        boxShadow: "0 4px 12px rgba(50, 120, 140, 0.5)",
-                        border: "1px solid var(--color-border)",
-                    },
-                }
-            );
-        }
+                </div>
+            ),
+            {
+                id: `delete-confirm-${id}`,
+                duration: 5000,
+                style: {
+                    background: "var(--color-background)",
+                    color: "var(--color-text)",
+                    padding: "10px 15px",
+                    borderRadius: "0.5rem",
+                    boxShadow: "0 4px 12px rgba(50, 120, 140, 0.5)",
+                    border: "1px solid var(--color-border)",
+                },
+            }
+        );
     };
     const deleteTask = async (id) => {
-        const { error } = await supabase.from("TodoList").delete().eq("id", id);
-        if (error) {
-            console.log("Error deleting task", error);
-            toast.error("Error deleting task", { 
-                id: `delete-error-${id}`,
-                duration: 3000
-            });
-        } else {
-            setTodos((prev) => prev.filter((todo) => todo.id !== id));
-            toast.success("Task deleted!", {
-                id: `delete-success-${id}`,
-                duration: 2000
-            });
+        try {
+            const { error } = await supabase
+                .from("TodoList")
+                .delete()
+                .eq("id", id);
+            if (error) {
+                const element = itemRef.current[id];
+                if (element) {
+                    gsap.to(element, {
+                        x: 0,
+                        opacity: 1,
+                        duration: 0.4,
+                    });
+                }
+                console.log("Error deleting task", error);
+                toast.error("Error deleting task", {
+                    id: `delete-error-${id}`,
+                    duration: 3000,
+                });
+            } else {
+                setTodos((prev) => prev.filter((todo) => todo.id !== id));
+                toast.success("Task deleted!", {
+                    id: `delete-success-${id}`,
+                    duration: 2000,
+                });
+
+                setTimeout(() => {
+                    onSelect(null);
+                }, 100);
+            }
+        } finally {
+            setIsDeletingId(null);
         }
-        setTimeout(() => {
-                onSelect(null);
-        }, 100);
     };
 
     return (
@@ -217,18 +254,22 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                 >
                     <TbCategory className="w-4 h-4" />
                     <span className="text-xs sm:text-sm">Filters</span>
-                    {showCategory ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                    {showCategory ? (
+                        <ChevronDown className="w-4 h-4" />
+                    ) : (
+                        <ChevronRight className="w-4 h-4" />
+                    )}
                 </button>
             </div>
 
-            <div 
+            <div
                 ref={categoryRef}
                 className="absolute top-12 right-0 z-20 overflow-hidden lg:hidden"
                 style={{ height: 0, opacity: 0 }}
             >
                 <div className="bg-background border border-border rounded-md p-3 shadow-lg min-w-500">
-                    <Category 
-                        todos={todos} 
+                    <Category
+                        todos={todos}
                         onFilterChange={handleFilterChange}
                         activeFilter={activeFilter}
                     />
@@ -264,10 +305,14 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                 <ul className="flex flex-col items-center mt-4">
                     {filter
                         .sort((a, b) => a.isCompleted - b.isCompleted)
-                        .map((todo, index) =>
+                        .map((todo) =>
                             todo.isCompleted ? (
                                 <li
-                                    ref={(e) => (itemRef.current[index] = e)}
+                                    ref={(e) => {
+                                        if (e) {
+                                            itemRef.current[todo.id] = e;
+                                        } else delete itemRef.current[todo.id];
+                                    }}
                                     key={todo.id}
                                     id={`todo-${todo.id}`}
                                     className={`relative flex justify-center items-center py-2 sm:py-3 mb-2 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
@@ -279,6 +324,7 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                         type="checkbox"
                                         id={`todo-${todo.id}-checkbox`}
                                         aria-describedby={`todo-${todo.id}-checkbox-error`}
+                                        disabled={isUpdating === todo.id}
                                         onChange={() => {
                                             completeTask(
                                                 todo.id,
@@ -299,8 +345,9 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                         id={`delete-todo-${todo.id}`}
                                         aria-describedby={`delete-todo-${todo.id}-error`}
                                         onClick={() => {
-                                            animateDelete(todo.id, index);
+                                            handleDelete(todo.id);
                                         }}
+                                        disabled={isDeletingId === todo.id}
                                         className="absolute right-2 sm:right-3 cursor-pointer"
                                     >
                                         <MdDelete className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
@@ -308,7 +355,11 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                 </li>
                             ) : (
                                 <li
-                                    ref={(e) => (itemRef.current[index] = e)}
+                                    ref={(e) => {
+                                        if (e) {
+                                            itemRef.current[todo.id] = e;
+                                        } else delete itemRef.current[todo.id];
+                                    }}
                                     key={todo.id}
                                     className={`relative flex justify-center items-center py-2 sm:py-3 mb-2 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl todo-item todo-element border-l-4 ${todo.priority === "low" ? "border-blue-500" : todo.priority === "medium" ? "border-green-700" : todo.priority === "high" ? "border-red-700" : ""} 
                         ${todo.priority === "low" ? "bg-blue-100" : todo.priority === "medium" ? "bg-green-300" : todo.priority === "high" ? "bg-red-300" : ""} ${todo.isCompleted && "hidden"}
@@ -326,7 +377,10 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                             );
                                         }}
                                         checked={todo.isCompleted}
-                                        disabled={todo.isCompleted}
+                                        disabled={
+                                            todo.isCompleted ||
+                                            isUpdating === todo.id
+                                        }
                                         className={`absolute left-2 sm:left-4 h-5 w-5 sm:h-6 sm:w-6 text-blue-600 cursor-pointer transition-colors duration-200 ring-2 ring-inset ${todo.priority === "low" ? "ring-blue-500" : todo.priority === "medium" ? "ring-green-600 " : todo.priority === "high" ? "ring-red-500" : ""}`}
                                     />
                                     <span
@@ -338,8 +392,9 @@ const Todos = ({ onSelect, todos, setTodos, filter, onFilterChange }) => {
                                     </span>
                                     <button
                                         onClick={() => {
-                                            handleDelete(todo.id, index);
+                                            handleDelete(todo.id);
                                         }}
+                                        disabled={isDeletingId === todo.id}
                                         className="absolute right-2 sm:right-3 cursor-pointer"
                                     >
                                         <MdDelete className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />

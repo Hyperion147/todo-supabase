@@ -2,7 +2,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { FaLockOpen } from "react-icons/fa";
 import supabase from "../lib/supabase";
 
 const Auth = () => {
